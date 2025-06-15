@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+@import './font.css';
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: 'retro';
+  default: true;
+  --color-primary: #412722;
+  --color-secondary: #3b1f2b;
+  --color-base-100: #fefae0;
+  --color-base-200: #f4e3b2;
+  --color-base-300: #f7fff7;
+  --color-accent: #db162f;
+  /* --color-base-300: #F1DAC4; */
+}
+
+@plugin "daisyui/theme" {
+  name: 'coffee';
+  --color-primary: #f3dfa2;
+  --color-secondary: #fff7ae;
+  --color-base-100: #231f20;
+  --color-base-200: #231f20;
+  --color-base-300: #d8d1cd;
+  --color-accent: #bc6c25;
+}
+
+.font-gokhan {
+  font-family: 'Gokhan';
+}
+
+.font-merri {
+  font-family: 'Merriweather';
+}

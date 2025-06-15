@@ -1,0 +1,61 @@
+---
+const today = new Date();
+---
+
+<footer class="w-full items-top justify-between mx-auto px-4 mt-10 mb-5">
+  <hr class="secondary mb-3" />
+  <div class="flex flex-col md:flex-row md:justify-between">
+    <div class="flex md:flex-row items-center">
+      <div class="flex items-center">
+        <svg
+          fill="currentColor"
+          class="w-9 h-9 md:w-12 md:h-12 text-secondary"
+          viewBox="0 0 256 256"
+        >
+          <path
+            d="M128,20A108,108,0,1,0,236,128,108.12249,108.12249,0,0,0,128,20Zm0,196a88,88,0,1,1,88-88A88.09957,88.09957,0,0,1,128,216Zm0-160a72,72,0,1,0,72,72A72.08124,72.08124,0,0,0,128,56Zm.00293,103.99512a31.76384,31.76384,0,0,0,25.60254-12.79981,8,8,0,0,1,12.791,9.61182,47.99976,47.99976,0,1,1,0-57.62451,8,8,0,0,1-12.791,9.61181,32.001,32.001,0,1,0-25.60254,51.20069Z"
+          ></path>
+        </svg>
+      </div>
+      <div
+        class="flex flex-col text-xs md:text-sm text-gray-700 font-normal text-left ml-1"
+      >
+        <span class="text-secondary"
+          >{today.getFullYear()} Forró da Capita.</span
+        >
+        <span class="text-secondary">All rights reserved.</span>
+      </div>
+    </div>
+
+    <div>
+      <a href="https://macozu.github.io" class="font-semibold">
+        <div class="flex flex-row gap-x-3 items-center justify-end w-full">
+          <div
+            class="flex flex-col text-xs md:text-sm text-gray-700 font-normal text-right transition delay-50 duration-300 ease-in-out will-change-transform hover:text-violet-900"
+          >
+            <span class="text-secondary">Code, Graphics & Photo</span>
+            <span class="text-secondary">Marco Zausch</span>
+          </div>
+          <div
+            class="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
+          >
+            <svg
+              id="_3._Quadrat"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 300 300"
+              fill="currentColor"
+              class="absolute inset-0 w-full h-full object-contain hover:scale-105 text-secondary hover:fill-violet-900 transition delay-50 duration-300 ease-in-out will-change-transform"
+            >
+              <path
+                d="m273.34,50.5L37.96,285.88c-1.15,1.15-.33,3.11,1.29,3.11h235.37c1.01,0,1.82-.82,1.82-1.82V51.79c0-1.62-1.96-2.44-3.11-1.29Zm-35.89,199.49h-108.44l108.44-108.44v108.44Z"
+              ></path>
+              <path
+                d="m24.66,247.45L260.04,12.08c.99-.99.52-2.58-.66-3-.34-.12-.73-.06-1.06.1L111.11,78.01c-7.81,3.65-17.06,2.01-23.15-4.09L24.19,9.86c-.89-.98-2.61-.43-2.64.89,0,.01,0,.02,0,.03v235.37c0,1.62,1.96,2.44,3.11,1.29Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,184 @@
+---
+import { Image } from 'astro:assets'
+import Door from '../assets/images/pa58_images/door.jpg'
+import Path from '../assets/images/pa58_images/path.jpg'
+import Sign from '../assets/images/pa58_images/sign.jpg'
+import Map from '../assets/images/map.png'
+import MapIcon from './Map_Icon.astro'
+
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  ContainerClasses?: string
+  TextClasses?: string
+}
+
+const { ContainerClasses = '', TextClasses = '' }: Props = Astro.props
+
+const baseContainerClasses = 'w-full flex justify-end rounded-lg'
+const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
+
+const baseTextClasses = 'text-primary font-merri font-semibold text-xl'
+const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+---
+
+<div class={mergedContainerClasses}>
+  <div>
+    <h1
+      class="text-2xl font-bold text-secondary font-gokhan tracking-wider mb-4"
+    >
+      FIND US
+    </h1>
+    <div
+      class="flex flex-row items-center gap-x-4 bg-base-100/50 p-6 rounded-xl"
+    >
+      <div class="">
+        <h1 class={mergedTextClasses}>
+          We dance Forró, every Tuesday at
+          <!-- Map Link - Click to Open Overlay -->
+          <button
+            id="mapLink"
+            class="underline underline-offset-5 hover:no-underline cursor-pointer"
+            role="button"
+            aria-haspopup="dialog"
+            aria-controls="mapModal"
+          >
+            Prinzenallee 58
+          </button>
+        </h1>
+
+        <h1 class={mergedTextClasses}>
+          Once in the first backyard,
+          <!-- Images Link - Click to Open Overlay -->
+          <a
+            id="imagesLink"
+            href="#"
+            class="underline underline-offset-5 hover:no-underline cursor-pointer"
+            role="button"
+            aria-haspopup="dialog"
+            aria-controls="imagesModal"
+          >
+            this
+          </a>
+          is the way to go.
+        </h1>
+      </div>
+      <MapIcon />
+    </div>
+  </div>
+
+  <!-- Map Overlay Modal (initially hidden) -->
+  <div
+    id="mapModal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center"
+    aria-modal="true"
+    role="dialog"
+  >
+    <!-- Modal Content - Mouse leaving this div closes the modal -->
+    <div
+      id="mapModalContent"
+      class="pointer-events-auto bg-base-100 p-4 rounded-lg shadow-xl max-h-[95vh] max-w-2xl flex items-center justify-center relative group"
+      style="min-width: 300px; max-width: 80vw;"
+    >
+      <Image
+        src={Map}
+        alt="Map showing Prinzenallee 58"
+        class="max-h-[95vh] max-w-2xl rounded-lg object-contain"
+        loading="eager"
+        widths={[300, 600, 800]}
+        sizes="(max-width: 768px) 80vw, 90vw"
+      />
+    </div>
+  </div>
+
+  <!-- Three Images Overlay Modal (initially hidden) -->
+  <div
+    id="imagesModal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex justify-center items-center"
+    aria-modal="true"
+    role="dialog"
+  >
+    <!-- Modal Content - Mouse leaving this div closes the modal -->
+    <div
+      id="imagesModalContent"
+      class="pointer-events-auto bg-base-100 p-6 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+    >
+      <Image
+        src={Sign}
+        alt="Signs"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+      />
+
+      <Image
+        src={Path}
+        alt="Path"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+      />
+
+      <Image
+        src={Door}
+        alt="Door"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+      />
+    </div>
+  </div>
+
+  <script is:inline>
+    // Get references to elements
+    const mapLink = document.getElementById('mapLink')
+    const mapModal = document.getElementById('mapModal')
+    const mapModalContent = document.getElementById('mapModalContent')
+
+    const imagesLink = document.getElementById('imagesLink')
+    const imagesModal = document.getElementById('imagesModal')
+    const imagesModalContent = document.getElementById('imagesModalContent')
+
+    // --- Map Modal Logic ---
+    if (mapLink && mapModal && mapModalContent) {
+      mapLink.addEventListener('click', (e) => {
+        e.preventDefault() // Prevent default link navigation
+        mapModal.classList.remove('hidden') // Show the modal
+        // Optional: Add a class to body to prevent scrolling when modal is open
+        // document.body.classList.add('overflow-hidden');
+      })
+
+      // Close when mouse leaves the modal content area
+      mapModalContent.addEventListener('mouseleave', () => {
+        mapModal.classList.add('hidden') // Hide the modal
+        // document.body.classList.remove('overflow-hidden');
+      })
+
+      // Close when clicking on the backdrop itself (not the content)
+      mapModal.addEventListener('click', (e) => {
+        if (e.target === mapModal) {
+          mapModal.classList.add('hidden')
+          // document.body.classList.remove('overflow-hidden');
+        }
+      })
+    }
+
+    // --- Three Images Modal Logic ---
+    if (imagesLink && imagesModal && imagesModalContent) {
+      imagesLink.addEventListener('click', (e) => {
+        e.preventDefault() // Prevent default link navigation
+        imagesModal.classList.remove('hidden') // Show the modal
+        // Optional: Add a class to body to prevent scrolling when modal is open
+        // document.body.classList.add('overflow-hidden');
+      })
+
+      // Close when mouse leaves the modal content area
+      imagesModalContent.addEventListener('mouseleave', () => {
+        imagesModal.classList.add('hidden') // Hide the modal
+        // document.body.classList.remove('overflow-hidden');
+      })
+
+      // Close when clicking on the backdrop itself (not the content)
+      imagesModal.addEventListener('click', (e) => {
+        if (e.target === imagesModal) {
+          imagesModal.classList.add('hidden')
+          // document.body.classList.remove('overflow-hidden');
+        }
+      })
+    }
+  </script>
+</div>

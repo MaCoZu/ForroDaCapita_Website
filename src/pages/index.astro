@@ -1,16 +1,20 @@
 ---
-
+import Board from '../components/Board.js'
+import FindUs from '../components/FindUs.astro'
+import News from '../components/News.astro'
+import Layout from '../layouts/Layout.astro'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Forró da Capita">
+  <div
+    class="flex flex-col md:flex-row justify-between items-start mt-10 gap-x-10"
+  >
+    <div class="w-full md:w-3/5 flex flex-col gap-y-10">
+      <News ContainerClasses="order-1" , TextClasses="" />
+      <FindUs ContainerClasses="justify-start mt-0 order-2" />
+    </div>
+    <div class="w-2/5">
+      <Board client:only="react" />
+    </div>
+  </div>
+</Layout>
