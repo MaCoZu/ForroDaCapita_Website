@@ -1,27 +1,41 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 @import './font.css';
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
   name: 'retro';
   default: true;
-  --color-primary: #412722;
-  --color-secondary: #3b1f2b;
-  --color-base-100: #fefae0;
-  --color-base-200: #f4e3b2;
-  --color-base-300: #f7fff7;
-  --color-accent: #db162f;
+  --color-primary: #341C1C;
+  --color-primary-content: #FC7A57;
+
+  --color-secondary: #FFF4D6;
+  --color-secondary-content: #5A683B;
+
+  --color-base-100: #FCF9EE;
+  --color-base-200: #FBF5DA;
+  --color-base-300: #EAD286;
+  --color-base-content: #502B2B;
+
+  --color-accent: #A90F2B;
   /* --color-base-300: #F1DAC4; */
 }
 
 @plugin "daisyui/theme" {
   name: 'coffee';
   --color-primary: #f3dfa2;
+  --color-primary-content: #FC7A57;
+
   --color-secondary: #fff7ae;
-  --color-base-100: #231f20;
-  --color-base-200: #231f20;
-  --color-base-300: #d8d1cd;
-  --color-accent: #bc6c25;
+  --color-secondary-content: #FFE499;
+
+  --color-base-100: #291F1E;
+  --color-base-200: #564D4F;
+  --color-base-300: #827376;
+  --color-base-content: #FBF5DA;
+
+  --color-accent: #FF5C5C;
+
 }
 
 .font-gokhan {

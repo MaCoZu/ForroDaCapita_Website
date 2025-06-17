@@ -1,30 +1,27 @@
 ---
-const adminUrl = import.meta.env.DEV
-  ? "http://localhost:4001/admin/"
-  : "/admin";
+const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
 ---
 
 <!-- Menu Container -->
 <div class="relative">
-  <ul class="menu lg:menu-horizontal bg-base-200 rounded-box">
+  <ul class="menu lg:menu-horizontal rounded-box">
     <li>
       <a
-        href="/#pa58"
-        class="text-2xl font-gokhan tracking-wider hover:text-secondary transition duration-600 ease-in-out"
-        >PA58</a
+        href="/"
+        class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+        >Home</a
       >
     </li>
-
     <li>
       <a
-        href="/#forro"
-        class="flex items-center hover:text-secondary transition duration-600 ease-in-out"
+        href="/forro"
+        class="flex items-center hover:primary-content transition duration-600 ease-in-out py-2"
       >
         <svg
           fill="currentColor"
           stroke="currentColor"
-          class="w-17 h-7 self-center"
-          viewBox="0 0 100 38"
+          class="w-17.5 h-7 self-center"
+          viewBox="0 2 100 38"
           xml:space="preserve"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -38,8 +35,16 @@ const adminUrl = import.meta.env.DEV
     </li>
     <li>
       <a
+        href="/pa58"
+        class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+        >PA58</a
+      >
+    </li>
+
+    <li>
+      <a
         href={adminUrl}
-        class="text-2xl font-gokhan tracking-wider hover:text-secondary transition duration-600 ease-in-out"
+        class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
         >Admin</a
       >
     </li>

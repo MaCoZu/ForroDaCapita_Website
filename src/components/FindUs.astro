@@ -11,57 +11,56 @@ import { twMerge } from 'tailwind-merge'
 interface Props {
   ContainerClasses?: string
   TextClasses?: string
+  HeadingClasses?: string
 }
 
-const { ContainerClasses = '', TextClasses = '' }: Props = Astro.props
+const {
+  ContainerClasses = '',
+  TextClasses = '',
+  HeadingClasses,
+}: Props = Astro.props
 
-const baseContainerClasses = 'w-full flex justify-end rounded-lg'
+const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'text-primary font-merri font-semibold text-xl'
+const baseTextClasses = 'prose font-merri rounded-xl base-content'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+
+const baseHeadingClasses =
+  'prose text-xl font-gokhan text-secondary-content tracking-wider'
+const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 ---
 
 <div class={mergedContainerClasses}>
   <div>
-    <h1
-      class="text-2xl font-bold text-secondary font-gokhan tracking-wider mb-4"
-    >
-      FIND US
-    </h1>
-    <div
-      class="flex flex-row items-center gap-x-4 bg-base-100/50 p-6 rounded-xl"
-    >
-      <div class="">
-        <h1 class={mergedTextClasses}>
+    <h1 class={mergedHeadingClasses}>FIND US</h1>
+    <div class="flex flex-row items-center gap-x-4">
+      <div class={mergedTextClasses}>
+        <p>
           We dance Forró, every Tuesday at
-          <!-- Map Link - Click to Open Overlay -->
           <button
             id="mapLink"
-            class="underline underline-offset-5 hover:no-underline cursor-pointer"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
             role="button"
             aria-haspopup="dialog"
             aria-controls="mapModal"
           >
-            Prinzenallee 58
-          </button>
-        </h1>
+            Prinzenallee 58.
+          </button><br />
 
-        <h1 class={mergedTextClasses}>
           Once in the first backyard,
-          <!-- Images Link - Click to Open Overlay -->
           <a
             id="imagesLink"
             href="#"
-            class="underline underline-offset-5 hover:no-underline cursor-pointer"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
             role="button"
             aria-haspopup="dialog"
             aria-controls="imagesModal"
           >
-            this
+            this is the way
           </a>
-          is the way to go.
-        </h1>
+          to go.
+        </p>
       </div>
       <MapIcon />
     </div>

@@ -1,15 +1,25 @@
 ---
-const today = new Date();
+const today = new Date()
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  ContainerClasses: string
+}
+
+const { ContainerClasses } = Astro.props
+const baseContainerClasses =
+  'w-full items-top justify-between mx-auto mt-10 mb-5 base-content'
+const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 ---
 
-<footer class="w-full items-top justify-between mx-auto px-4 mt-10 mb-5">
-  <hr class="secondary mb-3" />
+<footer class={mergedContainerClasses}>
+  <hr class="text-base-content/50 mb-3" />
   <div class="flex flex-col md:flex-row md:justify-between">
     <div class="flex md:flex-row items-center">
       <div class="flex items-center">
         <svg
           fill="currentColor"
-          class="w-9 h-9 md:w-12 md:h-12 text-secondary"
+          class="w-9 h-9 md:w-12 md:h-12"
           viewBox="0 0 256 256"
         >
           <path
@@ -17,13 +27,9 @@ const today = new Date();
           ></path>
         </svg>
       </div>
-      <div
-        class="flex flex-col text-xs md:text-sm text-gray-700 font-normal text-left ml-1"
-      >
-        <span class="text-secondary"
-          >{today.getFullYear()} Forró da Capita.</span
-        >
-        <span class="text-secondary">All rights reserved.</span>
+      <div class="flex flex-col text-xs md:text-sm font-normal text-left ml-1">
+        <span class="">{today.getFullYear()} Forró da Capita.</span>
+        <span class="">All rights reserved.</span>
       </div>
     </div>
 
@@ -31,10 +37,10 @@ const today = new Date();
       <a href="https://macozu.github.io" class="font-semibold">
         <div class="flex flex-row gap-x-3 items-center justify-end w-full">
           <div
-            class="flex flex-col text-xs md:text-sm text-gray-700 font-normal text-right transition delay-50 duration-300 ease-in-out will-change-transform hover:text-violet-900"
+            class="flex flex-col text-xs md:text-sm font-normal text-right transition delay-50 duration-300 ease-in-out will-change-transform hover:text-violet-900"
           >
-            <span class="text-secondary">Code, Graphics & Photo</span>
-            <span class="text-secondary">Marco Zausch</span>
+            <span class="">Code, Graphics & Photo</span>
+            <span class="">Marco Zausch</span>
           </div>
           <div
             class="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center"
@@ -44,7 +50,7 @@ const today = new Date();
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 300 300"
               fill="currentColor"
-              class="absolute inset-0 w-full h-full object-contain hover:scale-105 text-secondary hover:fill-violet-900 transition delay-50 duration-300 ease-in-out will-change-transform"
+              class="absolute inset-0 w-full h-full object-contain hover:scale-105 hover:fill-violet-900 transition delay-50 duration-300 ease-in-out will-change-transform"
             >
               <path
                 d="m273.34,50.5L37.96,285.88c-1.15,1.15-.33,3.11,1.29,3.11h235.37c1.01,0,1.82-.82,1.82-1.82V51.79c0-1.62-1.96-2.44-3.11-1.29Zm-35.89,199.49h-108.44l108.44-108.44v108.44Z"

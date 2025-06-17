@@ -1,0 +1,28 @@
+---
+import { twMerge } from "tailwind-merge";
+
+interface Props {
+	className?: string;
+	lang?: string;
+}
+
+const { className = "", lang = "en" } = Astro.props;
+
+// Base styles that are always applied
+const baseClasses = `
+  markdown-content
+  prose prose-stone text-lg
+  font-merri font-normal
+  leading-loose tracking-normal
+  dark:prose-invert
+  prose-p:text-pretty
+  prose-img:rounded-xl
+`;
+
+// Merge with any custom classes
+const mergedClasses = twMerge(baseClasses, className);
+---
+
+<article class={mergedClasses} lang={lang}>
+  <slot />
+</article>

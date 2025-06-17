@@ -1,0 +1,52 @@
+---
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  ContainerClasses?: string
+  TextClasses?: string
+  HeadingClasses?: string
+}
+
+const {
+  ContainerClasses = '',
+  TextClasses = '',
+  HeadingClasses,
+}: Props = Astro.props
+
+const baseContainerClasses = 'w-full'
+const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
+
+const baseTextClasses =
+  'prose font-merri flex flex-row items-center rounded-xl base-content'
+const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+
+const baseHeadingClasses =
+  'prose text-xl font-gokhan text-secondary-content tracking-wider'
+const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+---
+
+<div class={mergedContainerClasses}>
+  <div>
+    <h1 class={mergedHeadingClasses}>ABOUT</h1>
+    <div class={mergedTextClasses}>
+      <p>
+        Read about the
+        <a
+          href="/pa58"
+          class="underline underline-offset-4 hover:no-underline cursor-pointer"
+          role="button"
+        >
+          housing project
+        </a> at Prinzenallee 58 <br />
+        or our
+        <a
+          href="/forro"
+          class="underline underline-offset-4 hover:no-underline cursor-pointer"
+          role="button"
+        >
+          Forró venue
+        </a> there.
+      </p>
+    </div>
+  </div>
+</div>

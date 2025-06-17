@@ -4,23 +4,28 @@ import { twMerge } from 'tailwind-merge'
 interface Props {
   ContainerClasses?: string
   TextClasses?: string
+  HeadingClasses?: string
 }
 
-const { ContainerClasses = '', TextClasses = '' } = Astro.props
-const baseContainerClasses = 'bg-transparent'
+const { ContainerClasses = '', TextClasses = '', HeadingClasses }: Props = Astro.props
+
+const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'text-accent font-merri font-semibold text-xl'
+const baseTextClasses = 'prose font-merri flex flex-row items-center rounded-xl base-content gap-x-4'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+
+const baseHeadingClasses = 'prose text-xl font-gokhan text-secondary-content tracking-wider'
+const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 ---
 
 <div class={mergedContainerClasses}>
-  <h1 class="text-2xl font-bold text-secondary font-gokhan tracking-wider mb-4">
+  <h1
+    class={mergedHeadingClasses}
+  >
     NEWS
   </h1>
-  <div class="rounded-xl text-primary">
-    <h1 class={mergedTextClasses}>
-      Forró at Prinzenallee is happing all summer!!
-    </h1>
-  </div>
+  <h1 class={mergedTextClasses}>
+    Forró at Prinzenallee is happing all summer!!
+  </h1>
 </div>

@@ -1,0 +1,53 @@
+---
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
+import '../styles/main.css'
+const { title } = Astro.props
+---
+
+<!doctype html>
+<html lang="en" data-theme="retro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body class="flex flex-col min-h-screen bg-base-100">
+    <main class="w-[85%] mx-auto">
+      <Header />
+      <slot />
+      <Footer ContainerClasses="mt-30" />
+    </main>
+  </body>
+</html>
+
+<script>
+  // Function to set the theme
+  function setTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }
+
+  // Function to initialize the theme
+  function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme')
+    const themeController = document.querySelector('.theme-controller')
+
+    if (savedTheme) {
+      setTheme(savedTheme)
+      if (themeController) {
+        ;(themeController as HTMLInputElement).checked = savedTheme === 'coffee'
+      }
+    }
+
+    if (themeController) {
+      themeController.addEventListener('change', function (event) {
+        const input = event.currentTarget as HTMLInputElement
+        setTheme(input.checked ? 'coffee' : 'retro')
+      })
+    }
+  }
+
+  // Initialize the theme when the page loads
+  document.addEventListener('DOMContentLoaded', initializeTheme)
+</script>
