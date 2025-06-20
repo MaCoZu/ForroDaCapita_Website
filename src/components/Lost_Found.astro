@@ -119,6 +119,7 @@ const html = marked(lf_cond)
         </div>
       </label>
 
+      //TODO: make arrows work
       <!-- Modal Trigger (keep as is) -->
       <input type="checkbox" id="my_modal_7" class="modal-toggle" />
 
@@ -128,12 +129,53 @@ const html = marked(lf_cond)
           id="imagesModalContent"
           class="modal-box bg-base-100 p-6 rounded-lg shadow-xl max-h-[95vh] max-w-[30vw] flex flex-col items-center gap-5 relative group"
         >
+          <!-- Carousel navigation triangles -->
+          <div
+            class="w-full flex justify-around items-end absolute left-0 right-0 bottom-10 px-10 z-10 pointer-events-none"
+          >
+            <button
+              type="button"
+              class="pointer-events-auto bg-base-100/30 hover:outline-2 transition-colors rounded-full p-2"
+              aria-label="Previous image"
+              onclick="document.getElementById('carouselPrev')?.click()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="1 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="m4.431 12.822l13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645"
+                ></path>
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="pointer-events-auto bg-base-100/30 hover:outline-2 transition-colors rounded-full p-2"
+              aria-label="Next image"
+              onclick="document.getElementById('carouselNext')?.click()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="-1 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M5.536 21.886a1 1 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886"
+                ></path>
+              </svg>
+            </button>
+          </div>
           <div
             class="carousel carousel-center rounded-box w-full max-w-2xl space-x-2 p-0"
           >
             {
-              lf_images.map((image) => (
-                <div class="carousel-item">
+              lf_images.map((image, idx) => (
+                <div class="carousel-item" key={image.id}>
                   <img
                     src={image.url}
                     alt={image.alt || 'Lost & Found item'}
@@ -144,9 +186,24 @@ const html = marked(lf_cond)
               ))
             }
           </div>
-          <label class="btn btn-sm absolute top-2 right-2" for="my_modal_7"
-            >Close</label
+          <label
+            class="btn btn-square bg-base-100 absolute top-2 right-2"
+            for="my_modal_7"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width=""
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </label>
         </div>
         <!-- DaisyUI click-away close: modal-backdrop -->
         <label for="my_modal_7" class="modal-backdrop"></label>
