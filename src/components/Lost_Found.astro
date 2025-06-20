@@ -1,0 +1,156 @@
+---
+import { marked } from 'marked'
+import { twMerge } from 'tailwind-merge'
+import { executeQuery } from '../lib/datocms.js'
+interface Props {
+  ContainerClasses?: string
+  TextClasses?: string
+  HeadingClasses?: string
+}
+
+const {
+  ContainerClasses = '',
+  TextClasses = '',
+  HeadingClasses,
+}: Props = Astro.props
+
+const baseContainerClasses = 'w-full'
+const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
+
+const baseTextClasses = 'prose font-merri items-center rounded-xl base-content'
+const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+
+const baseHeadingClasses =
+  'prose text-xl font-gokhan text-secondary-content tracking-wider'
+const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+
+const { home } = (await executeQuery(`query Homepage { 
+    home { lfcond
+           lfimages {
+            id
+            url
+            alt
+      }} }`)) as {
+  home?: {
+    lfcond?: string
+    lfimages?: Array<{
+      id: string
+      url: string
+      alt?: string
+    }>
+  }
+}
+
+const result = await executeQuery(`
+  query IntrospectionQuery {
+    __type(name: "HomeRecord") {
+      fields {
+        name
+        type {
+          name
+          kind
+        }
+      }
+    }
+  }
+`)
+console.log('Introspection result:', JSON.stringify(result, null, 2))
+
+const lf_images = home?.lfimages ?? []
+const lf_cond = home?.lfcond ?? ''
+const html = marked(lf_cond)
+---
+
+<div class="order-3">
+  <h1 class={mergedHeadingClasses}>Lost and Found</h1>
+  <div class="flex flex-row items-center gap-x-4">
+    <!-- The button to open modal -->
+    <div class="flex flex-row items-center gap-x-4">
+      <div class={mergedTextClasses}>
+        <p>
+          Miss something have a look in the <label
+            for="my_modal_7"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
+          >
+            box</label
+          >.
+        </p>
+        <div class={mergedTextClasses} set:html={html} />
+      </div>
+      <label for="my_modal_7" class="cursor-pointer">
+        <!-- BOX SVG -->
+        <div
+          class="group w-20 h-20 hover:scale-125 transition-transform duration-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 500 500"
+            xml:space="preserve"
+            ><path
+              fill="currentColor"
+              class="group-hover:fill-accent transition-colors duration-900"
+              d="M498 133.5 334 38.2a4 4 0 0 0-4 0l-82 47.6a4 4 0 1 0 4 7l80-46.5 156 90.6-74 43.3-144.3-84a4 4 0 0 0-4 6.9L412 188.3a4 4 0 0 0 4 0l82-48a4 4 0 0 0 0-6.8"
+            ></path><path
+              fill="currentColor"
+              class="group-hover:fill-accent transition-colors duration-900"
+              d="M253.5 278.1a4 4 0 0 0-5.5-1.4l-80 46.7-156-91 74-43L226 271a4 4 0 1 0 4-7L88 181.5a4 4 0 0 0-4 0L2 229a4 4 0 0 0 0 7l164 95.5a4 4 0 0 0 4 0l82-48a4 4 0 0 0 1.5-5.4"
+            ></path><path
+              fill="currentColor"
+              class="group-hover:fill-accent transition-colors duration-900"
+              d="m498 229-82-47.6a4 4 0 1 0-4 7l76 44-156 91-80-46.7a4 4 0 1 0-4 6.9l82 47.9a4 4 0 0 0 4 0L498 236a4 4 0 0 0 0-6.9"
+            ></path><path
+              fill="currentColor"
+              class="group-hover:fill-accent transition-colors duration-900"
+              d="M399 193.6a4 4 0 0 0-5.5-1.5L248 276.7a4 4 0 1 0 4 6.9L397.5 199a4 4 0 0 0 1.5-5.5M250 86a4 4 0 0 0-4 4v171.7a4 4 0 1 0 8 0V90a4 4 0 0 0-4-4"
+            ></path><path
+              fill="currentColor"
+              d="M413.8 277.2a4 4 0 0 0-4 4v79.6L254 451.4V281.2a4 4 0 1 0-8 0v177.1a4 4 0 0 0 6 3.5l163.8-95.3a4 4 0 0 0 2-3.4v-82a4 4 0 0 0-4-4"
+            ></path><path
+              fill="currentColor"
+              class="group-hover:fill-accent transition-colors duration-900"
+              d="m252 85.8-82-47.6a4 4 0 0 0-4 0L2 133.5a4 4 0 0 0 0 6.9l82 47.9a4 4 0 0 0 5.4-1.4 4 4 0 0 0-1.4-5.5l-76-44.5 156-90.6 74 43-138 80.5a4 4 0 0 0 4 7l144.1-84a4 4 0 0 0 0-7"
+            ></path>
+            <path
+              fill="currentColor"
+              d="M250 277.2a4 4 0 0 0-4 4v170.2L90.3 361.3v-80.1a4 4 0 1 0-8 0v82.4a4
+            4 0 0 0 2 3.4L248 461.8a4 4 0 0 0 6-3.5V281.2a4 4 0 0 0-4-4"
+            ></path>
+          </svg>
+        </div>
+      </label>
+
+      <!-- Modal Trigger (keep as is) -->
+      <input type="checkbox" id="my_modal_7" class="modal-toggle" />
+
+      <!-- Modal Overlay and Content -->
+      <div id="imagesModal" class="modal" aria-modal="true" role="dialog">
+        <div
+          id="imagesModalContent"
+          class="modal-box bg-base-100 p-6 rounded-lg shadow-xl max-h-[95vh] max-w-[30vw] flex flex-col items-center gap-5 relative group"
+        >
+          <div
+            class="carousel carousel-center rounded-box w-full max-w-2xl space-x-2 p-0"
+          >
+            {
+              lf_images.map((image) => (
+                <div class="carousel-item">
+                  <img
+                    src={image.url}
+                    alt={image.alt || 'Lost & Found item'}
+                    class="rounded-box max-h-[80vh] w-auto object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            }
+          </div>
+          <label class="btn btn-sm absolute top-2 right-2" for="my_modal_7"
+            >Close</label
+          >
+        </div>
+        <!-- DaisyUI click-away close: modal-backdrop -->
+        <label for="my_modal_7" class="modal-backdrop"></label>
+      </div>
+    </div>
+  </div>
+</div>

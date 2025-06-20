@@ -76,12 +76,12 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <!-- Modal Content - Mouse leaving this div closes the modal -->
     <div
       id="mapModalContent"
-      class="pointer-events-auto bg-base-100 p-4 rounded-lg shadow-xl max-h-[95vh] max-w-2xl flex items-center justify-center relative group"
+      class="pointer-events-auto bg-[#FCF9EE] p-4 rounded-lg shadow-xl max-h-[95vh] max-w-2xl flex items-center justify-center relative group"
       style="min-width: 300px; max-width: 80vw;"
     >
       <Image
         src={Map}
-        alt="Map showing Prinzenallee 58"
+        alt="Map showing Prinzenallee 58 public transport connections"
         class="max-h-[95vh] max-w-2xl rounded-lg object-contain"
         loading="eager"
         widths={[300, 600, 800]}
@@ -105,19 +105,19 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       <Image
         src={Sign}
         alt="Signs"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
       />
 
       <Image
         src={Path}
         alt="Path"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
       />
 
       <Image
         src={Door}
         alt="Door"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square hover:scale-105 transition-all object-cover"
+        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
       />
     </div>
   </div>

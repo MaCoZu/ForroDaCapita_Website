@@ -9,5 +9,7 @@
     "oase",
     "straße",
     "Zausch"
-  ]
+  ],
+
+  "npm.packageManager": "pnpm"
 }

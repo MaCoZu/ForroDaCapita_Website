@@ -2,6 +2,7 @@
 import Footer from '../components/Footer.astro'
 import Header from '../components/Header.astro'
 import '../styles/main.css'
+
 const { title } = Astro.props
 ---
 
@@ -11,6 +12,15 @@ const { title } = Astro.props
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <script>
+      // Apply the theme as early as possible
+      ;(function () {
+        const savedTheme = localStorage.getItem('theme')
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme)
+        }
+      })()
+    </script>
   </head>
   <body class="flex flex-col min-h-screen bg-base-100">
     <main class="w-[85%] mx-auto">
@@ -30,15 +40,7 @@ const { title } = Astro.props
 
   // Function to initialize the theme
   function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme')
     const themeController = document.querySelector('.theme-controller')
-
-    if (savedTheme) {
-      setTheme(savedTheme)
-      if (themeController) {
-        ;(themeController as HTMLInputElement).checked = savedTheme === 'coffee'
-      }
-    }
 
     if (themeController) {
       themeController.addEventListener('change', function (event) {

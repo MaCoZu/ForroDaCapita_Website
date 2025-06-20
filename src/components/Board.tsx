@@ -12,10 +12,19 @@ const formatDate = (dateString: string) => {
   return `${day} ${month}. ${year}`
 }
 
+//TODO: _blank not working, Markdown Headings not working
 const renderer = new marked.Renderer()
-// Use class='text-accent' (not className) for HTML output
-renderer.link = function (token) {
-  return `<a href="${token.href ?? ''}" class="text-accent" target="_blank" rel="noopener noreferrer">${token.text ?? ''}</a>`
+renderer.link = function ({
+  href = '',
+  title,
+  text = '',
+}: {
+  href?: string
+  title?: string | null
+  text?: string
+}) {
+  const sanitizedHref = DOMPurify.sanitize(href)
+  return `<a href="${sanitizedHref}" class="text-accent" target="_blank" rel="noopener noreferrer"${title ? ` title="${title}"` : ''}>${text}</a>`
 }
 
 interface Message {
@@ -231,7 +240,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
           </button>
         </form>
 
-        <div className="border-base-content h-[50vh] w-full space-y-4 overflow-y-auto rounded-md border p-2">
+        <div className="border-base-content h-[50vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
           {error && <div className="text-error mt-2">{error}</div>}
           {loading ? (
             <p>Loading messages...</p>

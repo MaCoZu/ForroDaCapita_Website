@@ -6,3 +6,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+interface ImportMetaEnv {
+  readonly DATOCMS_API_KEY: string
+}

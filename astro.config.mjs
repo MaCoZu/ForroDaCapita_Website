@@ -2,9 +2,17 @@
 import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 
 export default defineConfig({
+  env: {
+    schema: {
+      DATOCMS_API_KEY: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+    },
+  },
   output: 'server',
   adapter: netlify(),
   vite: {

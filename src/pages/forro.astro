@@ -1,24 +1,24 @@
 ---
-import { Image } from 'astro:assets';
-import Mascot from '../assets/images/mascot.png';
-import Article from '../components/Article.astro';
-import { Content as ForroText } from '../content/pages/forro.md';
-import Layout from '../layout/Layout.astro';
+import { Image } from 'astro:assets'
+import Mascot from '../assets/images/mascot_bg.png'
+import Article from '../components/Article.astro'
+import { Content as ForroText } from '../content/pages/forro.md'
+import Layout from '../layout/Layout.astro'
 ---
 
 <Layout title="Forro">
-<h1 class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5">Forró</h1>
-<div class="flex flex-col md:flex-row justify-between">
-  <Article className="md:w-7/12" lang="en">
-    <ForroText />
-  </Article>
+  <h1 class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5">Forró</h1>
+  <div class="flex flex-col md:flex-row justify-between">
+    <Article className="md:w-7/12" lang="en">
+      <ForroText />
+    </Article>
 
-  <div class="md:w-3/12 -mt-16 flex items-center justify-center mx-auto">
-    <Image
-      src={Mascot}
-      alt="PA58 Mascot"
-      class="hover:scale-125 transition-all object-contain dark:bg-white"
-    />
+    <div class="md:w-3/12 -mt-16 flex items-center justify-center mx-auto">
+      <Image
+        src={Mascot}
+        alt="PA58 Mascot"
+        class="hover:scale-125 transition-all object-contain dark:bg-white"
+      />
+    </div>
   </div>
-</div>
 </Layout>

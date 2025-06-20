@@ -2,8 +2,12 @@
 import About from '../components/About.astro'
 import Board from '../components/Board.js'
 import FindUs from '../components/FindUs.astro'
+import Lost_Found from '../components/Lost_Found.astro'
 import News from '../components/News.astro'
 import Layout from '../layout/Layout.astro'
+
+import { marked } from 'marked'
+const renderer = new marked.Renderer()
 ---
 
 <Layout title="Forró da Capita">
@@ -20,6 +24,10 @@ import Layout from '../layout/Layout.astro'
         TextClasses="text-base-content text-lg"
       />
       <About
+        ContainerClasses="order-4"
+        TextClasses="text-base-content text-lg"
+      />
+      <Lost_Found
         ContainerClasses="order-3"
         TextClasses="text-base-content text-lg"
       />
