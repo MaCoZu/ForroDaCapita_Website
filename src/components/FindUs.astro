@@ -38,27 +38,18 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       <div class={mergedTextClasses}>
         <p>
           We dance Forró, every Tuesday at
-          <button
-            id="mapLink"
+          <label
+            for="mapModal"
             class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            role="button"
-            aria-haspopup="dialog"
-            aria-controls="mapModal"
-          >
-            Prinzenallee 58.
-          </button><br />
+            >Prinzenalle 58</label
+          ><br />
 
           Once in the first backyard,
-          <a
-            id="imagesLink"
-            href="#"
+          <label
+            for="wayModal"
             class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            role="button"
-            aria-haspopup="dialog"
-            aria-controls="imagesModal"
+            >this is the way</label
           >
-            this is the way
-          </a>
           to go.
         </p>
       </div>
@@ -66,27 +57,13 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     </div>
   </div>
 
-  <!-- //TODO: make modals -->
-  <!-- 
-  <button class="btn" onclick="my_modal_2.showModal()">open modal</button>
-  <dialog id="my_modal_2" class="modal">
-    <div class="modal-box">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">Press ESC key or click outside to close</p>
-    </div>
-    <form method="dialog" class="modal-backdrop">
-      <button>close</button>
-    </form>
-  </dialog> -->
-
   <!-- Map Overlay Modal (initially hidden) -->
-  <div
+  <!-- <div
     id="mapModal"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center"
     aria-modal="true"
     role="dialog"
   >
-    <!-- Modal Content - Mouse leaving this div closes the modal -->
     <div
       id="mapModalContent"
       class="pointer-events-auto bg-[#FCF9EE] p-4 rounded-lg shadow-xl max-h-[95vh] max-w-2xl flex items-center justify-center relative group"
@@ -101,38 +78,59 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
         sizes="(max-width: 768px) 80vw, 90vw"
       />
     </div>
+  </div> -->
+
+  <!-- MAP modal  -->
+  <input type="checkbox" id="mapModal" class="modal-toggle" />
+  <div class="modal" role="dialog">
+    <div
+      class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
+    >
+      <div
+        id="imagesModalContent"
+        class="pointer-events-auto bg-base-100 p-8 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+      >
+        <Image
+          src={Map}
+          alt="Map showing Prinzenallee 58 public transport connections"
+          class="max-h-[95vh] max-w-2xl rounded-lg object-contain"
+          loading="eager"
+          widths={[300, 600, 800]}
+          sizes="(max-width: 768px) 80vw, 90vw"
+        />
+      </div>
+    </div>
+    <label class="modal-backdrop" for="mapModal">Close</label>
   </div>
 
-  <!-- Three Images Overlay Modal (initially hidden) -->
-  <div
-    id="imagesModal"
-    class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden flex justify-center items-center"
-    aria-modal="true"
-    role="dialog"
-  >
-    <!-- Modal Content - Mouse leaving this div closes the modal -->
-    <div
-      id="imagesModalContent"
-      class="pointer-events-auto bg-base-100 p-6 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
-    >
-      <Image
-        src={Sign}
-        alt="Signs"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-      />
+  <!-- WAY TO GO modal -->
+  <input type="checkbox" id="wayModal" class="modal-toggle" />
+  <div class="modal" role="dialog">
+    <div class="modal-box max-h-[95vh] max-w-[90vw] p-0">
+      <div
+        id="imagesModalContent"
+        class="pointer-events-auto bg-base-100 p-8 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+      >
+        <Image
+          src={Sign}
+          alt="Signs"
+          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
+        />
 
-      <Image
-        src={Path}
-        alt="Path"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-      />
+        <Image
+          src={Path}
+          alt="Path"
+          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
+        />
 
-      <Image
-        src={Door}
-        alt="Door"
-        class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-      />
+        <Image
+          src={Door}
+          alt="Door"
+          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
+        />
+      </div>
     </div>
+    <label class="modal-backdrop" for="wayModal">Close</label>
   </div>
 
   <script is:inline>
