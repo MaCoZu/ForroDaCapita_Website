@@ -19,6 +19,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# underscore files
+_*.astro
 
 # environment variables
 .env
