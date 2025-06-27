@@ -1,0 +1,45 @@
+---
+const { block } = Astro.props
+const images = block?.assets || []
+
+// Debug log
+console.log('ImageGalleryBlock props:', Astro.props)
+console.log('ImageGalleryBlock images:', images)
+---
+
+{
+  images.length > 0 ? (
+    <div class="my-0">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {images.map(
+          (
+            image: { url: string | null | undefined; alt: any; title: unknown },
+            index: any
+          ) => (
+            <div class="relative">
+              <img
+                src={image.url}
+                alt={image.alt || ''}
+                title={typeof image.title === 'string' ? image.title : ''}
+                class="w-full h-48 object-cover"
+                loading="lazy"
+              />
+              {/* {image.title && (
+                <div class="text-sm text-gray-600 text-center italic">
+                  {image.title}
+                </div>
+              )} */}
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  ) : (
+    <div class="my-6 p-4 bg-red-100 border border-red-300 rounded-xs">
+      <p class="text-red-500">⚠️ No images found in gallery</p>
+      <pre class="text-xs mt-2 text-gray-600">
+        {JSON.stringify(Astro.props, null, 2)}
+      </pre>
+    </div>
+  )
+}

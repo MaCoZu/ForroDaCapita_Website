@@ -1,0 +1,38 @@
+---
+// The block data comes in as props under 'block' property
+const { block } = Astro.props
+const image = block?.asset
+const imageUrl = image?.url
+const imageAlt = image?.alt || ''
+const imageTitle = image?.title || block?.title || ''
+
+// Debug log to see what's being passed
+console.log('ImageBlock props:', Astro.props)
+console.log('ImageBlock block:', block)
+---
+
+{
+  imageUrl ? (
+    <div class="my-6">
+      <img
+        src={imageUrl}
+        alt={imageAlt}
+        title={imageTitle}
+        class="w-full h-auto"
+        loading="lazy"
+      />
+      {/* {imageTitle && (
+        <p class="text-sm text-gray-600 mt-2 text-center italic">
+          {imageTitle}
+        </p>
+      )} */}
+    </div>
+  ) : (
+    <div class="my-6 p-4 bg-red-100 border border-red-300">
+      <p class="text-red-500">⚠️ Image URL missing</p>
+      <pre class="text-xs mt-2 text-gray-600">
+        {JSON.stringify(Astro.props, null, 2)}
+      </pre>
+    </div>
+  )
+}

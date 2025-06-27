@@ -1,0 +1,41 @@
+---
+const { block } = Astro.props
+const video = block?.asset
+const videoUrl = video?.url
+const videoTitle = video?.title || block?.title || ''
+const videoWidth = video?.width
+const videoHeight = video?.height
+
+// Debug log
+console.log('VideoBlock props:', Astro.props)
+console.log('VideoBlock video:', video)
+---
+
+{
+  videoUrl ? (
+    <div class="my-3">
+      <video
+        controls
+        class="w-full h-auto rounded-xs shadow-xs"
+        width={videoWidth}
+        height={videoHeight}
+        preload="metadata"
+      >
+        <source src={videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      {/* {videoTitle && (
+        <p class="text-sm text-gray-600 mt-2 text-center italic">
+          {videoTitle}
+        </p>
+      )} */}
+    </div>
+  ) : (
+    <div class="my-6 p-4 bg-red-100 border border-red-300 rounded">
+      <p class="text-red-500">⚠️ Video URL missing</p>
+      <pre class="text-xs mt-2 text-gray-600">
+        {JSON.stringify(Astro.props, null, 2)}
+      </pre>
+    </div>
+  )
+}
