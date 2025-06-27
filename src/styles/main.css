@@ -6,40 +6,39 @@
 @plugin "daisyui/theme" {
   name: 'retro';
   default: true;
-  --color-primary: #341C1C;
-  --color-primary-content: #FC7A57;
+  --color-primary: #341c1c;
+  --color-primary-content: #fc7a57;
 
-  --color-secondary: #FFF4D6;
-  --color-secondary-content: #5A683B;
+  --color-secondary: #fff4d6;
+  --color-secondary-content: #5a683b;
 
-  --color-base-100: #FCF9EE;
-  --color-base-200: #FBF5DA;
-  --color-base-300: #EAD286;
-  --color-base-content: #502B2B;
+  --color-base-100: #fcf9ee;
+  --color-base-200: #fbf5da;
+  --color-base-300: #ead286;
+  --color-base-content: #502b2b;
 
-  --color-map_bg: #FCF9EE;
+  --color-map_bg: #fcf9ee;
 
-  --color-accent: #A90F2B;
+  --color-accent: #a90f2b;
   /* --color-base-300: #F1DAC4; */
 }
 
 @plugin "daisyui/theme" {
   name: 'coffee';
   --color-primary: #f3dfa2;
-  --color-primary-content: #FC7A57;
+  --color-primary-content: #fc7a57;
 
   --color-secondary: #fff7ae;
-  --color-secondary-content: #FFE499;
+  --color-secondary-content: #ffe499;
 
-  --color-base-100: #291F1E;
-  --color-base-200: #564D4F;
+  --color-base-100: #291f1e;
+  --color-base-200: #564d4f;
   --color-base-300: #827376;
-  --color-base-content: #FBF5DA;
+  --color-base-content: #fbf5da;
 
-  --color-map_bg: #FCF9EE;
+  --color-map_bg: #fcf9ee;
 
-  --color-accent: #FF5C5C;
-
+  --color-accent: #ff5c5c;
 }
 
 .font-gokhan {
