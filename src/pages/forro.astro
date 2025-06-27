@@ -1,24 +1,77 @@
 ---
+import { StructuredText } from '@datocms/astro/StructuredText'
 import { Image } from 'astro:assets'
 import Mascot from '../assets/images/mascot_bg.png'
 import Article from '../components/Article.astro'
-import { Content as ForroText } from '../content/pages/forro.md'
+
+import ImageBlock from '../components/ImageBlock.astro'
+import VideoBlock from '../components/VideoBlock.astro'
 import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+const result = await executeQuery(`
+  query ForroQuery {
+  forro {
+    forrotitle
+    strforrocontent {
+      value
+      blocks {
+        __typename
+        ... on ImageBlockRecord {
+          id
+          asset {
+            url
+            alt
+            title
+            width
+            height
+          }
+        }
+        ... on VideoBlockRecord {
+          id
+          asset {
+            url
+            title
+            width
+            height
+          }
+        }
+      }
+    }
+  }
+}
+`)
+console.log(result)
+const forro = (result as { forro?: any }).forro
 ---
 
 <Layout title="Forro">
-  <h1 class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5">Forró</h1>
-  <div class="flex flex-col md:flex-row justify-between">
-    <Article className="md:w-7/12" lang="en">
-      <ForroText />
-    </Article>
-
-    <div class="md:w-3/12 -mt-16 flex items-center justify-center mx-auto">
-      <Image
-        src={Mascot}
-        alt="PA58 Mascot"
-        class="hover:scale-125 transition-all object-contain dark:bg-white"
+  <div class="flex mx-auto items-start justify-between">
+    <Article className="max-w-4xl">
+      <h1
+        class="text-3xl font-merri font-semibold md:mt-15 mt-5"
+        set:html={forro.forrotitle}
       />
-    </div>
+      <div class="">
+        <StructuredText
+          data={forro.strforrocontent}
+          blockComponents={{
+            ImageBlockRecord: ImageBlock,
+            VideoBlockRecord: VideoBlock,
+          }}
+        />
+      </div>
+    </Article>
+    <Image
+      src={Mascot}
+      alt="PA58 Mascot"
+      class="hidden md:block w-1/4 h-auto md:mt-20 hover:scale-110 transition-all object-contain dark:bg-white"
+    />
+    <!-- <Image
+      src={Mascot}
+      alt="PA58 Mascot"
+      class="hover:scale-110 transition-all object-contain dark:bg-white drop-shadow-lg"
+      style="width: 200px; height: auto;"
+    /> -->
   </div>
 </Layout>
