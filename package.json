@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/netlify": "^6.4.0",
     "@astrojs/react": "^4.3.0",
+    "@datocms/astro": "^0.6.2",
     "@datocms/cda-client": "^0.2.7",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.29.0",
@@ -20,9 +21,9 @@
     "@tailwindcss/vite": "^4.1.10",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
-    "astro": "^5.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "astro": "^5.10.1",
     "astro-eslint-parser": "^1.2.2",
     "daisyui": "^5.0.43",
     "datocms-client": "^3.5.24",
@@ -33,14 +34,14 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "globals": "^16.2.0",
     "marked": "^15.0.12",
-    "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.12",
+    "prettier": "^3.6.0",
+    "prettier-plugin-tailwindcss": "^0.6.13",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "sharp": "^0.34.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.10",
-    "typescript-eslint": "^8.34.1"
+    "typescript-eslint": "^8.35.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16"
