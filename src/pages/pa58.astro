@@ -1,32 +1,91 @@
 ---
+import { StructuredText } from '@datocms/astro/StructuredText'
 import { Image } from 'astro:assets'
-import pa_eingang_01 from '../assets/images/pa58_images/pa_eingang_01.jpg'
-import pa_garten from '../assets/images/pa58_images/pa_garten.jpg'
-import pa_innenhof from '../assets/images/pa58_images/pa_innenhof.jpg'
-import pa_oase from '../assets/images/pa58_images/pa_oase.jpg'
-import pa_straße from '../assets/images/pa58_images/pa_straße.jpg'
 import Article from '../components/Article.astro'
-import { Content as PA58_text } from '../content/pages/pa58.md'
+import ImageBlock from '../components/ImageBlock.astro'
+import VideoBlock from '../components/VideoBlock.astro'
 import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+const result = await executeQuery(`
+  query Pa58Query {
+  pa58 {
+    pa58title
+    pa58pictures
+    {
+    id
+    url 
+    alt 
+    title
+    height 
+    width
+    }
+    pa58content {
+      value
+      blocks {
+        __typename
+        ... on ImageBlockRecord {
+          id
+          asset {
+            url
+            alt
+            title
+            width
+            height
+          }
+        }
+        ... on ImageGalleryBlockRecord {
+          id
+        }
+        ... on VideoBlockRecord {
+          id
+          asset {
+            url
+            title
+            width
+            height
+          }
+        }
+      }
+    }
+  }
+}
+`)
+
+const pa58 = (result as { pa58?: any }).pa58
+console.log(pa58.pa58pictures[0])
 ---
 
 <Layout title="PA 58">
-  <h1 class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5">PA 58</h1>
+  <h1
+    class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5"
+    set:html={pa58.pa58title}
+  />
   <div class="flex flex-col lg:flex-row justify-between">
     <div class="w-full lg:w-3/5 lg:pr-15">
       <Article>
-        <PA58_text />
+        <StructuredText
+          data={pa58.pa58content}
+          blockComponents={{
+            ImageBlockRecord: ImageBlock,
+            VideoBlockRecord: VideoBlock,
+          }}
+        />
       </Article>
     </div>
     <div class="flex flex-col lg:w-2/5 gap-3">
       <Image
-        src={pa_straße}
-        alt="PA58 Street"
+        src={pa58.pa58pictures[0].url}
+        height={pa58.pa58pictures[0].height}
+        width={pa58.pa58pictures[0].width}
+        alt={pa58.pa58pictures[0].alt || 'Prinzenallee 58'}
         class="h-auto w-full rounded-sm"
       />
       <Image
-        src={pa_eingang_01}
-        alt="PA58 Entrance"
+        src={pa58.pa58pictures[1].url}
+        height={pa58.pa58pictures[1].height}
+        width={pa58.pa58pictures[1].width}
+        alt={pa58.pa58pictures[1].alt || 'Prinzenallee 58'}
         class="h-auto w-full rounded-sm"
       />
     </div>
@@ -34,17 +93,42 @@ import Layout from '../layout/Layout.astro'
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-5 lg:gap-x-5 mt-5">
     <Image
-      src={pa_oase}
-      alt="PA58 First backyard"
+      src={pa58.pa58pictures[2].url}
+      height={pa58.pa58pictures[2].height}
+      width={pa58.pa58pictures[2].width}
+      alt={pa58.pa58pictures[2].alt || 'Prinzenallee 58'}
       class="h-auto w-full rounded-sm"
     />
     <Image
-      src={pa_innenhof}
-      alt="PA58 Second backyard"
+      src={pa58.pa58pictures[3].url}
+      height={pa58.pa58pictures[3].height}
+      width={pa58.pa58pictures[3].width}
+      alt={pa58.pa58pictures[3].alt || 'Prinzenallee 58'}
       class="h-auto w-full rounded-sm"
     />
   </div>
   <div class="mt-5">
-    <Image src={pa_garten} alt="PA58 Garden" class="h-auto w-full rounded-sm" />
+    <Image
+      src={pa58.pa58pictures[4].url}
+      height={pa58.pa58pictures[4].height}
+      width={pa58.pa58pictures[4].width}
+      alt={pa58.pa58pictures[4].alt || 'Prinzenallee 58'}
+      class="h-auto w-full rounded-sm"
+    />
   </div>
+  {
+    pa58.pa58pictures?.length > 5 && (
+      <div class="mt-5 flex flex-col gap-5">
+        {pa58.pa58pictures.slice(5).map((pic) => (
+          <Image
+            src={pic.url}
+            height={pic.height}
+            width={pic.width}
+            alt={pic.alt || 'Prinzenallee 58'}
+            class="h-auto w-full rounded-sm"
+          />
+        ))}
+      </div>
+    )
+  }
 </Layout>
