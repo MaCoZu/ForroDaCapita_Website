@@ -5,7 +5,8 @@ import Path from '../assets/images/pa58_images/path.jpg'
 import Sign from '../assets/images/pa58_images/sign.jpg'
 import Map from '../assets/images/map.png'
 import MapIcon from './Map_Icon.astro'
-
+import StreetMapIcon from './Street_map_icon.astro'
+import ImagesIcon from './Images_Icon.astro'
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
@@ -23,7 +24,7 @@ const {
 const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'prose font-merri rounded-xl base-content'
+const baseTextClasses = 'prose font-merri base-content'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
 
 const baseHeadingClasses =
@@ -36,29 +37,48 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <h1 class={mergedHeadingClasses}>FIND US</h1>
     <div class="flex flex-row items-center gap-x-4">
       <div class={mergedTextClasses}>
-        <p>
-          We dance Forró, every Tuesday at
-          <label
-            for="mapModal"
-            class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >Prinzenalle 58</label
-          ><br />
+        <div class="flex flex-row gap-x-8">
+          <div>
+            We dance Forró, every Tuesday<br /> from 19:30 to 22:00 <br /> in the
+            <label
+              for="mapModal"
+              class="underline underline-offset-4 hover:no-underline cursor-pointer"
+              >Café of Prinzenallee 58</label
+            >
+          </div>
+          <div class="flex flex-row gap-x-8 align-bottom">
+            <label for="mapModal" class="cursor-pointer"
+              ><StreetMapIcon className="w-13" /></label
+            >
+            <div><MapIcon className="w-8" /></div>
+          </div>
+        </div>
 
-          Once in the first backyard,
-          <label
-            for="wayModal"
-            class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >this is the way</label
-          >
-          to go.
-        </p>
+        <div class="flex flex-row gap-x-8 mt-4 items-center">
+          <div>
+            Once in the first backyard,<br />
+            <label
+              for="wayModal"
+              class="underline underline-offset-4 hover:no-underline cursor-pointer"
+              >This is the way</label
+            >
+            to go.
+          </div>
+
+          <div>
+            <label
+              for="wayModal"
+              class="underline underline-offset-4 hover:no-underline cursor-pointer"
+            >
+              <ImagesIcon className="w-12 h-auto" />
+            </label>
+          </div>
+        </div>
       </div>
-      <MapIcon />
     </div>
-  </div>
 
-  <!-- Map Overlay Modal (initially hidden) -->
-  <!-- <div
+    <!-- Map Overlay Modal (initially hidden) -->
+    <!-- <div
     id="mapModal"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center"
     aria-modal="true"
@@ -80,115 +100,116 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     </div>
   </div> -->
 
-  <!-- MAP modal  -->
-  <input type="checkbox" id="mapModal" class="modal-toggle" />
-  <div class="modal" role="dialog">
-    <div
-      class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
-    >
+    <!-- MAP modal  -->
+    <input type="checkbox" id="mapModal" class="modal-toggle" />
+    <div class="modal" role="dialog">
       <div
-        id="imagesModalContent"
-        class="pointer-events-auto bg-base-100 p-8 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+        class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
       >
-        <Image
-          src={Map}
-          alt="Map showing Prinzenallee 58 public transport connections"
-          class="max-h-[95vh] max-w-2xl rounded-lg object-contain"
-          loading="eager"
-          widths={[300, 600, 800]}
-          sizes="(max-width: 768px) 80vw, 90vw"
-        />
+        <div
+          id="imagesModalContent"
+          class="pointer-events-auto bg-gray-50 rounded-md shadow-xl max-h-[95vh] max-w-[70vw] flex flex-col md:flex-row items-center gap-5 relative group"
+        >
+          <Image
+            src={Map}
+            alt="Map showing Prinzenallee 58 public transport connections"
+            class="max-h-[95vh] max-w-2xl rounded-md object-contain"
+            loading="eager"
+            widths={[300, 600, 800]}
+            sizes="(max-width: 768px) 80vw, 90vw"
+          />
+        </div>
       </div>
+      <label class="modal-backdrop" for="mapModal">Close</label>
     </div>
-    <label class="modal-backdrop" for="mapModal">Close</label>
-  </div>
 
-  <!-- WAY TO GO modal -->
-  <input type="checkbox" id="wayModal" class="modal-toggle" />
-  <div class="modal" role="dialog">
-    <div class="modal-box max-h-[95vh] max-w-[90vw] p-0">
-      <div
-        id="imagesModalContent"
-        class="pointer-events-auto bg-base-100 p-8 rounded-lg shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
-      >
-        <Image
-          src={Sign}
-          alt="Signs"
-          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-        />
+    <!-- WAY TO GO modal -->
+    <input type="checkbox" id="wayModal" class="modal-toggle" />
+    <div class="modal" role="dialog">
+      <div class="modal-box max-h-[95vh] max-w-[90vw] p-0">
+        <div
+          id="imagesModalContent"
+          class="pointer-events-auto bg-base-100 p-5 rounded-md shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+        >
+          <Image
+            src={Sign}
+            alt="Signs"
+            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
+          />
 
-        <Image
-          src={Path}
-          alt="Path"
-          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-        />
+          <Image
+            src={Path}
+            alt="Path"
+            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
+          />
 
-        <Image
-          src={Door}
-          alt="Door"
-          class="w-full md:flex-1 max-w-full rounded-sm aspect-square object-cover"
-        />
+          <Image
+            src={Door}
+            alt="Door"
+            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
+          />
+        </div>
       </div>
+      <label class="modal-backdrop" for="wayModal">Close</label>
     </div>
-    <label class="modal-backdrop" for="wayModal">Close</label>
+
+    <script is:inline>
+      // Get references to elements
+      const mapLink = document.getElementById('mapLink')
+      const mapModal = document.getElementById('mapModal')
+      const mapModalContent = document.getElementById('mapModalContent')
+
+      const imagesLink = document.getElementById('imagesLink')
+      const imagesModal = document.getElementById('imagesModal')
+      const imagesModalContent = document.getElementById('imagesModalContent')
+
+      // --- Map Modal Logic ---
+      if (mapLink && mapModal && mapModalContent) {
+        mapLink.addEventListener('click', (e) => {
+          e.preventDefault() // Prevent default link navigation
+          mapModal.classList.remove('hidden') // Show the modal
+          // Optional: Add a class to body to prevent scrolling when modal is open
+          // document.body.classList.add('overflow-hidden');
+        })
+
+        // Close when mouse leaves the modal content area
+        mapModalContent.addEventListener('mouseleave', () => {
+          mapModal.classList.add('hidden') // Hide the modal
+          // document.body.classList.remove('overflow-hidden');
+        })
+
+        // Close when clicking on the backdrop itself (not the content)
+        mapModal.addEventListener('click', (e) => {
+          if (e.target === mapModal) {
+            mapModal.classList.add('hidden')
+            // document.body.classList.remove('overflow-hidden');
+          }
+        })
+      }
+
+      // --- Three Images Modal Logic ---
+      if (imagesLink && imagesModal && imagesModalContent) {
+        imagesLink.addEventListener('click', (e) => {
+          e.preventDefault() // Prevent default link navigation
+          imagesModal.classList.remove('hidden') // Show the modal
+          // Optional: Add a class to body to prevent scrolling when modal is open
+          // document.body.classList.add('overflow-hidden');
+        })
+
+        // Close when mouse leaves the modal content area
+        imagesModalContent.addEventListener('mouseleave', () => {
+          imagesModal.classList.add('hidden') // Hide the modal
+          // document.body.classList.remove('overflow-hidden');
+        })
+
+        // Close when clicking on the backdrop itself (not the content)
+        imagesModal.addEventListener('click', (e) => {
+          if (e.target === imagesModal) {
+            imagesModal.classList.add('hidden')
+            // document.body.classList.remove('overflow-hidden');
+          }
+        })
+      }
+    </script>
   </div>
-
-  <script is:inline>
-    // Get references to elements
-    const mapLink = document.getElementById('mapLink')
-    const mapModal = document.getElementById('mapModal')
-    const mapModalContent = document.getElementById('mapModalContent')
-
-    const imagesLink = document.getElementById('imagesLink')
-    const imagesModal = document.getElementById('imagesModal')
-    const imagesModalContent = document.getElementById('imagesModalContent')
-
-    // --- Map Modal Logic ---
-    if (mapLink && mapModal && mapModalContent) {
-      mapLink.addEventListener('click', (e) => {
-        e.preventDefault() // Prevent default link navigation
-        mapModal.classList.remove('hidden') // Show the modal
-        // Optional: Add a class to body to prevent scrolling when modal is open
-        // document.body.classList.add('overflow-hidden');
-      })
-
-      // Close when mouse leaves the modal content area
-      mapModalContent.addEventListener('mouseleave', () => {
-        mapModal.classList.add('hidden') // Hide the modal
-        // document.body.classList.remove('overflow-hidden');
-      })
-
-      // Close when clicking on the backdrop itself (not the content)
-      mapModal.addEventListener('click', (e) => {
-        if (e.target === mapModal) {
-          mapModal.classList.add('hidden')
-          // document.body.classList.remove('overflow-hidden');
-        }
-      })
-    }
-
-    // --- Three Images Modal Logic ---
-    if (imagesLink && imagesModal && imagesModalContent) {
-      imagesLink.addEventListener('click', (e) => {
-        e.preventDefault() // Prevent default link navigation
-        imagesModal.classList.remove('hidden') // Show the modal
-        // Optional: Add a class to body to prevent scrolling when modal is open
-        // document.body.classList.add('overflow-hidden');
-      })
-
-      // Close when mouse leaves the modal content area
-      imagesModalContent.addEventListener('mouseleave', () => {
-        imagesModal.classList.add('hidden') // Hide the modal
-        // document.body.classList.remove('overflow-hidden');
-      })
-
-      // Close when clicking on the backdrop itself (not the content)
-      imagesModal.addEventListener('click', (e) => {
-        if (e.target === imagesModal) {
-          imagesModal.classList.add('hidden')
-          // document.body.classList.remove('overflow-hidden');
-        }
-      })
-    }
-  </script>
 </div>
