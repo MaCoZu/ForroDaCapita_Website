@@ -1,0 +1,114 @@
+---
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  className?: string
+}
+
+const { className = '' } = Astro.props
+
+// Base styles that are always applied
+const baseClasses = `group  w-12 h-12 duration-600`
+
+// Merge with any custom classes
+const mergedClasses = twMerge(baseClasses, className)
+---
+
+<label for="lfModal" class="cursor-pointer">
+  <div class={mergedClasses}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xml:space="preserve"
+      viewBox="0 0 65.7 62.4"
+      class="rattling-bounce"
+      ><path
+        fill="none"
+        stroke="currentColor"
+        stroke-dashoffset="11.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="0"
+        stroke-width="2.2"
+        d="M32.8 35.1v26.5l23-13.2V35m-45.8.1v13.3l22.8 13.2"></path><path
+        fill="none"
+        stroke="currentColor"
+        stroke-dashoffset="11.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="0"
+        stroke-width="2.2"
+        d="M10 22 5.2 32.4l23 13.2L32.7 35M10 22 .6 14 23.7.7l9.1 8m0 0 9.2-8L65 14l-9.3 8"
+      ></path><path
+        fill="none"
+        stroke="currentColor"
+        stroke-dashoffset="11.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="0"
+        stroke-width="2.2"
+        d="m32.8 35.1 6 9.8 23.8-13.7-6.9-9.3"></path><path
+        fill="none"
+        stroke="currentColor"
+        class="group-hover:stroke-accent transition-all duration-900"
+        stroke-dashoffset="11.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="0"
+        stroke-width="2.2"
+        d="M32.8 8.7V35"></path><path
+        fill="none"
+        stroke="currentColor"
+        class="group-hover:stroke-accent transition-all duration-900"
+        stroke-dashoffset="11.5"
+        stroke-linecap="square"
+        stroke-linejoin="round"
+        stroke-miterlimit="10"
+        stroke-width="2.2"
+        d="M32.8 8.7 10 21.9l23 13.2L55.6 22Z"></path></svg
+    >
+  </div>
+</label>
+
+<style>
+  @keyframes rattling-bounce {
+    /* Bounce down */
+    0% {
+      transform: translateY(-10px) scaleY(1) scaleX(1) rotate(0deg);
+    }
+    15% {
+      transform: translateY(5px) scaleY(0.8) scaleX(1.1) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-4px) scaleY(1.05) scaleX(0.95) rotate(0deg);
+    }
+    35% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
+    }
+
+    /* Shake/rattle phase */
+    40% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(-5deg);
+    }
+    45% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(5deg);
+    }
+    50% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(-5deg);
+    }
+    55% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(5deg);
+    }
+    60% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
+    }
+
+    /* Rest */
+    100% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
+    }
+  }
+
+  .group:hover .rattling-bounce {
+    animation: rattling-bounce 2.5s ease-in-out;
+  }
+</style>
