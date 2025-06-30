@@ -119,7 +119,7 @@ console.log(pa58.pa58pictures[0])
   {
     pa58.pa58pictures?.length > 5 && (
       <div class="mt-5 flex flex-col gap-5">
-        {pa58.pa58pictures.slice(5).map((pic) => (
+        {pa58.pa58pictures.slice(5).map((pic: any) => (
           <Image
             src={pic.url}
             height={pic.height}
