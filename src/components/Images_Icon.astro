@@ -1,0 +1,52 @@
+---
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  className?: string
+}
+
+const { className = '' } = Astro.props
+
+// Base styles that are always applied
+const baseClasses = `group hover:scale-125 transition-transform duration-900`
+
+// Merge with any custom classes
+const mergedClasses = twMerge(baseClasses, className)
+---
+
+<div class={mergedClasses}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xml:space="preserve"
+    viewBox="0 0 49.88 38.85"
+    ><g
+      stroke-dashoffset="11.51"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="1"
+      transform="translate(-35.14 -240.24)"
+      ><circle
+        cx="44.38"
+        cy="249.73"
+        r="4.35"
+        fill="currentColor"
+        class="group-hover:fill-accent group-hover:translate-x-2 group-hover:translate-y-1.5 transition-all duration-900"
+      ></circle><path
+        fill="currentColor"
+        d="M39.66 268.94h34.48L65.21 251l-10.23 13.93s-4.33-7.95-7.9-7.48c-4.43.58-7.42 11.48-7.42 11.48"
+      ></path><path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.9"
+        d="M36.09 241.19h41.63v30.6H36.09z"></path><path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.9"
+        d="M80.9 246.29v28.68H41.24"></path><path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.9"
+        d="M84.07 249.46v28.68H44.42"></path></g
+    ></svg
+  >
+</div>
