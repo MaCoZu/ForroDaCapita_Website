@@ -35,70 +35,47 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 <div class={mergedContainerClasses}>
   <div>
     <h1 class={mergedHeadingClasses}>FIND US</h1>
-    <div class="flex flex-row items-center gap-x-4">
-      <div class={mergedTextClasses}>
-        <div class="flex flex-row gap-x-8">
-          <div>
-            We dance Forró, every Tuesday<br /> from 19:30 to 22:00 <br /> in the
-            <label
-              for="mapModal"
-              class="underline underline-offset-4 hover:no-underline cursor-pointer"
-              >Café of Prinzenallee 58</label
-            >
-          </div>
-          <div class="flex flex-row gap-x-8 align-bottom">
-            <label for="mapModal" class="cursor-pointer"
-              ><TreasureMapIcon className="w-13" /></label
-            >
-            <div><GoogleIcon className="w-8" /></div>
-          </div>
+    <div class="w-full">
+      <div class="flex flex-row justify-between gap-x-8 w-full">
+        <div class={mergedTextClasses}>
+          We dance Forró, every Tuesday<br /> from 19:30 to 22:00 <br /> in the
+          <label
+            for="mapModal"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
+            >Café of Prinzenallee 58</label
+          >
+        </div>
+        <div class="flex flex-col md:flex-row gap-8 justify-end items-start">
+          <label for="mapModal" class="cursor-pointer"
+            ><TreasureMapIcon className="w-8 md:w-13" /></label
+          >
+          <GoogleIcon className="w-6 ml-1 md:ml-0 md:w-8" />
+        </div>
+      </div>
+
+      <div
+        class="flex flex-row gap-x-4 md:gap-x-8 mt-2 md:mt-4 items-center justify-between w-full"
+      >
+        <div class={mergedTextClasses}>
+          Once in the first backyard,<br />
+          <label
+            for="wayModal"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
+            >This is the way</label
+          >
+          to go.
         </div>
 
-        <div class="flex flex-row gap-x-8 mt-4 items-center">
-          <div>
-            Once in the first backyard,<br />
-            <label
-              for="wayModal"
-              class="underline underline-offset-4 hover:no-underline cursor-pointer"
-              >This is the way</label
-            >
-            to go.
-          </div>
-
-          <div>
-            <label
-              for="wayModal"
-              class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >
-              <ImagesIcon className="w-12 h-auto" />
-            </label>
-          </div>
+        <div>
+          <label
+            for="wayModal"
+            class="underline underline-offset-4 hover:no-underline cursor-pointer"
+          >
+            <ImagesIcon className="w-8 md:w-12" />
+          </label>
         </div>
       </div>
     </div>
-
-    <!-- Map Overlay Modal (initially hidden) -->
-    <!-- <div
-    id="mapModal"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center"
-    aria-modal="true"
-    role="dialog"
-  >
-    <div
-      id="mapModalContent"
-      class="pointer-events-auto bg-[#FCF9EE] p-4 rounded-lg shadow-xl max-h-[95vh] max-w-2xl flex items-center justify-center relative group"
-      style="min-width: 300px; max-width: 80vw;"
-    >
-      <Image
-        src={Map}
-        alt="Map showing Prinzenallee 58 public transport connections"
-        class="max-h-[95vh] max-w-2xl rounded-lg object-contain"
-        loading="eager"
-        widths={[300, 600, 800]}
-        sizes="(max-width: 768px) 80vw, 90vw"
-      />
-    </div>
-  </div> -->
 
     <!-- MAP modal  -->
     <input type="checkbox" id="mapModal" class="modal-toggle" />
@@ -108,12 +85,28 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       >
         <div
           id="imagesModalContent"
-          class="pointer-events-auto bg-gray-50 rounded-md shadow-xl max-h-[95vh] max-w-[70vw] flex flex-col md:flex-row items-center gap-5 relative group"
+          class="pointer-events-auto bg-gray-50 rounded-md shadow-xl md:max-h-[95vh] md:max-w-[70vw] flex flex-col md:flex-row items-center gap-5 relative group"
         >
+          <!-- close X button -->
+          <label class="p-2 rounded-md absolute top-2 right-2" for="mapModal">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 hover:scale-110 hover:text-accent transition-transform duration-900"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </label>
           <Image
             src={Map}
             alt="Map showing Prinzenallee 58 public transport connections"
-            class="max-h-[95vh] max-w-2xl rounded-md object-contain"
+            class="w-full md:max-h-[95vh] md:max-w-2xl rounded-md object-contain"
             loading="eager"
             widths={[300, 600, 800]}
             sizes="(max-width: 768px) 80vw, 90vw"
@@ -131,6 +124,25 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
           id="imagesModalContent"
           class="pointer-events-auto bg-base-100 p-5 rounded-md shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
         >
+          <!-- close X button -->
+          <label
+            class="bg-base-100 p-2 rounded-md absolute top-2 right-2 z-10"
+            for="wayModal"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 hover:scale-110 hover:text-accent transition-transform duration-900"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </label>
           <Image
             src={Sign}
             alt="Signs"
