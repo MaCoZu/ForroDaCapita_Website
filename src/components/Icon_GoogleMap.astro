@@ -8,7 +8,7 @@ interface Props {
 const { className = '' } = Astro.props
 
 // Base styles that are always applied
-const baseClasses = `group h-auto hover:scale-125 transition-transform duration-600`
+const baseClasses = `group h-auto hover:scale-125 origin-center transition-all duration-900`
 
 // Merge with any custom classes
 const mergedClasses = twMerge(baseClasses, className)
@@ -19,7 +19,8 @@ const mergedClasses = twMerge(baseClasses, className)
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xml:space="preserve"
-      viewBox="-1 -2 22.49 31.248"
+      viewBox="0 -2 23 40"
+      transform="translate(0 -5)"
     >
       <g class="shake-vertical"
         ><path

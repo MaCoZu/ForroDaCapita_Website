@@ -8,7 +8,7 @@ interface Props {
 const { className = '' } = Astro.props
 
 // Base styles that are always applied
-const baseClasses = `group  w-12 h-12 duration-600`
+const baseClasses = `group w-12 h-12 duration-900`
 
 // Merge with any custom classes
 const mergedClasses = twMerge(baseClasses, className)
@@ -49,7 +49,7 @@ const mergedClasses = twMerge(baseClasses, className)
         d="m32.8 35.1 6 9.8 23.8-13.7-6.9-9.3"></path><path
         fill="none"
         stroke="currentColor"
-        class="group-hover:stroke-accent transition-all duration-900"
+        class="red_glow group-hover:stroke-accent transition-all duration-900"
         stroke-dashoffset="11.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -58,7 +58,7 @@ const mergedClasses = twMerge(baseClasses, className)
         d="M32.8 8.7V35"></path><path
         fill="none"
         stroke="currentColor"
-        class="group-hover:stroke-accent transition-all duration-900"
+        class="red_glow group-hover:stroke-accent transition-all duration-900"
         stroke-dashoffset="11.5"
         stroke-linecap="square"
         stroke-linejoin="round"
@@ -70,16 +70,25 @@ const mergedClasses = twMerge(baseClasses, className)
 </label>
 
 <style>
+  .red_glow {
+    transition: all 1s ease;
+  }
+
+  .group:hover .red_glow {
+    filter: drop-shadow(0 0 0.5px rgb(149, 5, 5)) blur(0.8px);
+    fill: accent;
+  }
+
   @keyframes rattling-bounce {
     /* Bounce down */
     0% {
-      transform: translateY(-7px) scaleY(1) scaleX(1) rotate(0deg);
+      transform: translateY(-5px) scaleY(1) scaleX(1) rotate(0deg);
     }
     15% {
-      transform: translateY(5px) scaleY(0.8) scaleX(1.1) rotate(0deg);
+      transform: translateY(3px) scaleY(0.9) scaleX(1.1) rotate(0deg);
     }
     25% {
-      transform: translateY(-3px) scaleY(1.05) scaleX(0.95) rotate(0deg);
+      transform: translateY(-2px) scaleY(1.02) scaleX(0.98) rotate(0deg);
     }
     35% {
       transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);

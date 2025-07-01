@@ -30,7 +30,7 @@ const mergedClasses = twMerge(baseClasses, className)
         cy="249.73"
         r="4.35"
         fill="currentColor"
-        class="group-hover:fill-accent group-hover:translate-x-2 group-hover:translate-y-1.5 transition-all duration-900"
+        class="red_glow group-hover:fill-accent group-hover:translate-x-2 group-hover:translate-y-1.5 transition-all duration-900"
       ></circle><path
         fill="currentColor"
         d="M39.66 268.94h34.48L65.21 251l-10.23 13.93s-4.33-7.95-7.9-7.48c-4.43.58-7.42 11.48-7.42 11.48"
@@ -50,3 +50,14 @@ const mergedClasses = twMerge(baseClasses, className)
     ></svg
   >
 </div>
+<style>
+  .red_glow {
+    transition: all 2s ease;
+  }
+
+  .group:hover .red_glow {
+    filter: drop-shadow(0 0 1px #ff5252) drop-shadow(0 0 2px #ff0000)
+      drop-shadow(0 0 3px #c5400b);
+    fill: accent;
+  }
+</style>
