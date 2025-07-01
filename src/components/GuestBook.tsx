@@ -227,7 +227,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
           <textarea
             ref={textareaRef}
-            className="textarea textarea-bordered text-base-content bg-base-100 placeholder-base-content/80 focus:ring-base-content mt-1 h-18 w-full rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
+            className="textarea textarea-bordered text-base-content bg-base-100 placeholder-base-content/80 focus:ring-base-content mt-1 h-28 w-full rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none md:h-18"
             placeholder={`Feedback, wish, or link to your playlist.\nUse Markdown formatting or the buttons above.`}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
