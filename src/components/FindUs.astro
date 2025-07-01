@@ -4,9 +4,9 @@ import Door from '../assets/images/pa58_images/door.jpg'
 import Path from '../assets/images/pa58_images/path.jpg'
 import Sign from '../assets/images/pa58_images/sign.jpg'
 import Map from '../assets/images/map.png'
-import MapIcon from './Map_Icon.astro'
-import StreetMapIcon from './Street_map_icon.astro'
-import ImagesIcon from './Images_Icon.astro'
+import GoogleIcon from './Icon_GoogleMap.astro'
+import TreasureMapIcon from './Icon_TreasureMap.astro'
+import ImagesIcon from './Icon_Images.astro'
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
@@ -48,9 +48,9 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
           </div>
           <div class="flex flex-row gap-x-8 align-bottom">
             <label for="mapModal" class="cursor-pointer"
-              ><StreetMapIcon className="w-13" /></label
+              ><TreasureMapIcon className="w-13" /></label
             >
-            <div><MapIcon className="w-8" /></div>
+            <div><GoogleIcon className="w-8" /></div>
           </div>
         </div>
 
