@@ -8,7 +8,7 @@ interface Props {
 const { className = '' } = Astro.props
 
 // Base styles that are always applied
-const baseClasses = `group w-12 h-12 duration-900`
+const baseClasses = `group w-12 h-auto duration-900`
 
 // Merge with any custom classes
 const mergedClasses = twMerge(baseClasses, className)
@@ -79,6 +79,10 @@ const mergedClasses = twMerge(baseClasses, className)
     fill: accent;
   }
 
+  .group:hover .rattling-bounce {
+    animation: rattling-bounce 2.5s ease-in-out;
+  }
+
   @keyframes rattling-bounce {
     /* Bounce down */
     0% {
@@ -115,9 +119,5 @@ const mergedClasses = twMerge(baseClasses, className)
     100% {
       transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
     }
-  }
-
-  .group:hover .rattling-bounce {
-    animation: rattling-bounce 2.5s ease-in-out;
   }
 </style>
