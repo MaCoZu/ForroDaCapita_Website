@@ -73,17 +73,14 @@ const lfconditions = marked(lf_cond)
 
 <!-- Modal Overlay and Content -->
 <div class="modal" role="dialog">
-  <div class="modal-box max-h-[95vh] max-w-[30vw] p-0">
+  <div
+    class="modal-box max-h-[95vh] max-w-[95vw] md:max-w-[30vw] flex items-center justify-center"
+  >
     <div
       id="imagesModalContent"
-      class="pointer-events-auto bg-base-100 p-5 rounded-md shadow-xl max-h-[95vh] max-w-[30vw] flex flex-col md:flex-row items-center gap-5 relative group"
+      class="pointer-events-auto shadow-xl w-full h-full flex items-center justify-center relative group"
     >
-      <!-- Carousel navigation triangles -->
-      <div
-        class="w-full flex justify-around items-end absolute left-0 right-0 bottom-10 px-10 z-10 pointer-events-none"
-      >
-      </div>
-      <div class="carousel w-full max-w-2xl p-0 rounded-md">
+      <div class="carousel w-full h-full rounded-md p-0 shadow-0">
         {
           lf_images.map((image, idx) => {
             const prevId = `slide${idx === 0 ? lf_images.length : idx}`
@@ -143,7 +140,7 @@ const lfconditions = marked(lf_cond)
       </div>
       <!-- close X button -->
       <label
-        class="bg-base-100 p-2 rounded-md absolute top-2 right-2"
+        class="bg-base-100 rounded-md absolute p-1 top-2 right-2"
         for="lfModal"
       >
         <svg
