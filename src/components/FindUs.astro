@@ -119,14 +119,14 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <!-- WAY TO GO modal -->
     <input type="checkbox" id="wayModal" class="modal-toggle" />
     <div class="modal" role="dialog">
-      <div class="modal-box max-h-[95vh] max-w-[90vw] p-0">
+      <div class="modal-box hidescrollbar max-h-[95vh] max-w-[90vw] p-0">
         <div
           id="imagesModalContent"
-          class="pointer-events-auto bg-base-100 p-5 rounded-md shadow-xl max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-5 relative group"
+          class="pointer-events-auto bg-base-100 md:p-5 p-2 rounded-md max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-2 md:gap-5 relative group"
         >
           <!-- close X button -->
           <label
-            class="bg-base-100 p-2 rounded-md absolute top-2 right-2 z-10"
+            class="bg-base-100 p-1 md:p-2 rounded-bl-md absolute top-1 right-1 md:top-2 md:right-2 z-10"
             for="wayModal"
           >
             <svg
@@ -225,3 +225,15 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     </script>
   </div>
 </div>
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hidescrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hidescrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+</style>
