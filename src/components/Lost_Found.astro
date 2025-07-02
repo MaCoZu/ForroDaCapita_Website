@@ -74,13 +74,15 @@ const lfconditions = marked(lf_cond)
 <!-- Modal Overlay and Content -->
 <div class="modal" role="dialog">
   <div
-    class="modal-box max-h-[95vh] max-w-[95vw] md:max-w-[30vw] flex items-center justify-center"
+    class="max-h-[95vh] max-w-[95vw] md:max-w-[30vw] flex items-center justify-center"
   >
     <div
       id="imagesModalContent"
-      class="pointer-events-auto shadow-xl w-full h-full flex items-center justify-center relative group"
+      class="pointer-events-auto rounded-md w-full h-full flex items-center justify-center relative group"
     >
-      <div class="carousel w-full h-full rounded-md p-0 shadow-0">
+      <div
+        class="carousel flex items-center justify-center relative w-full h-full rounded-md bg-base-100 md:py-5 p-2 gap-4 shadow-0"
+      >
         {
           lf_images.map((image, idx) => {
             const prevId = `slide${idx === 0 ? lf_images.length : idx}`
@@ -140,7 +142,7 @@ const lfconditions = marked(lf_cond)
       </div>
       <!-- close X button -->
       <label
-        class="bg-base-100 rounded-md absolute p-1 top-2 right-2"
+        class="bg-base-100 p-1 md:p-2 rounded-bl-md absolute top-1 right-1 md:top-3 md:right-4 z-10"
         for="lfModal"
       >
         <svg
