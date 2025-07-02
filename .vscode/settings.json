@@ -11,5 +11,22 @@
     "Zausch"
   ],
 
-  "npm.packageManager": "pnpm"
+  "npm.packageManager": "pnpm",
+
+  // CSS and Tailwind CSS settings
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "tailwindCSS.includeLanguages": {
+    "astro": "html",
+    "css": "css"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["class:list=\\{([^}]*)\\}", "'([^']*)'"],
+    ["class:list=\\{([^}]*)\\}", "\"([^\"]*)\""],
+    ["class:list=\\{([^}]*)\\}", "`([^`]*)`"]
+  ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }
