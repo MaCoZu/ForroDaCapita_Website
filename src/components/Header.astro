@@ -1,5 +1,6 @@
 ---
 import Logo from './ForroDaCapita_Logo.astro'
+import Hamburger from './Hamburger.astro'
 import Menu from './Menu.astro'
 import Paypal from './Paypal.astro'
 import ThemeSwitch from './ThemeSwitch.astro'
@@ -9,9 +10,10 @@ import ThemeSwitch from './ThemeSwitch.astro'
   <div class="flex flex-row items-top justify-between mx-auto">
     <Logo />
     <Menu />
-    <div class="flex flex-col gap-y-8 mt-4 items-center">
+    <div class="flex flex-col gap-y-14 mt-4 items-center">
       <ThemeSwitch />
       <Paypal />
     </div>
+    <Hamburger />
   </div>
 </header>
