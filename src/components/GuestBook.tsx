@@ -12,19 +12,63 @@ const formatDate = (dateString: string) => {
   return `${day} ${month}. ${year}`
 }
 
-//TODO: _blank not working, Markdown Headings not working
+// Custom renderer for marked to handle links and headings properly
 const renderer = new marked.Renderer()
-renderer.link = function ({
-  href = '',
-  title,
-  text = '',
+
+// Enhanced link renderer with better security and accessibility
+renderer.link = function ({ href = '', title, text = '' }: LinkRendererParams) {
+  // Sanitize both href and text content
+  const sanitizedHref = DOMPurify.sanitize(href.trim())
+  const sanitizedText = DOMPurify.sanitize(text)
+  const sanitizedTitle = title ? DOMPurify.sanitize(title) : null
+
+  // Validate URL format to prevent javascript: and other dangerous protocols
+  const isValidUrl = /^https?:\/\/.+/i.test(sanitizedHref)
+  if (!isValidUrl && sanitizedHref !== '') {
+    // If it's not a valid HTTP(S) URL, treat it as plain text
+    return sanitizedText
+  }
+
+  // Build attributes object for better maintainability
+  const attributes = {
+    href: sanitizedHref,
+    class: 'text-accent hover:text-accent/80 underline transition-colors',
+    target: '_blank',
+    rel: 'noopener noreferrer nofollow',
+    ...(sanitizedTitle && { title: sanitizedTitle }),
+  }
+
+  // Convert attributes object to string
+  const attributeString = Object.entries(attributes)
+    .map(([key, value]) => `${key}="${value}"`)
+    .join(' ')
+
+  return `<a ${attributeString}>${sanitizedText}</a>`
+}
+
+// Fix heading rendering
+renderer.heading = function ({
+  tokens,
+  depth,
 }: {
-  href?: string
-  title?: string | null
-  text?: string
+  tokens: any[]
+  depth: number
 }) {
-  const sanitizedHref = DOMPurify.sanitize(href)
-  return `<a href="${sanitizedHref}" class="text-accent" target="_blank" rel="noopener noreferrer"${title ? ` title="${title}"` : ''}>${text}</a>`
+  // Extract text from tokens
+  const text = tokens.map((token) => token.raw ?? token.text ?? '').join('')
+  const sanitizedText = DOMPurify.sanitize(text)
+  const headingClasses = {
+    1: 'text-2xl font-bold mb-4 mt-6',
+    2: 'text-xl font-semibold mb-3 mt-5',
+    3: 'text-lg font-medium mb-2 mt-4',
+    4: 'text-base font-medium mb-2 mt-3',
+    5: 'text-sm font-medium mb-1 mt-2',
+    6: 'text-xs font-medium mb-1 mt-2',
+  }
+
+  const className =
+    headingClasses[depth as keyof typeof headingClasses] || headingClasses[6]
+  return `<h${depth} class="${className}">${sanitizedText}</h${depth}>`
 }
 
 interface Message {
@@ -36,6 +80,19 @@ interface Message {
 
 interface MessageBoardProps {
   containerClasses?: string
+}
+
+// Type for marked renderer link function parameters
+interface LinkRendererParams {
+  href?: string
+  title?: string | null
+  text?: string
+}
+
+// Type for marked renderer heading function parameters
+interface HeadingRendererParams {
+  text: string
+  depth: number
 }
 
 const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
@@ -54,10 +111,10 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     try {
       const res = await fetch('/api/messages')
       const result = await res.json()
-      if (!res.ok) throw new Error(result.error || 'Failed to fetch messages')
+      if (!res.ok) throw new Error(result.error ?? 'Failed to fetch messages')
       setMessages(result as Message[])
     } catch (err: any) {
-      setError(err.message || String(err))
+      setError(err.message ?? String(err))
       console.error('Fetch messages error:', err)
     } finally {
       setLoading(false)
@@ -74,10 +131,10 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
           setUserId(result.user.id)
           await fetchMessages()
         } else {
-          throw new Error(result.error || 'Failed to authenticate')
+          throw new Error(result.error ?? 'Failed to authenticate')
         }
       } catch (err: any) {
-        setError(err.message || String(err))
+        setError(err.message ?? String(err))
         console.error('Initialization error:', err)
       }
     }
@@ -112,16 +169,57 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
       if (!res.ok) {
         console.error('Failed to post:', result.error)
-        setError(result.error || 'Failed to post message')
+        setError(result.error ?? 'Failed to post message')
       } else {
         setMessage('')
         setError('')
         await fetchMessages()
       }
     } catch (err: any) {
-      setError(err.message || String(err))
+      setError(err.message ?? String(err))
       console.error('Post error:', err)
     }
+  }
+
+  const renderMessages = () => {
+    if (loading) {
+      return <p>Loading messages...</p>
+    }
+
+    if (messages.length === 0) {
+      return <p className="text-gray-500">No messages yet. Be the first!</p>
+    }
+
+    return (
+      <div className="space-y-2">
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className="text-base-content bg-base-100 border-base-content/20 border-b p-2 text-lg"
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(
+                  marked(msg.content, {
+                    renderer,
+                    breaks: true, // Convert line breaks to <br>
+                    gfm: true, // Enable GitHub Flavored Markdown
+                  }) as string,
+                  {
+                    // Allow target attribute for links to open in new tab
+                    ADD_ATTR: ['target', 'rel'],
+                    ALLOWED_ATTR: ['href', 'title', 'class', 'target', 'rel'],
+                  }
+                ),
+              }}
+            />
+            <small className="text-gray-500">
+              {formatDate(msg.created_at)}
+            </small>
+          </div>
+        ))}
+      </div>
+    )
   }
 
   return (
@@ -233,7 +331,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
             onChange={(e) => setMessage(e.target.value)}
           ></textarea>
           <button
-            className="btn btn-secondary my-2 rounded-md font-bold"
+            className="btn bg-base-200 my-2 rounded-md font-bold"
             disabled={!message.trim()}
           >
             Post
@@ -242,31 +340,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
         <div className="border-base-content h-[72vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
           {error && <div className="text-error mt-2">{error}</div>}
-          {loading ? (
-            <p>Loading messages...</p>
-          ) : messages.length === 0 ? (
-            <p className="text-gray-500">No messages yet. Be the first!</p>
-          ) : (
-            <div className="space-y-2">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className="text-base-content bg-base-100 border-base-content/20 border-b p-2 text-lg"
-                >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(
-                        marked(msg.content, { renderer }) as string
-                      ),
-                    }}
-                  />
-                  <small className="text-gray-500">
-                    {formatDate(msg.created_at)}
-                  </small>
-                </div>
-              ))}
-            </div>
-          )}
+          {renderMessages()}
         </div>
       </div>
     </div>
