@@ -1,0 +1,176 @@
+---
+const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
+---
+
+<div class="md:hidden">
+  <!-- Hamburger Menu Toggle -->
+  <input id="menu__toggle" type="checkbox" class="hidden" />
+
+  <!-- Special SVG Hamburger Button -->
+  <label for="menu__toggle" class="ham-container relative z-50 top-3 right-5">
+    <svg class="ham hamRotate ham1" viewBox="0 0 100 100" width="50">
+      <path
+        class="line top"
+        d="m 30,33 h 40 c 0,0 9.044436,-0.654587 9.044436,-8.508902 0,-7.854315 -8.024349,-11.958003 -14.89975,-10.85914 -6.875401,1.098863 -13.637059,4.171617 -13.637059,16.368042 v 40"
+      ></path>
+      <path class="line middle" d="m 30,50 h 40"></path>
+      <path
+        class="line bottom"
+        d="m 30,67 h 40 c 12.796276,0 15.357889,-11.717785 15.357889,-26.851538 0,-15.133752 -4.786586,-27.274118 -16.667516,-27.274118 -11.88093,0 -18.499247,6.994427 -18.435284,17.125656 l 0.252538,40"
+      ></path>
+    </svg>
+  </label>
+
+  <!-- Side Navigation Menu -->
+  <div class="hamburger-menu">
+    <ul class="menu__box bg-base-100 rounded-l-3xl">
+      <li>
+        <a
+          href="/"
+          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          href="/forro"
+          class="flex items-center hover:primary-content transition duration-600 ease-in-out py-[6px]"
+        >
+          <svg
+            fill="currentColor"
+            stroke="currentColor"
+            class="w-19.5 h-8 self-center"
+            viewBox="0 9 288 90.5"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g transform="scale(0.95 0.95)">
+              <path
+                d="M280 89.7q-1.6.7-4.8.7a62 62 0 0 1-13.5-.5l-5.2-.4-6.8-1a19 19 0 0 1-6.6-2.3 13 13 0 0 1-6.2-8q-.4-2-.7-5.7a126 126 0 0 1 .7-17.4 340 340 0 0 1 2-17.8l1.2-5.9q.8-2.9 3-5.5 2.1-2.6 5-3.6 2.8-1 5.6-1 2.8-.3 5.6-.1l8.3.2q4.7 0 9.1 1 4.5.7 8.3 2.7a13 13 0 0 1 5.9 5.6q.9 1.5 1.1 4.8.4 3.3.4 7.5a157 157 0 0 1-.8 17.8A127 127 0 0 1 289 79q-.8 2.5-2 4.9-1.2 2-3 3.5-1.8 1.4-4 2.3m-18.6-18 3.8.6q2 0 3.7-.8 1.5-.9 2.8-3.3 1.2-2.5 2-5.8a52 52 0 0 0 .7-19.5q-.5-2.3-1.7-2.9-.5-.3-1.8-.4a33 33 0 0 0-5.5-.5l-4 .1q-.9 0-1.8.6t-1.8 3a38 38 0 0 0-2.2 12 66 66 0 0 0 .3 12.2q.4 2.4 1.3 3 1 1 2 1.1zm-42.2-7.6q2.8 2.7 4 5 1.4 2.3 2 5 .4 2.4.4 5.3v6.4l-.1 1.4q-.1.8-.5 1.4t-1.5.8l-2 .5-2.4.2h-3.8l-2.6-.1q-1.3 0-2.5-.4a3 3 0 0 1-1.6-.9q-.4-.3-.6-1.7l-.3-7.2a27 27 0 0 0-1.4-7.4q-.4-1.5-1.5-2.2-1.8-1-4.4-1-2.4-.2-4.5-.1v4.1a94 94 0 0 1-.4 11.3 8 8 0 0 1-1 3.5q-.5.9-1.5 1.1l-1.9.5q-1.1.2-3.6.3l-5.2-.2q-2.6-.3-4.7-1-2-.8-2-2.3l.1-6.9.3-7a1192 1192 0 0 0 .3-37.4q-.2-4.4.4-8.4.5-3.4 4-4l6.3-.4a204 204 0 0 1 23.8.8q5.6.6 9.8 3.5 4.3 3 6.3 8.2 1.5 3.8 1.7 8 .1 4-.8 8a25 25 0 0 1-8.6 13.3m-24.3-13.4q2.3 0 4.4.4 2.2.3 4.4-.2a8 8 0 0 0 5.2-3.7q.8-1.5.8-3 0-1.4-1.1-2.7a7 7 0 0 0-3.3-2q-2.2-.7-6-.6l-4 .4-.2 5.8zm-36.8 13.4q2.8 2.7 4.1 5t1.9 5q.5 2.4.4 5.3v7.8q-.2.8-.6 1.4t-1.4.8l-2.2.5-2.3.2h-3.8l-2.5-.1q-1.5 0-2.5-.4a3 3 0 0 1-1.7-.9q-.3-.3-.5-1.7l-.4-7.2a27 27 0 0 0-1.3-7.4q-.7-1.5-1.6-2.2-1.7-1-4.4-1-2.4-.2-4.5-.1v4.1a94 94 0 0 1-.4 11.3 8 8 0 0 1-.9 3.5q-.6.9-1.6 1.1l-1.9.5q-1 .2-3.6.3l-5.2-.2q-2.6-.3-4.6-1-2-.8-2-2.3v-6.9l.3-7a1192 1192 0 0 0 .3-37.4q-.1-4.4.4-8.4.6-3.4 4-4a204 204 0 0 1 30 .4q5.7.6 10 3.5 4.2 3 6.2 8.2 1.5 3.8 1.7 8 .2 4-.8 8a25 25 0 0 1-8.6 13.3m-24.2-13.4q2.1 0 4.3.4 2.3.3 4.4-.2a8 8 0 0 0 5.2-3.7q.9-1.5.8-3 0-1.4-1.1-2.7a7 7 0 0 0-3.3-2q-2.2-.7-6-.6l-4 .4-.2 5.8zM94 89.7q-1.5.7-4.7.7a62 62 0 0 1-13.5-.5l-5.2-.4-6.9-1a19 19 0 0 1-6.5-2.3 13 13 0 0 1-6.2-8q-.6-2-.7-5.7a126 126 0 0 1 .5-17.4 340 340 0 0 1 2.1-17.8q.6-3.8 1.2-5.9.8-2.9 2.9-5.5 2.3-2.6 5.1-3.6t5.5-1q3-.3 5.6-.1l8.3.2q4.8 0 9.2 1 4.5.7 8.3 2.7a13 13 0 0 1 5.8 5.6q.9 1.5 1.2 4.8t.3 7.5a157 157 0 0 1-.7 17.8A127 127 0 0 1 103 79q-.8 2.5-2 4.9-1.2 2-3 3.5-1.8 1.4-4 2.3m-18.6-18 3.9.6q1.9 0 3.7-.8 1.6-.9 2.7-3.3 1.2-2.5 2-5.8a52 52 0 0 0 .8-19.5q-.6-2.3-1.7-2.9-.6-.3-1.9-.4a33 33 0 0 0-5.5-.5l-4 .1q-.8 0-1.7.6-1 .7-1.8 3a38 38 0 0 0-2.2 12 66 66 0 0 0 .2 12.2q.5 2.4 1.4 3 .9 1 2 1.1zM21.8 61.1a46 46 0 0 0 .7 8.2 144 144 0 0 1 1.2 18.1q-.5.7-1.2 1t-1.3.4a111 111 0 0 1-12.4 1.1q-2 0-3-.8-.5-.3-.8-1.1a17 17 0 0 1-.7-3.8l-.2-1.6-.4-7.1-.1-7.3-1-18.9Q2 39.7.6 30.5l-.4-1.9q-.3-1 0-2 .4-1.8 2.1-2.2 2.1-.6 6-1a165 165 0 0 1 16.9-.8A124 124 0 0 0 40 21.1q1.3 0 1.7.4l.6.9.2 1 .6 7.5-.1 4.3q0 2-.6 2.5-.8.6-2.6 1a55 55 0 0 1-9.6 1l-9 .7q-1.7.2-2 .7l-.1.9v1.3l.1 1.2.4 1q.3.6 1.8.8h3.4l9-1.4 3.9-.3q1.7 0 2.5.5.5.3.7.8l.5.8.4 2.3a58 58 0 0 1 .7 7q0 1.5-.2 2-.4.6-3.3 1.1a212 212 0 0 1-17.2 2m260.9-50a80 80 0 0 1-13.2 6.2c-3.2 1.2-4.3.7-4.8-.8-.8-2-.3-4.5 1.3-6A42 42 0 0 1 281.2.1q1.5-.3 2.3 1c.8 1.5 3.4 6.8-.8 10"
+              >
+              </path>
+            </g>
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/pa58"
+          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          >PA58</a
+        >
+      </li>
+
+      <li>
+        <a
+          href={adminUrl}
+          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          >Admin</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  /* Hamburger Button Styles */
+  .ham-container {
+    cursor: pointer;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .ham {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 400ms;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .line {
+    fill: none;
+    transition:
+      stroke-dasharray 400ms,
+      stroke-dashoffset 400ms;
+    stroke: #000;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+  }
+
+  .ham1 .top {
+    stroke-dasharray: 40 139;
+  }
+  .ham1 .bottom {
+    stroke-dasharray: 40 180;
+  }
+
+  /* Hamburger Animation when Menu is Open */
+  #menu__toggle:checked ~ .ham-container .ham1 .top {
+    stroke-dashoffset: -98px;
+  }
+  #menu__toggle:checked ~ .ham-container .ham1 .bottom {
+    stroke-dashoffset: -138px;
+  }
+  #menu__toggle:checked ~ .ham-container .ham {
+    transform: rotate(45deg);
+  }
+
+  /* Side Navigation Menu */
+  .menu__box {
+    display: block;
+    position: fixed;
+    visibility: hidden;
+    top: 0;
+    right: -100%;
+    width: 200px;
+    height: 100vh;
+    margin: 0;
+    padding: 80px 20px 20px 20px;
+    list-style: none;
+    /* background-color: rgba(236, 239, 241, 0.95); */
+    backdrop-filter: blur(10px);
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
+    transition:
+      right 0.3s ease-in-out,
+      visibility 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  /* Show Menu when Toggle is Checked */
+  #menu__toggle:checked ~ .hamburger-menu .menu__box {
+    visibility: visible;
+    right: 0;
+  }
+
+  /* Menu Items Styling */
+  .menu__box li {
+    margin: 20px 0;
+  }
+
+  .menu__box a {
+    display: block;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+  }
+
+  .menu__box a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+  }
+
+  /* Overlay when menu is open */
+  #menu__toggle:checked ~ .hamburger-menu::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9;
+  }
+</style>
