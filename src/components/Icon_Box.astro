@@ -8,134 +8,133 @@ interface Props {
 const { className = '' } = Astro.props
 
 // Base styles that are always applied
-const baseClasses = `group w-12 h-auto duration-900`
+const baseClasses = `group w-12 h-auto`
 
 // Merge with any custom classes
 const mergedClasses = twMerge(baseClasses, className)
 ---
 
-<label for="lfModal" class="cursor-pointer">
-  <div class={mergedClasses}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xml:space="preserve"
-      viewBox="0 0 67.95 67.94"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      class="rattling-bounce transition-all duration-900"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="0"
-        stroke-width="2.2"
-        d="M35.12 36.73V63.2l22.91-13.23V36.73M9.92 35.41v13.23l25.2 14.55"
-      ></path>
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="0"
-        stroke-width="2.2"
-        d="M9.92 22.18 5.33 32.76l25.2 14.56 4.59-10.59M9.92 22.18.75 14.24 23.66 1.01l9.17 7.94m-.01-.26L42 .75l25.2 14.82-9.16 7.93"
-      ></path>
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="0"
-        stroke-width="2.2"
-        d="m35.12 36.73 6.02 9.76 23.77-13.73-6.88-9.26"></path>
-      <path
-        fill="none"
-        class="group-hover:stroke-accent transition-all duration-900"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-miterlimit="0"
-        stroke-width="2.2"
-        d="M32.83 8.95v26.46"></path>
-      <path
-        fill="none"
-        class="group-hover:stroke-accent transition-all duration-900"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="square"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width="2.2"
-        d="M32.83 8.95 9.92 22.18l25.2 14.55L58.03 23.5Z"></path>
-      <path
-        fill="none"
-        class="group-hover:fill-red-800/60 blur-md brightness-150 transition-all duration-900"
-        stroke="currentColor"
-        stroke-dashoffset="11.51"
-        stroke-linecap="square"
-        stroke-linejoin="round"
-        stroke-miterlimit="10"
-        stroke-width=".23"
-        d="m50.63 28-15.51 8.73-16.96-9.79c-5.52-3.18 11.12-12.17 17.49-12.17S56.18 24.87 50.63 28z"
-        filter="url(#a)"></path>
-    </svg>
-  </div>
+<div class={mergedClasses} data-box-icon>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xml:space="preserve"
+    viewBox="0 0 67.95 67.94"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    class="rattling-bounce"
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="0"
+      stroke-width="2.2"
+      d="M35.12 36.73V63.2l22.91-13.23V36.73M9.92 35.41v13.23l25.2 14.55"
+    ></path>
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="0"
+      stroke-width="2.2"
+      d="M9.92 22.18 5.33 32.76l25.2 14.56 4.59-10.59M9.92 22.18.75 14.24 23.66 1.01l9.17 7.94m-.01-.26L42 .75l25.2 14.82-9.16 7.93"
+    ></path>
+    <path
+      fill="none"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="0"
+      stroke-width="2.2"
+      d="m35.12 36.73 6.02 9.76 23.77-13.73-6.88-9.26"></path>
+    <path
+      fill="none"
+      class="group-hover:stroke-accent"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="0"
+      stroke-width="2.2"
+      d="M32.83 8.95v26.46"></path>
+    <path
+      fill="none"
+      class="group-hover:stroke-accent"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="square"
+      stroke-linejoin="round"
+      stroke-miterlimit="10"
+      stroke-width="2.2"
+      d="M32.83 8.95 9.92 22.18l25.2 14.55L58.03 23.5Z"></path>
+    <path
+      fill="none"
+      class="group-hover:fill-red-800/60 blur-md brightness-150 transition-all duration-900"
+      stroke="currentColor"
+      stroke-dashoffset="11.51"
+      stroke-linecap="square"
+      stroke-linejoin="round"
+      stroke-miterlimit="10"
+      stroke-width=".23"
+      d="m50.63 28-15.51 8.73-16.96-9.79c-5.52-3.18 11.12-12.17 17.49-12.17S56.18 24.87 50.63 28z"
+      filter="url(#a)"></path>
+  </svg>
+</div>
 
-  <style>
-    .red_glow {
-      transition: all 1s ease;
+<style>
+  .red_glow {
+    transition: all 1s ease;
+  }
+
+  .group:hover .red_glow {
+    filter: drop-shadow(0 0 0.5px rgb(149, 5, 5)) blur(0.8px);
+    fill: accent;
+  }
+
+  .group:hover .rattling-bounce {
+    animation: rattling-bounce 3s ease-in-out;
+    transition: all 3s ease;
+  }
+
+  @keyframes rattling-bounce {
+    /* Bounce down */
+    0% {
+      transform: translateY(-5px) scaleY(1) scaleX(1) rotate(0deg);
+    }
+    15% {
+      transform: translateY(3px) scaleY(0.9) scaleX(1.1) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-2px) scaleY(1.02) scaleX(0.98) rotate(0deg);
+    }
+    35% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
     }
 
-    .group:hover .red_glow {
-      filter: drop-shadow(0 0 0.5px rgb(149, 5, 5)) blur(0.8px);
-      fill: accent;
+    /* Shake/rattle phase */
+    40% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(-3deg);
+    }
+    45% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(3deg);
+    }
+    50% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(-3deg);
+    }
+    55% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(3deg);
+    }
+    60% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
     }
 
-    .group:hover .rattling-bounce {
-      animation: rattling-bounce 2.5s ease-in-out;
+    /* Rest */
+    100% {
+      transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
     }
-
-    @keyframes rattling-bounce {
-      /* Bounce down */
-      0% {
-        transform: translateY(-5px) scaleY(1) scaleX(1) rotate(0deg);
-      }
-      15% {
-        transform: translateY(3px) scaleY(0.9) scaleX(1.1) rotate(0deg);
-      }
-      25% {
-        transform: translateY(-2px) scaleY(1.02) scaleX(0.98) rotate(0deg);
-      }
-      35% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
-      }
-
-      /* Shake/rattle phase */
-      40% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(-3deg);
-      }
-      45% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(3deg);
-      }
-      50% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(-3deg);
-      }
-      55% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(3deg);
-      }
-      60% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
-      }
-
-      /* Rest */
-      100% {
-        transform: translateY(0px) scaleY(1) scaleX(1) rotate(0deg);
-      }
-    }
-  </style>
-</label>
+  }
+</style>
