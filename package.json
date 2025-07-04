@@ -17,6 +17,7 @@
     "@datocms/cda-client": "^0.2.7",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.29.0",
+    "@splidejs/splide": "^4.1.4",
     "@supabase/supabase-js": "^2.50.0",
     "@tailwindcss/vite": "^4.1.10",
     "@types/react": "^19.1.8",
