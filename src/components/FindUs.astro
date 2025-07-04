@@ -190,9 +190,19 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
           // document.body.classList.remove('overflow-hidden');
         })
 
-        // Close when clicking on the backdrop itself (not the content)
+        // Close when clicking on the backdrop itself (not the content) - robust implementation
         mapModal.addEventListener('click', (e) => {
-          if (e.target === mapModal) {
+          const modalContent = mapModal.querySelector('#imagesModalContent')
+          if (!modalContent) return
+
+          const rect = modalContent.getBoundingClientRect()
+          const isInModal =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width
+
+          if (!isInModal) {
             mapModal.classList.add('hidden')
             // document.body.classList.remove('overflow-hidden');
           }
@@ -214,9 +224,19 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
           // document.body.classList.remove('overflow-hidden');
         })
 
-        // Close when clicking on the backdrop itself (not the content)
+        // Close when clicking on the backdrop itself (not the content) - robust implementation
         imagesModal.addEventListener('click', (e) => {
-          if (e.target === imagesModal) {
+          const modalContent = imagesModal.querySelector('#imagesModalContent')
+          if (!modalContent) return
+
+          const rect = modalContent.getBoundingClientRect()
+          const isInModal =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width
+
+          if (!isInModal) {
             imagesModal.classList.add('hidden')
             // document.body.classList.remove('overflow-hidden');
           }
