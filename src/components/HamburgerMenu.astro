@@ -4,10 +4,16 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
 
 <div class="md:hidden">
   <!-- Hamburger Menu Toggle -->
-  <input id="menu__toggle" type="checkbox" class="hidden" />
+  <input
+    id="menu__toggle"
+    type="checkbox"
+    class="hidden"
+    aria-controls="menu"
+    aria-expanded="false"
+  />
 
   <!-- Special SVG Hamburger Button -->
-  <label for="menu__toggle" class="ham-container relative z-10 top-3 right-5">
+  <label for="menu__toggle" class="ham-container absolute z-10 top-3 right-5">
     <svg
       class="ham hamRotate ham1"
       viewBox="0 0 100 100"
@@ -29,18 +35,18 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
 
   <!-- Side Navigation Menu -->
   <div class="hamburger-menu">
-    <ul class="menu__box bg-base-100 rounded-l-3xl">
+    <ul class="menu__box bg-base-100 rounded-l-3xl" role="menu">
       <li>
         <a
           href="/"
-          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          class="text-2xl font-gokhan tracking-wider hover:primary-content"
           >Home</a
         >
       </li>
       <li>
         <a
           href="/forro"
-          class="flex items-center hover:primary-content transition duration-600 ease-in-out py-[6px]"
+          class="flex items-center hover:primary-content py-[6px]"
         >
           <svg
             fill="currentColor"
@@ -62,7 +68,7 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
       <li>
         <a
           href="/pa58"
-          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          class="text-2xl font-gokhan tracking-wider hover:primary-content"
           >PA58</a
         >
       </li>
@@ -70,7 +76,7 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
       <li>
         <a
           href={adminUrl}
-          class="text-2xl font-gokhan tracking-wider hover:primary-content transition duration-600 ease-in-out"
+          class="text-2xl font-gokhan tracking-wider hover:primary-content"
           >Admin</a
         >
       </li>
@@ -81,9 +87,27 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
 <style>
   /* Hamburger Button Styles */
   .ham-container {
+    position: absolute;
+    right: 1.25rem; /* Tailwind's right-5 = 1.25rem */
+    top: 0.75rem; /* Tailwind's top-3 = 0.75rem */
     cursor: pointer;
-    position: fixed;
     z-index: 1000;
+    transition:
+      top 0.3s ease,
+      right 0.3s ease;
+  }
+
+  /* When menu is open, button becomes fixed to stay visible */
+  #menu__toggle:checked ~ .ham-container {
+    position: fixed;
+    top: 0.75rem;
+    right: 1.25rem;
+    /* right: calc(100vw - 200px + 1.25rem); */
+  }
+
+  /* Menu container needs relative positioning */
+  .hamburger-menu {
+    position: relative;
   }
 
   .ham {
@@ -94,15 +118,16 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    transition: transform 400ms ease;
   }
 
   .line {
     fill: none;
-    transition:
-      stroke-dasharray 400ms,
-      stroke-dashoffset 400ms;
     stroke-width: 5.5;
     stroke-linecap: round;
+    transition:
+      stroke-dasharray 400ms ease,
+      stroke-dashoffset 400ms ease;
   }
 
   .ham1 .top {
@@ -144,17 +169,6 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
     z-index: 999;
   }
 
-  /* Show Menu when Toggle is Checked */
-  #menu__toggle:checked ~ .hamburger-menu .menu__box {
-    visibility: visible;
-    right: 0;
-  }
-
-  /* Menu Items Styling */
-  .menu__box li {
-    margin: 20px 0;
-  }
-
   .menu__box a {
     display: block;
     padding: 12px 16px;
@@ -165,6 +179,17 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
   .menu__box a:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: translateX(-5px);
+  }
+
+  /* Show Menu when Toggle is Checked */
+  #menu__toggle:checked ~ .hamburger-menu .menu__box {
+    visibility: visible;
+    right: 0;
+  }
+
+  /* Menu Items Styling */
+  .menu__box li {
+    margin: 20px 0;
   }
 
   /* Overlay when menu is open */
@@ -179,3 +204,12 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
     z-index: 9;
   }
 </style>
+
+<script>
+  const toggle = document.getElementById('menu__toggle') as HTMLInputElement
+  if (toggle) {
+    toggle.addEventListener('change', () => {
+      toggle.setAttribute('aria-expanded', toggle.checked ? 'true' : 'false')
+    })
+  }
+</script>
