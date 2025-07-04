@@ -3,6 +3,8 @@ import { marked } from 'marked'
 import { twMerge } from 'tailwind-merge'
 import { executeQuery } from '../lib/datocms.js'
 import BoxIcon from './Icon_Box.astro'
+import SplideSlider from './SplideSlider.astro'
+
 interface Props {
   ContainerClasses?: string
   TextClasses?: string
@@ -54,195 +56,20 @@ const lfconditions = marked(lf_cond)
     <div class={mergedTextClasses}>
       Miss something? <br />
       Have a look in the
-      <label
-        for="lfModal"
+      <button
+        id="openGallery"
         class="underline underline-offset-4 hover:no-underline cursor-pointer"
       >
-        box</label
+        box</button
       >.
     </div>
 
-    <!-- Arrow SVG  -->
-
-    <BoxIcon className="mb-2 w-9 md:w-12" />
+    <div data-box-icon class="cursor-pointer">
+      <BoxIcon className="mb-2 w-9 md:w-12" />
+    </div>
   </div>
   <div class={mergedTextClasses + ' mt-4'} set:html={lfconditions} />
 </div>
 
-<input type="checkbox" id="lfModal" class="modal-toggle" />
-
-<!-- Modal Overlay and Content -->
-<div class="modal" role="dialog">
-  <div
-    class="max-h-[95vh] max-w-[95vw] md:max-w-[30vw] flex items-center justify-center"
-  >
-    <div
-      id="imagesModalContent"
-      class="pointer-events-auto rounded-md w-full h-full flex items-center justify-center relative group"
-    >
-      <div
-        class="carousel flex items-center justify-center relative w-full h-full rounded-md bg-base-100 md:py-5 p-2 gap-4 shadow-0"
-      >
-        {
-          lf_images.map((image, idx) => {
-            const prevId = `slide${idx === 0 ? lf_images.length : idx}`
-            const nextId = `slide${idx === lf_images.length - 1 ? 1 : idx + 2}`
-            const thisId = `slide${idx + 1}`
-            return (
-              <div
-                id={thisId}
-                class="carousel-item relative w-full flex flex-col items-center"
-              >
-                <img
-                  src={image.url}
-                  alt={image.alt || 'Lost & Found item'}
-                  class="rounded-md max-h-[80vh] w-auto object-contain mx-auto"
-                  loading="lazy"
-                />
-                <div class="absolute pointer-events-none w-full flex justify-around items-end left-0 right-0 bottom-3 px-0 z-10">
-                  <a
-                    href={`#${prevId}`}
-                    class="pointer-events-auto btn btn-circle bg-base-100/30 hover:bg-base-100/50 hover:scale-110 hover:text-accent transition-transform duration-600 border-none"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="2 0 24 24"
-                      class="opacity-80"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="m4.431 12.822l13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href={`#${nextId}`}
-                    class="pointer-events-auto btn btn-circle bg-base-100/30 hover:bg-base-100/50 hover:scale-110 hover:text-accent transition-transform duration-600 border-none"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      class="opacity-80"
-                      viewBox="-2 0 24 24"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M5.536 21.886a1 1 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            )
-          })
-        }
-      </div>
-      <!-- close X button -->
-      <label
-        class="bg-base-100 p-1 md:p-2 rounded-bl-md absolute top-1 right-1 md:top-3 md:right-4 z-10"
-        for="lfModal"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6 hover:scale-110 hover:text-accent transition-transform duration-600"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </label>
-    </div>
-    <!-- DaisyUI click-away close: modal-backdrop -->
-    <label for="lfModal" class="modal-backdrop"></label>
-  </div>
-
-  <script is:inline define:vars={{ totalImages: lf_images.length }}>
-    let current = 0
-    const total = totalImages
-
-    if (typeof window !== 'undefined') {
-      // Function to check if modal is open
-      function isModalOpen() {
-        const modal = document.getElementById('lfModal')
-        return modal && modal.checked
-      }
-
-      // Function to navigate to slide
-      function goToSlide(slideIndex) {
-        current = slideIndex
-        location.hash = `#slide${current + 1}`
-      }
-
-      // Keyboard navigation
-      window.addEventListener('keydown', (e) => {
-        if (!isModalOpen()) return
-
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault()
-          current = (current - 1 + total) % total
-          goToSlide(current)
-        } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault()
-          current = (current + 1) % total
-          goToSlide(current)
-        } else if (e.key === 'Escape') {
-          // Close modal on Escape
-          document.getElementById('lfModal').checked = false
-        }
-      })
-
-      // Mouse wheel navigation
-      window.addEventListener(
-        'wheel',
-        (e) => {
-          if (!isModalOpen()) return
-
-          // Check if the event target is within the modal
-          const modalContent = document.getElementById('imagesModalContent')
-          if (!modalContent || !modalContent.contains(e.target)) return
-
-          e.preventDefault()
-
-          if (e.deltaY > 0 || e.deltaX > 0) {
-            // Scroll down/right - next image
-            current = (current + 1) % total
-            goToSlide(current)
-          } else if (e.deltaY < 0 || e.deltaX < 0) {
-            // Scroll up/left - previous image
-            current = (current - 1 + total) % total
-            goToSlide(current)
-          }
-        },
-        { passive: false }
-      )
-
-      // Track current slide based on hash changes
-      window.addEventListener('hashchange', () => {
-        if (!isModalOpen()) return
-
-        const hash = location.hash
-        const match = hash.match(/slide(\d+)/)
-        if (match) {
-          current = parseInt(match[1]) - 1
-        }
-      })
-
-      // Initialize current slide when modal opens
-      document.getElementById('lfModal').addEventListener('change', (e) => {
-        if (e.target.checked) {
-          // Modal opened - go to first slide
-          current = 0
-          goToSlide(current)
-        }
-      })
-    }
-  </script>
-</div>
+<!-- Image Gallery Modal -->
+<SplideSlider images={lf_images} />
