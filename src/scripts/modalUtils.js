@@ -1,6 +1,6 @@
 /**
  * Robust modal backdrop close functionality
- * Uses getBoundingClientRect() to accurately detect clicks outside modal content
+ * Uses .contains() to accurately detect clicks outside modal content
  *
  * @param {HTMLElement} modal - The modal container element
  * @param {HTMLElement} modalContent - The modal content element (what should stay open when clicked)
@@ -11,15 +11,9 @@ export function addRobustBackdropClose(modal, modalContent, closeCallback) {
     console.warn('addRobustBackdropClose: Invalid parameters provided')
     return
   }
-  modal.addEventListener('click', (event) => {
-    const rect = modalContent.getBoundingClientRect()
-    const isInModal =
-      rect.top <= event.clientY &&
-      event.clientY <= rect.top + rect.height &&
-      rect.left <= event.clientX &&
-      event.clientX <= rect.left + rect.width
 
-    if (!isInModal) {
+  modal.addEventListener('click', (event) => {
+    if (!modalContent.contains(event.target)) {
       closeCallback()
     }
   })
