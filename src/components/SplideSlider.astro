@@ -14,14 +14,12 @@ const { images = [] } = Astro.props
 
 <div
   id="galleryModal"
-  class="fixed inset-0 z-9999 hidden bg-base-100/60 backdrop-blur-md"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="gallery-title"
+  class="fixed inset-0 z-9999 hidden bg-base-100/60 backdrop-blur-md flex items-center justify-center"
 >
-  <!-- Modal Content Container - Responsive Layout -->
+  <!-- Modal Content Box (Does NOT fill full height/width!) -->
   <div
-    class="relative w-full h-full flex flex-col md:flex-row items-center justify-center p-2 sm:p-4"
+    id="modalContent"
+    class="relative max-w-[95vw] max-h-[90vh] px-0 py-4 bg-white/10 rounded-lg overflow-hidden"
   >
     <!-- Close Button - positioned at top right -->
     <button
@@ -78,7 +76,7 @@ const { images = [] } = Astro.props
                   <img
                     src={image.url}
                     alt={image.alt || 'Gallery thumbnail'}
-                    class="w-full h-20 object-cover cursor-pointer opacity-80 hover:opacity-100 focus:opacity-100 transition-opacity bg-transparent"
+                    class="w-full h-20 object-cover cursor-pointer transition-opacity bg-transparent"
                     loading="lazy"
                   />
                 </li>
@@ -119,25 +117,46 @@ const { images = [] } = Astro.props
 <script>
   import { Splide } from '@splidejs/splide'
   import '@splidejs/splide/dist/css/splide.min.css'
-
-  let isModalOpen = false
+  import {
+    addEnhancedModalClose,
+    createHiddenClassChecker,
+  } from '../scripts/modalUtils'
 
   document.addEventListener('DOMContentLoaded', () => {
-    // Desktop: Main slider with thumbnails
-    const mainSlider = document.getElementById('main-slider')
-    const thumbnailSlider = document.getElementById('thumbnail-slider')
-    const modal = document.getElementById('galleryModal')
-    const openButton = document.getElementById('openGallery')
-    const closeButton = document.getElementById('closeGallery')
-    const slideCounter = document.getElementById('slideCounter')
+    const modal = document.getElementById('galleryModal') as HTMLElement | null
+    const modalContent = document.getElementById(
+      'modalContent'
+    ) as HTMLElement | null
+    const openButton = document.getElementById(
+      'openGallery'
+    ) as HTMLElement | null
+    const closeButton = document.getElementById(
+      'closeGallery'
+    ) as HTMLElement | null
+    const boxIcon = document.querySelector(
+      '[data-box-icon]'
+    ) as HTMLElement | null
 
-    // Function to open modal
-    function openModal() {
+    let isModalOpen = false
+
+    const closeModal = () => {
+      if (modal) {
+        modal.classList.add('hidden')
+        isModalOpen = false
+        document.body.style.overflow = ''
+      }
+    }
+
+    const openModal = () => {
       if (!modal) return
 
       modal.classList.remove('hidden')
       isModalOpen = true
       document.body.style.overflow = 'hidden'
+
+      // Initialize Desktop Sliders
+      const mainSlider = document.getElementById('main-slider')
+      const thumbnailSlider = document.getElementById('thumbnail-slider')
 
       if (mainSlider && thumbnailSlider) {
         const main = new Splide('#main-slider', {
@@ -155,12 +174,11 @@ const { images = [] } = Astro.props
           trimSpace: true,
           drag: 'free',
           fixedWidth: 100,
-          // cover: true,
-          // fixedHeight: 80,
           isNavigation: true,
           gap: 10,
           pagination: false,
           arrows: false,
+          keyboard: 'global',
           breakpoints: {
             600: {
               fixedWidth: 60,
@@ -174,6 +192,7 @@ const { images = [] } = Astro.props
         thumbnails.mount()
       }
 
+      // Initialize Mobile Slider
       const mobileSlider = document.getElementById('mobile-slider')
       if (mobileSlider) {
         const mobile = new Splide('#mobile-slider', {
@@ -181,100 +200,85 @@ const { images = [] } = Astro.props
           drag: 'free',
           snap: true,
           rewind: true,
-          pagination: false, // Disable default pagination
+          pagination: false,
           arrows: true,
         })
 
-        // Create custom counter with Tailwind classes
         const counterElement = document.createElement('div')
         counterElement.className =
-          'absolute bottom-4 right-4 bg-black/70 text-white px-3 py-2 rounded-full text-sm font-medium z-10 backdrop-blur-sm shadow-lg'
+          'absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-base-100/90 text-base-content/70 px-6 py-2 rounded-full text-md font-medium z-30 shadow-md'
         counterElement.innerHTML =
           '<span class="current font-semibold">1</span> / <span class="total">0</span>'
 
-        // Add counter to the slider container (make sure container is relative)
         mobileSlider.classList.add('relative')
         mobileSlider.appendChild(counterElement)
 
-        // Update counter on slide change
-        mobile.on('mounted move', function () {
+        mobile.on('mounted move', () => {
           const currentSlide = mobile.index + 1
           const totalSlides = mobile.Components.Controller.getEnd() + 1
 
           const currentElement = counterElement.querySelector('.current')
           const totalElement = counterElement.querySelector('.total')
+
           if (currentElement && totalElement) {
             currentElement.textContent = currentSlide.toString()
             totalElement.textContent = totalSlides.toString()
           }
         })
-        // Bottom-center counter
-        counterElement.className =
-          'absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-base-100/60 text-base-content/70 px-4 py-2 rounded-full text-md font-medium z-10 shadow-lg'
+
         mobile.mount()
       }
     }
 
-    // Function to close modal
-    function closeModal() {
-      if (!modal) return
-
-      modal.classList.add('hidden')
-      isModalOpen = false
-      document.body.style.overflow = ''
+    // Attach modal close helpers
+    if (modal && modalContent) {
+      const isModalCurrentlyOpen = createHiddenClassChecker(modal)
+      addEnhancedModalClose(
+        modal,
+        modalContent,
+        closeModal,
+        isModalCurrentlyOpen
+      )
     }
 
-    // Event listeners for opening modal
-    if (openButton) {
-      openButton.addEventListener('click', (e) => {
+    // Open modal triggers
+    ;[openButton, boxIcon].forEach((btn) => {
+      btn?.addEventListener('click', (e) => {
         e.preventDefault()
         openModal()
       })
-    }
-
-    // Add click handler to BoxIcon
-    const boxIcon = document.querySelector('[data-box-icon]')
-    if (boxIcon) {
-      boxIcon.addEventListener('click', (e) => {
-        e.preventDefault()
-        openModal()
-      })
-    }
-
-    // Event listener for closing modal
-    if (closeButton) {
-      closeButton.addEventListener('click', closeModal)
-    }
-
-    // Close modal when clicking backdrop - robust implementation
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        // Get the modal content container (the div with the actual content)
-        const modalContent = modal.querySelector('.relative.w-full.h-full')
-        if (!modalContent) return
-
-        const rect = modalContent.getBoundingClientRect()
-        const isInModal =
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width
-
-        if (!isInModal) {
-          closeModal()
-        }
-      })
-    }
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-        closeModal()
-      }
     })
+
+    // Close button
+    closeButton?.addEventListener('click', closeModal)
   })
 </script>
 <style>
+  .splide__slide:focus,
+  .splide__slide:active,
+  .splide__slide.is-active,
+  .splide__arrow:focus,
+  .splide__arrow:active,
+  .splide__arrow.is-active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ✅ Custom Arrows */
+  .splide__arrow {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 40px;
+    height: 40px;
+    color: currentColor;
+    background-color: #ce0c0c; /* Your custom background */
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+
+  /* ✅ Slide Counter (if used) */
   .splide-counter {
     position: absolute;
     bottom: 16px;
@@ -301,15 +305,18 @@ const { images = [] } = Astro.props
     font-weight: 600;
   }
 
-  .splide--nav > .splide__track > .splide__list > .splide__slide.is-active {
+  .splide--nav .splide__slide.is-active {
     opacity: 1;
-    border: 0px;
+    border: none;
   }
 
-  .splide__arrow {
-    width: 40px;
-    height: 40px;
-    background-color: #ce0c0c;
-    border-radius: 50%;
+  .splide__slide img {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .splide__slide img:hover,
+  .splide__slide.is-active img {
+    opacity: 1;
   }
 </style>
