@@ -1,13 +1,29 @@
 ---
 import { Image } from 'astro:assets'
-import Door from '../assets/images/pa58_images/door.jpg'
-import Path from '../assets/images/pa58_images/path.jpg'
-import Sign from '../assets/images/pa58_images/sign.jpg'
+import { executeQuery } from '../lib/datocms.js'
+
 import Map from '../assets/images/map.png'
 import GoogleIcon from './Icon_GoogleMap.astro'
 import TreasureMapIcon from './Icon_TreasureMap.astro'
 import ImagesIcon from './Icon_Images.astro'
 import { twMerge } from 'tailwind-merge'
+import Slider from './SplideSlider.astro'
+
+const { home } = (await executeQuery(`query Homepage { 
+    home { 
+      findus { id url alt }
+      } 
+    }`)) as {
+  home?: {
+    findus?: Array<{
+      id: string
+      url: string
+      alt?: string
+    }>
+  }
+}
+
+const wayimages = home?.findus ?? []
 
 interface Props {
   ContainerClasses?: string
@@ -58,40 +74,35 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       >
         <div class={mergedTextClasses}>
           Once in the first backyard,<br />
-          <label
-            for="wayModal"
+          <a
+            id="wayLink"
             class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >This is the way</label
+            >This is the way</a
           >
           to go.
         </div>
 
         <div>
-          <label
-            for="wayModal"
-            class="underline underline-offset-4 hover:no-underline cursor-pointer"
-          >
-            <ImagesIcon className="w-8 md:w-12" />
-          </label>
+          <ImagesIcon id="imagesIcon" className="w-8 md:w-12" />
         </div>
       </div>
     </div>
 
     <!-- MAP modal  -->
     <input type="checkbox" id="mapModal" class="modal-toggle" />
-    <div class="modal" role="dialog">
+    <div class="modal bg-base-100/60 backdrop-blur-md" role="dialog">
       <div
         class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
       >
         <div
-          id="imagesModalContent"
-          class="pointer-events-auto bg-gray-50 rounded-md shadow-xl md:max-h-[95vh] md:max-w-[70vw] flex flex-col md:flex-row items-center gap-5 relative group"
+          id="imagesfu_modalContent"
+          class="pointer-events-auto bg-white-50 rounded-md shadow-xl md:max-h-[95vh] md:max-w-[70vw] flex flex-col md:flex-row items-center gap-5 relative group"
         >
           <!-- close X button -->
           <label class="p-2 rounded-md absolute top-2 right-2" for="mapModal">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 hover:scale-110 hover:text-accent transition-transform duration-900"
+              class="w-5 h-5 sm:w-7 sm:h-7 hover:scale-110 hover:text-accent transition-transform duration-900"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -116,64 +127,20 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       <label class="modal-backdrop" for="mapModal">Close</label>
     </div>
 
-    <!-- WAY TO GO modal -->
-    <input type="checkbox" id="wayModal" class="modal-toggle" />
-    <div class="modal" role="dialog">
-      <div class="modal-box hidescrollbar max-h-[95vh] max-w-[90vw] p-0">
-        <div
-          id="imagesModalContent"
-          class="pointer-events-auto bg-base-100 md:p-5 p-2 rounded-md max-h-[95vh] max-w-[90vw] flex flex-col md:flex-row items-center gap-2 md:gap-5 relative group"
-        >
-          <!-- close X button -->
-          <label
-            class="bg-base-100 p-1 md:p-2 rounded-bl-md absolute top-1 right-1 md:top-2 md:right-2 z-10"
-            for="wayModal"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 hover:scale-110 hover:text-accent transition-transform duration-900"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </label>
-          <Image
-            src={Sign}
-            alt="Signs"
-            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
-          />
+    <Slider
+      prefix="way"
+      triggerIDs={['imagesIcon', 'wayLink']}
+      images={wayimages}
+      showCounter={false}
+    />
 
-          <Image
-            src={Path}
-            alt="Path"
-            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
-          />
+    <script>
+      import '@splidejs/splide/dist/css/splide.min.css'
 
-          <Image
-            src={Door}
-            alt="Door"
-            class="w-full md:flex-1 max-w-full rounded-md aspect-square object-cover"
-          />
-        </div>
-      </div>
-      <label class="modal-backdrop" for="wayModal">Close</label>
-    </div>
-
-    <script is:inline>
       // Get references to elements
       const mapLink = document.getElementById('mapLink')
       const mapModal = document.getElementById('mapModal')
       const mapModalContent = document.getElementById('mapModalContent')
-
-      const imagesLink = document.getElementById('imagesLink')
-      const imagesModal = document.getElementById('imagesModal')
-      const imagesModalContent = document.getElementById('imagesModalContent')
 
       // --- Map Modal Logic ---
       if (mapLink && mapModal && mapModalContent) {
@@ -192,10 +159,13 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
         // Close when clicking on the backdrop itself (not the content) - robust implementation
         mapModal.addEventListener('click', (e) => {
-          const modalContent = mapModal.querySelector('#imagesModalContent')
-          if (!modalContent) return
+          const fu_modalContent = mapModal.querySelector(
+            '#imagesfu_modalContent'
+          )
 
-          const rect = modalContent.getBoundingClientRect()
+          if (!fu_modalContent) return
+
+          const rect = fu_modalContent.getBoundingClientRect()
           const isInModal =
             rect.top <= e.clientY &&
             e.clientY <= rect.top + rect.height &&
@@ -204,40 +174,6 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
           if (!isInModal) {
             mapModal.classList.add('hidden')
-            // document.body.classList.remove('overflow-hidden');
-          }
-        })
-      }
-
-      // --- Three Images Modal Logic ---
-      if (imagesLink && imagesModal && imagesModalContent) {
-        imagesLink.addEventListener('click', (e) => {
-          e.preventDefault() // Prevent default link navigation
-          imagesModal.classList.remove('hidden') // Show the modal
-          // Optional: Add a class to body to prevent scrolling when modal is open
-          // document.body.classList.add('overflow-hidden');
-        })
-
-        // Close when mouse leaves the modal content area
-        imagesModalContent.addEventListener('mouseleave', () => {
-          imagesModal.classList.add('hidden') // Hide the modal
-          // document.body.classList.remove('overflow-hidden');
-        })
-
-        // Close when clicking on the backdrop itself (not the content) - robust implementation
-        imagesModal.addEventListener('click', (e) => {
-          const modalContent = imagesModal.querySelector('#imagesModalContent')
-          if (!modalContent) return
-
-          const rect = modalContent.getBoundingClientRect()
-          const isInModal =
-            rect.top <= e.clientY &&
-            e.clientY <= rect.top + rect.height &&
-            rect.left <= e.clientX &&
-            e.clientX <= rect.left + rect.width
-
-          if (!isInModal) {
-            imagesModal.classList.add('hidden')
             // document.body.classList.remove('overflow-hidden');
           }
         })
