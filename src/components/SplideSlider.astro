@@ -2,29 +2,43 @@
 import '../styles/splide-custom.css'
 
 interface Props {
-  images: Array<{
-    id: string
-    url: string
-    alt?: string
-  }>
+  modalID?: string
+  prefix: string
+  triggerIDs: string[]
+  images: Array<{ id: string; url: string; alt?: string }>
+  showCounter?: boolean
 }
 
-const { images = [] } = Astro.props
+const {
+  triggerIDs = [],
+  images = [],
+  showCounter = false,
+  prefix = '',
+} = Astro.props
+
+const modalID = `${prefix ? `${prefix}_` : ''}modalID`
+const modalContent = `${prefix ? `${prefix}_` : ''}modalContent`
+const closeGallery = `${prefix ? `${prefix}_` : ''}closeGallery`
+const mainSlider = `${prefix ? `${prefix}_` : ''}mainSlider`
+const thumbnailSlider = `${prefix ? `${prefix}_` : ''}thumbnailSlider`
+const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
 ---
 
 <div
-  id="galleryModal"
-  class="fixed inset-0 z-9999 hidden bg-base-100/60 backdrop-blur-md flex items-center justify-center"
+  id={modalID}
+  class="fixed inset-0 z-[9999] hidden backdrop-blur-md flex items-center justify-center"
+  data-trigger-ids={JSON.stringify(triggerIDs)}
+  data-show-counter={showCounter}
+  data-prefix={prefix}
 >
-  <!-- Modal Content Box (Does NOT fill full height/width!) -->
   <div
-    id="modalContent"
-    class="relative max-w-[95vw] max-h-[90vh] px-0 py-4 rounded-lg overflow-hidden"
+    id={modalContent}
+    class="relative flex justify-center mx-auto w-full max-w-[55vw] h-full max-h-[90vh] px-4 py-4 rounded-lg overflow-hidden bg-transparent"
   >
-    <!-- Close Button - positioned at top right -->
+    <!-- Close Button -->
     <button
-      id="closeGallery"
-      class="absolute top-4 right-4 z-100 rounded-full p-2 transition-all duration-300 group backdrop-blur-sm"
+      id={closeGallery}
+      class="absolute top-4 right-4 z-[100] rounded-full p-2 transition-all duration-300 group backdrop-blur-sm bg-base-100/50"
       aria-label="Close gallery"
     >
       <svg
@@ -41,10 +55,14 @@ const { images = [] } = Astro.props
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
-    <!-- Desktop: Main slider with thumbnails -->
-    <div class="hidden md:block">
+
+    <!-- Desktop Layout -->
+    <div class="hidden md:block h-full">
       <!-- Main Slider -->
-      <section id="main-slider" class="splide mb-4 max-w-[35vw]">
+      <section
+        id={mainSlider}
+        class="splide mb-4 max-w-[65vw] flex justify-center mx-auto"
+      >
         <div class="splide__track">
           <ul class="splide__list">
             {
@@ -63,9 +81,9 @@ const { images = [] } = Astro.props
         </div>
       </section>
 
-      <!-- Thumbnail Slider -->
+      <!-- Thumbnails -->
       <section
-        id="thumbnail-slider"
+        id={thumbnailSlider}
         class="splide flex justify-center mx-auto max-w-[35vw]"
       >
         <div class="splide__track">
@@ -86,11 +104,10 @@ const { images = [] } = Astro.props
         </div>
       </section>
     </div>
-
-    <!-- Mobile: Simple slider -->
-    <div class="block md:hidden">
+    <!-- Mobile Layout -->
+    <div class="block md:hidden h-full">
       <section
-        id="mobile-slider"
+        id={mobileSlider}
         class="splide flex justify-center mx-auto max-w-[95vw]"
       >
         <div class="splide__track">
@@ -116,57 +133,88 @@ const { images = [] } = Astro.props
 
 <script>
   import { Splide } from '@splidejs/splide'
-  import '@splidejs/splide/dist/css/splide.min.css'
-  import {
-    addEnhancedModalClose,
-    createHiddenClassChecker,
-  } from '../scripts/modalUtils'
+import '@splidejs/splide/dist/css/splide.min.css'
+import {
+  addEnhancedModalClose,
+  createHiddenClassChecker,
+} from '../scripts/modalUtils'
 
   document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('galleryModal') as HTMLElement | null
-    const modalContent = document.getElementById(
-      'modalContent'
-    ) as HTMLElement | null
-    const openButton = document.getElementById(
-      'openGallery'
-    ) as HTMLElement | null
-    const closeButton = document.getElementById(
-      'closeGallery'
-    ) as HTMLElement | null
-    const boxIcon = document.querySelector(
-      '[data-box-icon]'
-    ) as HTMLElement | null
+    const modal = document.querySelector('[data-trigger-ids]')
+    if (!modal) return
 
-    let isModalOpen = false
+    const prefix = modal?.dataset?.prefix || ''
+    const modalID = `${prefix}${prefix ? '_' : ''}modalID`
+    const modalContentID = `${prefix}${prefix ? '_' : ''}modalContent`
+    const closeGalleryID = `${prefix}${prefix ? '_' : ''}closeGallery`
+    const mainSliderID = `${prefix}${prefix ? '_' : ''}mainSlider`
+    const thumbnailSliderID = `${prefix}${prefix ? '_' : ''}thumbnailSlider`
+    const mobileSliderID = `${prefix}${prefix ? '_' : ''}mobileSlider`
+
+    const modalContent = document.getElementById(modalContentID)
+    const closeButton = document.getElementById(closeGalleryID)
+
+    if (!modalContent || !closeButton) return
+
+    const triggerIDs = JSON.parse(modal.dataset.triggerIds || '[]')
+    const showCounter = modal.dataset.showCounter === 'true'
+
+    const triggers = triggerIDs
+      .map((id) => document.getElementById(id))
+      .filter((el) => el !== null)
+
+    let mainSliderInstance = null
+    let thumbnailSliderInstance = null
+    let mobileSliderInstance = null
 
     const closeModal = () => {
-      if (modal) {
-        modal.classList.add('hidden')
-        isModalOpen = false
-        document.body.style.overflow = ''
-      }
+      modal.classList.add('hidden')
+      document.body.style.overflow = ''
     }
 
     const openModal = () => {
-      if (!modal) return
-
       modal.classList.remove('hidden')
-      isModalOpen = true
       document.body.style.overflow = 'hidden'
+      // Initialize sliders after modal is visible
+      setTimeout(() => {
+        initializeSliders()
+      }, 100)
+    }
 
-      // Initialize Desktop Sliders
-      const mainSlider = document.getElementById('main-slider')
-      const thumbnailSlider = document.getElementById('thumbnail-slider')
+    const initializeSliders = () => {
+      // Clean up existing instances
+      if (mainSliderInstance) {
+        mainSliderInstance.destroy()
+        mainSliderInstance = null
+      }
+      if (thumbnailSliderInstance) {
+        thumbnailSliderInstance.destroy()
+        thumbnailSliderInstance = null
+      }
+      if (mobileSliderInstance) {
+        mobileSliderInstance.destroy()
+        mobileSliderInstance = null
+      }
 
-      if (mainSlider && thumbnailSlider) {
-        const main = new Splide('#main-slider', {
+      const mainSliderElement = document.getElementById(mainSliderID)
+      const thumbnailSliderElement = document.getElementById(thumbnailSliderID)
+      const mobileSliderElement = document.getElementById(mobileSliderID)
+
+      // Desktop sliders
+      if (mainSliderElement && thumbnailSliderElement) {
+        mainSliderInstance = new Splide(`#${mainSliderID}`, {
           type: 'fade',
+          autoWidth: true,
+          perPage: 1,
           rewind: true,
+          focus: 'center',
+          gap: 4,
           pagination: false,
           arrows: true,
+          keyboard: 'global',
         })
 
-        const thumbnails = new Splide('#thumbnail-slider', {
+        thumbnailSliderInstance = new Splide(`#${thumbnailSliderID}`, {
           type: 'slide',
           perPage: 3,
           rewind: true,
@@ -187,15 +235,14 @@ const { images = [] } = Astro.props
           },
         })
 
-        main.sync(thumbnails)
-        main.mount()
-        thumbnails.mount()
+        mainSliderInstance.sync(thumbnailSliderInstance)
+        mainSliderInstance.mount()
+        thumbnailSliderInstance.mount()
       }
 
-      // Initialize Mobile Slider
-      const mobileSlider = document.getElementById('mobile-slider')
-      if (mobileSlider) {
-        const mobile = new Splide('#mobile-slider', {
+      // Mobile slider
+      if (mobileSliderElement) {
+        mobileSliderInstance = new Splide(`#${mobileSliderID}`, {
           type: 'slide',
           drag: 'free',
           snap: true,
@@ -204,52 +251,34 @@ const { images = [] } = Astro.props
           arrows: true,
         })
 
-        const counterElement = document.createElement('div')
-        counterElement.className =
-          'absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-base-100/90 text-base-content/70 px-6 py-2 rounded-full text-md font-medium z-30 shadow-md'
-        counterElement.innerHTML =
-          '<span class="current font-semibold">1</span> / <span class="total">0</span>'
+        // Add counter for mobile if requested
+        if (showCounter) {
+          mobileSliderInstance.on('mounted move', () => {
+            const current = mobileSliderInstance.index + 1
+            const total =
+              mobileSliderInstance.Components.Controller.getEnd() + 1
+            // Update or create counter
+            let counter = mobileSliderElement.querySelector('.slide-counter')
+            if (!counter) {
+              counter = document.createElement('div')
+              counter.className =
+                'slide-counter absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-base-100/90 text-base-content px-4 py-2 rounded-full text-sm font-medium z-30'
+              mobileSliderElement.appendChild(counter)
+            }
+            counter.textContent = `${current} / ${total}`
+          })
+        }
 
-        mobileSlider.classList.add('relative')
-        mobileSlider.appendChild(counterElement)
-
-        mobile.on('mounted move', () => {
-          const currentSlide = mobile.index + 1
-          const totalSlides = mobile.Components.Controller.getEnd() + 1
-
-          const currentElement = counterElement.querySelector('.current')
-          const totalElement = counterElement.querySelector('.total')
-
-          if (currentElement && totalElement) {
-            currentElement.textContent = currentSlide.toString()
-            totalElement.textContent = totalSlides.toString()
-          }
-        })
-
-        mobile.mount()
+        mobileSliderInstance.mount()
       }
     }
 
-    // Attach modal close helpers
     if (modal && modalContent) {
-      const isModalCurrentlyOpen = createHiddenClassChecker(modal)
-      addEnhancedModalClose(
-        modal,
-        modalContent,
-        closeModal,
-        isModalCurrentlyOpen
-      )
+      const isOpen = createHiddenClassChecker(modal)
+      addEnhancedModalClose(modal, modalContent, closeModal, isOpen)
     }
 
-    // Open modal triggers
-    ;[openButton, boxIcon].forEach((btn) => {
-      btn?.addEventListener('click', (e) => {
-        e.preventDefault()
-        openModal()
-      })
-    })
-
-    // Close button
-    closeButton?.addEventListener('click', closeModal)
+    triggers.forEach((btn) => btn.addEventListener('click', openModal))
+    closeButton.addEventListener('click', closeModal)
   })
 </script>
