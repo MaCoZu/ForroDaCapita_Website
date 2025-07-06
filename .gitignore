@@ -2,6 +2,9 @@
 dist/
 dist/
 
+# files
+_*.astro
+
 # Local Netlify folder
 .netlify
 
