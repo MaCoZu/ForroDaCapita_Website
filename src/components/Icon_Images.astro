@@ -2,10 +2,12 @@
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
+  id: string,
   className?: string
+
 }
 
-const { className = '' } = Astro.props
+const { id ='' ,className = '' } = Astro.props
 
 // Base styles that are always applied
 const baseClasses = `group hover:scale-110 transition-transform duration-900`
@@ -14,7 +16,7 @@ const baseClasses = `group hover:scale-110 transition-transform duration-900`
 const mergedClasses = twMerge(baseClasses, className)
 ---
 
-<div class={mergedClasses}>
+<div id={id} class={mergedClasses}>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xml:space="preserve"
