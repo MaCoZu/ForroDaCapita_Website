@@ -90,13 +90,13 @@
 }
 
 /* ✅ Thumbnail Slider Specific */
-#thumbnail-slider .splide__slide img {
+#lf_thumbnail-slider .splide__slide img {
   opacity: 0.8;
   transition: opacity 0.2s ease;
 }
 
-#thumbnail-slider .splide__slide img:hover,
-#thumbnail-slider .splide__slide.is-active img {
+#lf_thumbnail-slider .splide__slide img:hover,
+#lf_thumbnail-slider .splide__slide.is-active img {
   opacity: 1;
 }
 
