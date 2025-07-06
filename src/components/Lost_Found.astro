@@ -3,7 +3,7 @@ import { marked } from 'marked'
 import { twMerge } from 'tailwind-merge'
 import { executeQuery } from '../lib/datocms.js'
 import BoxIcon from './Icon_Box.astro'
-import SplideSlider from './SplideSlider.astro'
+import Slider from './SplideSlider.astro'
 
 interface Props {
   ContainerClasses?: string
@@ -45,8 +45,7 @@ const { home } = (await executeQuery(`query Homepage {
 }
 
 const lf_images = home?.lfimages ?? []
-const lf_cond = home?.lfcond ?? ''
-const lfconditions = marked(lf_cond)
+const lf_conditions = marked.parse(home?.lfcond ?? '')
 ---
 
 <div class="order-3">
@@ -56,20 +55,24 @@ const lfconditions = marked(lf_cond)
     <div class={mergedTextClasses}>
       Miss something? <br />
       Have a look in the
-      <button
-        id="openGallery"
+      <a
+        id="boxlink"
         class="underline underline-offset-4 hover:no-underline cursor-pointer"
       >
-        box</button
+        box</a
       >.
     </div>
 
     <div data-box-icon class="cursor-pointer">
-      <BoxIcon className="mb-2 w-9 md:w-12" />
+      <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
     </div>
   </div>
-  <div class={mergedTextClasses + ' mt-4'} set:html={lfconditions} />
+  <div class={mergedTextClasses + ' mt-4'} set:html={lf_conditions} />
 </div>
 
-<!-- Image Gallery Modal -->
-<SplideSlider images={lf_images} />
+<Slider
+  prefix="lf"
+  triggerIDs={['boxLink', 'boxIcon']}
+  images={lf_images}
+  showCounter={true}
+/>
