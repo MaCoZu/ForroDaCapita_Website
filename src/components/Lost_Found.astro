@@ -56,16 +56,13 @@ const lf_conditions = marked.parse(home?.lfcond ?? '')
       Miss something? <br />
       Have a look in the
       <a
-        id="boxlink"
+        id="boxLink"
         class="underline underline-offset-4 hover:no-underline cursor-pointer"
       >
         box</a
       >.
     </div>
-
-    <div data-box-icon class="cursor-pointer">
       <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
-    </div>
   </div>
   <div class={mergedTextClasses + ' mt-4'} set:html={lf_conditions} />
 </div>
