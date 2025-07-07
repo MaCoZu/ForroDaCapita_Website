@@ -20,7 +20,6 @@
   --color-map_bg: #fcf9ee;
 
   --color-accent: rgb(169 15 43);
-  /* --color-base-300: #F1DAC4; */
 }
 
 @plugin "daisyui/theme" {
