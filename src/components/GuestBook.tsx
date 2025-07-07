@@ -121,6 +121,18 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     }
   }
 
+  // 1. Set up polling for real-time updates
+  useEffect(() => {
+    // Fetch immediately on component mount
+    fetchMessages()
+
+    // Then poll every 10 seconds
+    const pollInterval = setInterval(fetchMessages, 10000)
+
+    // Cleanup interval on unmount
+    return () => clearInterval(pollInterval)
+  }, [])
+
   useEffect(() => {
     async function init() {
       try {
@@ -148,6 +160,13 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     // Replace single newlines not followed by another newline with two spaces + newline (Markdown line break)
     return text.replace(/([^\n])\n(?!\n)/g, '$1  \n')
   }
+
+  // 1. Polling/Realtime Logic (useEffect)
+  useEffect(() => {
+    fetchMessages() // Initial load
+    const interval = setInterval(fetchMessages, 10000) // Polling fallback
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
