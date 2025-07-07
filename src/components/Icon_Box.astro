@@ -2,20 +2,20 @@
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
-  id: string,
+  id: string
   className?: string
 }
 
-const { id='' , className = '' } = Astro.props
+const { id = '', className = '' } = Astro.props
 
 // Base styles that are always applied
-const baseClasses = `group w-12 h-auto`
+const baseClasses = `group w-12 h-auto cursor-pointer`
 
 // Merge with any custom classes
 const mergedClasses = twMerge(baseClasses, className)
 ---
 
-<div id={id} class={mergedClasses} data-box-icon>
+<div data-box-icon id={id} class={mergedClasses} data-box-icon>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xml:space="preserve"
