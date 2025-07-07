@@ -1,9 +1,13 @@
-# build output
+# Exclude static build output
+dist/client/
 dist/
-dist/
+
+# BUT allow the SSR server files
+!dist/server/
 
 # files
 _*.astro
+_*.mjs
 
 # Local Netlify folder
 .netlify

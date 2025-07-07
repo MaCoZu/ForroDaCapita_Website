@@ -14,7 +14,7 @@ export default defineConfig({
   },
   output: 'server',
   adapter: node({
-    mode: 'standalone',
+    mode: 'standalone', // For Vercel (Node.js runtime)
   }),
   vite: {
     plugins: [
