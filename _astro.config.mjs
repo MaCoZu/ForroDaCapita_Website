@@ -1,4 +1,5 @@
-import node from '@astrojs/node'
+// @ts-check
+import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
@@ -13,8 +14,8 @@ export default defineConfig({
     },
   },
   output: 'server',
-  adapter: node({
-    mode: 'standalone',
+  adapter: netlify({
+    edgeMiddleware: true,
   }),
   vite: {
     plugins: [
@@ -29,5 +30,6 @@ export default defineConfig({
       },
     ],
   },
+
   integrations: [react()],
 })

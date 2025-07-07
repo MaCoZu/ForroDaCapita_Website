@@ -2,6 +2,7 @@
   "name": "forrodacapita-daisy-datocms",
   "type": "module",
   "version": "0.0.1",
+  "start": "node ./dist/server/entry.mjs",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -45,6 +46,7 @@
     "typescript-eslint": "^8.35.0"
   },
   "devDependencies": {
+    "@astrojs/node": "^9.3.0",
     "@tailwindcss/typography": "^0.5.16"
   }
 }
