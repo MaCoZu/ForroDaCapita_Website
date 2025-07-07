@@ -26,43 +26,44 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
 
 <div
   id={modalID}
-  class="fixed inset-0 z-[9999] hidden backdrop-blur-md flex items-center justify-center"
+  class="fixed inset-0 z-[9999] hidden bg-base-100/60 backdrop-blur-md items-center flex justify-center mx-auto"
   data-trigger-ids={JSON.stringify(triggerIDs)}
   data-show-counter={showCounter}
   data-prefix={prefix}
 >
+  <!-- Close Button -->
+  <button
+    id={closeGallery}
+    class="absolute top-1/20 right-1/12 z-[100] rounded-full p-2 transition-all duration-300 group"
+    aria-label="Close gallery"
+    onclick="event.stopPropagation()"
+  >
+    <svg
+      width="40"
+      height="40"
+      class="w-5 h-5 sm:w-7 sm:h-7 text-base-content group-hover:text-accent/90"
+      fill="currentColor"
+      stroke="currentColor"
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
+      ></path>
+    </svg>
+  </button>
   <div
     id={modalContent}
-    class="relative flex justify-center mx-auto w-full max-w-[55vw] h-full max-h-[90vh] px-4 py-4 rounded-lg overflow-hidden bg-transparent"
+    class="relative my-8 overflow-hidden w-[95vw] md:w-1/3"
   >
-    <!-- Close Button -->
-    <button
-      id={closeGallery}
-      class="absolute top-4 right-4 z-[100] rounded-full p-2 transition-all duration-300 group backdrop-blur-sm bg-base-100/50"
-      aria-label="Close gallery"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-5 h-5 sm:w-7 sm:h-7 text-base-content group-hover:text-accent"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-
     <!-- Desktop Layout -->
-    <div class="hidden md:block h-full">
+    <div class="hidden md:block">
       <!-- Main Slider -->
       <section
         id={mainSlider}
-        class="splide mb-4 max-w-[65vw] flex justify-center mx-auto"
+        class="splide mb-4 w-[95vw] lg:w-full flex justify-center mx-auto"
       >
+        <div class="splide__arrows"></div>
         <div class="splide__track">
           <ul class="splide__list">
             {
@@ -82,10 +83,31 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
       </section>
 
       <!-- Thumbnails -->
-      <section
-        id={thumbnailSlider}
-        class="splide flex justify-center mx-auto max-w-[35vw]"
-      >
+      <section id={thumbnailSlider} class="splide flex justify-center mx-auto">
+        <!-- Custom Arrows  -->
+        <div class="splide__arrows">
+          <button class="splide__arrow splide__arrow--prev">
+            <svg
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              ><path
+                d="m322.7 128.4 100.3 105c6 5.8 9 13.7 9 22.4s-3 16.5-9 22.4L322.7 383.6a29.6 29.6 0 0 1-43.2 0 33 33 0 0 1 0-45.2l48.2-50.4h-217c-17 0-30.7-14.3-30.7-32s13.7-32 30.6-32h217l-48.2-50.4a33 33 0 0 1 0-45.2 29.7 29.7 0 0 1 43.3 0"
+              ></path></svg
+            >
+          </button>
+          <button class="splide__arrow splide__arrow--next">
+            <svg
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              ><path
+                d="m322.7 128.4 100.3 105c6 5.8 9 13.7 9 22.4s-3 16.5-9 22.4L322.7 383.6a29.6 29.6 0 0 1-43.2 0 33 33 0 0 1 0-45.2l48.2-50.4h-217c-17 0-30.7-14.3-30.7-32s13.7-32 30.6-32h217l-48.2-50.4a33 33 0 0 1 0-45.2 29.7 29.7 0 0 1 43.3 0"
+              ></path></svg
+            ></button
+          >
+        </div>
+
         <div class="splide__track">
           <ul class="splide__list">
             {
@@ -94,7 +116,7 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
                   <img
                     src={image.url}
                     alt={image.alt || 'Gallery thumbnail'}
-                    class="w-full h-20 object-cover cursor-pointer transition-opacity bg-transparent"
+                    class="w-full h-[15vh] object-cover cursor-pointer transition-opacity bg-transparent"
                     loading="lazy"
                   />
                 </li>
@@ -105,11 +127,34 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
       </section>
     </div>
     <!-- Mobile Layout -->
-    <div class="block md:hidden h-full">
+    <div class="block md:hidden w-full">
       <section
         id={mobileSlider}
-        class="splide flex justify-center mx-auto max-w-[95vw]"
+        class="splide mobile-splide max-w-[95vw] mx-auto"
       >
+        <!-- Custom Arrows  -->
+        <div class="splide__arrows">
+          <button class="splide__arrow splide__arrow--prev mobile-arrow">
+            <svg
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              ><path
+                d="m322.7 128.4 100.3 105c6 5.8 9 13.7 9 22.4s-3 16.5-9 22.4L322.7 383.6a29.6 29.6 0 0 1-43.2 0 33 33 0 0 1 0-45.2l48.2-50.4h-217c-17 0-30.7-14.3-30.7-32s13.7-32 30.6-32h217l-48.2-50.4a33 33 0 0 1 0-45.2 29.7 29.7 0 0 1 43.3 0"
+              ></path></svg
+            >
+          </button>
+          <button class="splide__arrow splide__arrow--next mobile-arrow">
+            <svg
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              ><path
+                d="m322.7 128.4 100.3 105c6 5.8 9 13.7 9 22.4s-3 16.5-9 22.4L322.7 383.6a29.6 29.6 0 0 1-43.2 0 33 33 0 0 1 0-45.2l48.2-50.4h-217c-17 0-30.7-14.3-30.7-32s13.7-32 30.6-32h217l-48.2-50.4a33 33 0 0 1 0-45.2 29.7 29.7 0 0 1 43.3 0"
+              ></path></svg
+            ></button
+          >
+        </div>
         <div class="splide__track">
           <ul class="splide__list">
             {
@@ -134,151 +179,148 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
 <script>
   import { Splide } from '@splidejs/splide'
 import '@splidejs/splide/dist/css/splide.min.css'
-import {
-  addEnhancedModalClose,
-  createHiddenClassChecker,
-} from '../scripts/modalUtils'
+import { addEnhancedModalClose } from '../scripts/modalUtils'
 
   document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.querySelector('[data-trigger-ids]')
-    if (!modal) return
+    const modals =
+      document.querySelectorAll<HTMLDivElement>('[data-trigger-ids]')
+    modals.forEach((modal) => {
+      const prefix = modal?.dataset?.prefix || ''
+      const modalID = `${prefix}${prefix ? '_' : ''}modalID`
+      const modalContentID = `${prefix}${prefix ? '_' : ''}modalContent`
+      const closeGalleryID = `${prefix}${prefix ? '_' : ''}closeGallery`
+      const mainSliderID = `${prefix}${prefix ? '_' : ''}mainSlider`
+      const thumbnailSliderID = `${prefix}${prefix ? '_' : ''}thumbnailSlider`
+      const mobileSliderID = `${prefix}${prefix ? '_' : ''}mobileSlider`
 
-    const prefix = modal?.dataset?.prefix || ''
-    const modalID = `${prefix}${prefix ? '_' : ''}modalID`
-    const modalContentID = `${prefix}${prefix ? '_' : ''}modalContent`
-    const closeGalleryID = `${prefix}${prefix ? '_' : ''}closeGallery`
-    const mainSliderID = `${prefix}${prefix ? '_' : ''}mainSlider`
-    const thumbnailSliderID = `${prefix}${prefix ? '_' : ''}thumbnailSlider`
-    const mobileSliderID = `${prefix}${prefix ? '_' : ''}mobileSlider`
+      const modalContent = document.getElementById(modalContentID)
+      const closeButton = document.getElementById(closeGalleryID)
 
-    const modalContent = document.getElementById(modalContentID)
-    const closeButton = document.getElementById(closeGalleryID)
+      if (!modalContent || !closeButton) return
 
-    if (!modalContent || !closeButton) return
+      const triggerIDs = JSON.parse(modal.dataset.triggerIds || '[]')
+      const showCounter = modal.dataset.showCounter === 'true'
 
-    const triggerIDs = JSON.parse(modal.dataset.triggerIds || '[]')
-    const showCounter = modal.dataset.showCounter === 'true'
+      const triggers = triggerIDs
+        .map((id) => document.getElementById(id))
+        .filter((el) => el !== null)
 
-    const triggers = triggerIDs
-      .map((id) => document.getElementById(id))
-      .filter((el) => el !== null)
+      let mainSliderInstance = null
+      let thumbnailSliderInstance = null
+      let mobileSliderInstance = null
 
-    let mainSliderInstance = null
-    let thumbnailSliderInstance = null
-    let mobileSliderInstance = null
-
-    const closeModal = () => {
-      modal.classList.add('hidden')
-      document.body.style.overflow = ''
-    }
-
-    const openModal = () => {
-      modal.classList.remove('hidden')
-      document.body.style.overflow = 'hidden'
-      // Initialize sliders after modal is visible
-      setTimeout(() => {
-        initializeSliders()
-      }, 100)
-    }
-
-    const initializeSliders = () => {
-      // Clean up existing instances
-      if (mainSliderInstance) {
-        mainSliderInstance.destroy()
-        mainSliderInstance = null
-      }
-      if (thumbnailSliderInstance) {
-        thumbnailSliderInstance.destroy()
-        thumbnailSliderInstance = null
-      }
-      if (mobileSliderInstance) {
-        mobileSliderInstance.destroy()
-        mobileSliderInstance = null
-      }
-
-      const mainSliderElement = document.getElementById(mainSliderID)
-      const thumbnailSliderElement = document.getElementById(thumbnailSliderID)
-      const mobileSliderElement = document.getElementById(mobileSliderID)
-
-      // Desktop sliders
-      if (mainSliderElement && thumbnailSliderElement) {
-        mainSliderInstance = new Splide(`#${mainSliderID}`, {
-          type: 'fade',
-          autoWidth: true,
-          perPage: 1,
-          rewind: true,
-          focus: 'center',
-          gap: 4,
-          pagination: false,
-          arrows: true,
-          keyboard: 'global',
-        })
-
-        thumbnailSliderInstance = new Splide(`#${thumbnailSliderID}`, {
-          type: 'slide',
-          perPage: 3,
-          rewind: true,
-          focus: 'center',
-          trimSpace: true,
-          drag: 'free',
-          fixedWidth: 100,
-          isNavigation: true,
-          gap: 10,
-          pagination: false,
-          arrows: false,
-          keyboard: 'global',
-          breakpoints: {
-            600: {
-              fixedWidth: 60,
-              fixedHeight: 44,
-            },
-          },
-        })
-
-        mainSliderInstance.sync(thumbnailSliderInstance)
-        mainSliderInstance.mount()
-        thumbnailSliderInstance.mount()
-      }
-
-      // Mobile slider
-      if (mobileSliderElement) {
-        mobileSliderInstance = new Splide(`#${mobileSliderID}`, {
-          type: 'slide',
-          drag: 'free',
-          snap: true,
-          rewind: true,
-          pagination: false,
-          arrows: true,
-        })
-
-        // Add counter for mobile if requested
-        if (showCounter) {
-          mobileSliderInstance.on('mounted move', () => {
-            const current = mobileSliderInstance.index + 1
-            const total =
-              mobileSliderInstance.Components.Controller.getEnd() + 1
-            // Update or create counter
-            let counter = mobileSliderElement.querySelector('.slide-counter')
-            if (!counter) {
-              counter = document.createElement('div')
-              counter.className =
-                'slide-counter absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-base-100/90 text-base-content px-4 py-2 rounded-full text-sm font-medium z-30'
-              mobileSliderElement.appendChild(counter)
-            }
-            counter.textContent = `${current} / ${total}`
-          })
+      const initializeSliders = () => {
+        // Clean up existing instances
+        if (mainSliderInstance) {
+          mainSliderInstance.destroy()
+          mainSliderInstance = null
+        }
+        if (thumbnailSliderInstance) {
+          thumbnailSliderInstance.destroy()
+          thumbnailSliderInstance = null
+        }
+        if (mobileSliderInstance) {
+          mobileSliderInstance.destroy()
+          mobileSliderInstance = null
         }
 
-        mobileSliderInstance.mount()
+        const mainSliderElement = document.getElementById(mainSliderID)
+        const thumbnailSliderElement =
+          document.getElementById(thumbnailSliderID)
+        const mobileSliderElement = document.getElementById(mobileSliderID)
+
+        // Desktop sliders
+        if (mainSliderElement && thumbnailSliderElement) {
+          mainSliderInstance = new Splide(`#${mainSliderID}`, {
+            type: 'fade',
+            perPage: 1,
+            rewind: true,
+            focus: 'center',
+            gap: 0,
+            pagination: false,
+            arrows: false,
+            keyboard: 'global',
+          })
+
+          thumbnailSliderInstance = new Splide(`#${thumbnailSliderID}`, {
+            type: 'slide',
+            perPage: 3,
+            rewind: true,
+            focus: 'center',
+            trimSpace: true,
+            drag: 'free',
+            fixedWidth: 100,
+            isNavigation: true,
+            gap: 10,
+            pagination: false,
+            arrows: true,
+            keyboard: 'global',
+          })
+
+          mainSliderInstance.sync(thumbnailSliderInstance)
+          mainSliderInstance.mount()
+          thumbnailSliderInstance.mount()
+        }
+
+        // Mobile slider
+        if (mobileSliderElement) {
+          mobileSliderInstance = new Splide(`#${mobileSliderID}`, {
+            type: 'slide',
+            drag: 'free',
+            snap: true,
+            rewind: true,
+            pagination: false,
+            arrows: true,
+          })
+
+          // Add counter for mobile if requested
+          if (showCounter) {
+            mobileSliderInstance.on('mounted move', () => {
+              const current = mobileSliderInstance.index + 1
+              const total =
+                mobileSliderInstance.Components.Controller.getEnd() + 1
+              // Update or create counter
+              let counter = mobileSliderElement.querySelector('.slide-counter')
+              if (!counter) {
+                counter = document.createElement('div')
+                counter.className = 'slide-counter'
+                mobileSliderElement.appendChild(counter)
+              }
+              counter.innerHTML = `<span class="current">${current}</span> / ${total}`
+            })
+          }
+
+          mobileSliderInstance.mount()
+        }
       }
-    }
 
-    if (modal && modalContent) {
-      const isOpen = createHiddenClassChecker(modal)
-      addEnhancedModalClose(modal, modalContent, closeModal, isOpen)
-    }
+      const closeModal = () => {
+        modal.classList.add('hidden')
+        document.body.style.overflow = ''
+      }
 
-    triggers.forEach((btn) => btn.addEventListener('click', openModal))
-    closeButton.addEventListener('click', closeModal)
+      const openModal = () => {
+        modal.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
+        initializeSliders()
+        modal.focus()
+      }
+
+      // Simplified backdrop handler
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal()
+        }
+      })
+
+      // Make sure this runs after DOM is ready
+      if (modal && modalContent) {
+        const isOpen = () => !modal.classList.contains('hidden')
+        addEnhancedModalClose(modal, modalContent, closeModal, isOpen)
+      }
+
+      triggers.forEach((btn) => btn.addEventListener('click', openModal))
+      closeButton.addEventListener('click', closeModal)
+    })
   })
 </script>
