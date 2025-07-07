@@ -91,6 +91,21 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <!-- MAP modal  -->
     <input type="checkbox" id="mapModal" class="modal-toggle" />
     <div class="modal bg-base-100/60 backdrop-blur-md" role="dialog">
+      <label class="p-2 rounded-md absolute top-1/20 right-1/12" for="mapModal">
+        <svg
+          width="40"
+          height="40"
+          class="w-5 h-5 sm:w-7 sm:h-7 text-base-content group-hover:text-accent/90"
+          fill="currentColor"
+          stroke="currentColor"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
+          ></path>
+        </svg>
+      </label>
       <div
         class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
       >
@@ -99,21 +114,7 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
           class="pointer-events-auto bg-base-100 rounded-md shadow-xl md:max-h-[95vh] md:max-w-[50vw] flex flex-col md:flex-row items-center gap-5 relative group"
         >
           <!-- close X button -->
-          <label class="p-2 rounded-md absolute top-2 right-2" for="mapModal">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5 sm:w-7 sm:h-7 hover:scale-110 hover:text-accent transition-transform duration-900"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </label>
+
           <Image
             src={Map}
             alt="Map showing Prinzenallee 58 public transport connections"
