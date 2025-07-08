@@ -27,15 +27,16 @@ const baseHeadingClasses =
   'prose text-xl font-gokhan text-secondary-content tracking-wider'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
-const { home } = (await executeQuery(`query Homepage { 
-    home { lfcond
+const { lostfound } = (await executeQuery(`query Homepage { 
+    lostfound { 
+           lfinfo
            lfimages {
             id
             url
             alt
       }} }`)) as {
-  home?: {
-    lfcond?: string
+  lostfound?: {
+    lfinfo?: string
     lfimages?: Array<{
       id: string
       url: string
@@ -44,8 +45,8 @@ const { home } = (await executeQuery(`query Homepage {
   }
 }
 
-const lf_images = home?.lfimages ?? []
-const lf_conditions = marked.parse(home?.lfcond ?? '')
+const lf_images = lostfound?.lfimages ?? []
+const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
 ---
 
 <div class="order-3">
@@ -62,7 +63,7 @@ const lf_conditions = marked.parse(home?.lfcond ?? '')
         box</a
       >.
     </div>
-      <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
+    <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
   </div>
   <div class={mergedTextClasses + ' mt-4'} set:html={lf_conditions} />
 </div>

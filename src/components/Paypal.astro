@@ -1,11 +1,19 @@
+---
+import { executeQuery } from '../lib/datocms.js'
+const { news } = (await executeQuery(
+  `query HomeQuery { news { paypal } }`
+)) as {
+  news?: { paypal?: string }
+}
+
+const paypal = news?.paypal ?? ''
+---
+
 <!-- PAYPAL BUTTON  -->
 <form action="https://www.paypal.com/donate" method="post" target="_top">
   <input type="hidden" name="hosted_button_id" value="HRV8YBMHJVSWU" />
 
-  <div
-    class="tooltip tooltip-bottom"
-    data-tip="Cashless, forgot to donate or pay for your drink. No sweat, ease your conscience with PayPal"
-  >
+  <div class="tooltip tooltip-bottom" data-tip={paypal}>
     <input
       type="image"
       src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"

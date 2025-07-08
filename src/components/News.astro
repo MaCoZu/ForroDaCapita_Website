@@ -18,22 +18,22 @@ const {
 const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'prose font-merri items-center text-accent text-xl'
+const baseTextClasses = 'prose font-merri items-center text-accent text-3xl'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
 
 const baseHeadingClasses =
   'prose text-xl font-gokhan text-secondary-content tracking-wider'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
-const { home } = (await executeQuery(`query HomeQuery { home { news } }`)) as {
-  home?: { news?: string }
+const { news } = (await executeQuery(`query { news { newstext } }`)) as {
+  news?: { newstext?: string }
 }
 
-const news = home?.news ?? ''
-const html = marked(news ?? '')
+// const newstext = news?.newstext ?? ''
+const newstext = marked.parse(news?.newstext ?? '')
 ---
 
 <div class={mergedContainerClasses}>
-  <h1s class={mergedHeadingClasses}>NEWS</h1s>
-  <div class={mergedTextClasses} set:html={html} />
+  <h1 class={mergedHeadingClasses}>NEWS</h1>
+  <div class={mergedTextClasses} set:html={newstext} />
 </div>

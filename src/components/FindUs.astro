@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import { executeQuery } from '../lib/datocms.js'
-
+import { marked } from 'marked'
 import Map from '../assets/images/map.png'
 import GoogleIcon from './Icon_GoogleMap.astro'
 import TreasureMapIcon from './Icon_TreasureMap.astro'
@@ -9,12 +9,14 @@ import ImagesIcon from './Icon_Images.astro'
 import { twMerge } from 'tailwind-merge'
 import Slider from './SplideSlider.astro'
 
-const { home } = (await executeQuery(`query Homepage { 
-    home { 
+const { find58 } = (await executeQuery(`query Homepage { 
+    find58 { 
+      whenwhere
       findus { id url alt }
       } 
     }`)) as {
-  home?: {
+  find58?: {
+    whenwhere?: string
     findus?: Array<{
       id: string
       url: string
@@ -23,7 +25,8 @@ const { home } = (await executeQuery(`query Homepage {
   }
 }
 
-const wayimages = home?.findus ?? []
+const whenwhere = marked.parse(find58?.whenwhere ?? '')
+const wayimages = find58?.findus ?? []
 
 interface Props {
   ContainerClasses?: string
@@ -53,14 +56,7 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <h1 class={mergedHeadingClasses}>FIND US</h1>
     <div class="w-full">
       <div class="flex flex-row justify-between gap-x-8 w-full">
-        <div class={mergedTextClasses}>
-          We dance Forró, every Tuesday<br /> from 19:30 to 22:00 <br /> in the
-          <label
-            for="mapModal"
-            class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >Café of Prinzenallee 58</label
-          >
-        </div>
+        <div class={mergedTextClasses} set:html={whenwhere} />
         <div class="flex flex-col md:flex-row gap-8 justify-end items-start">
           <label for="mapModal" class="cursor-pointer"
             ><TreasureMapIcon className="w-8 md:w-13" /></label
@@ -92,10 +88,7 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <input type="checkbox" id="mapModal" class="modal-toggle" />
     <div class="modal bg-base-100/60 backdrop-blur-md" role="dialog">
       <!-- close X button -->
-      <label
-        class="p-2 rounded-md absolute top-1/20 right-1/12"
-        for="mapModal"
-      >
+      <label class="p-2 rounded-md absolute top-1/20 right-1/12" for="mapModal">
         <svg
           width="40"
           height="40"
