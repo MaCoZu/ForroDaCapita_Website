@@ -1,5 +1,5 @@
-import node from '@astrojs/node'
 import react from '@astrojs/react'
+import vercel from '@astrojs/vercel/serverless'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
 
@@ -10,23 +10,24 @@ export default defineConfig({
         context: 'server',
         access: 'secret',
       }),
+      // Add other environment variables you're using
+      SUPABASE_URL: envField.string({
+        context: 'client',
+        access: 'public',
+      }),
+      SUPABASE_ANON_KEY: envField.string({
+        context: 'client',
+        access: 'public',
+      }),
     },
   },
   output: 'server',
-  adapter: node({
-    mode: 'standalone', // For Vercel (Node.js runtime)
+  adapter: vercel({
+    webAnalytics: { enabled: true }, // Optional: enable Vercel analytics
   }),
   vite: {
     plugins: [
       tailwindcss(),
-      {
-        name: 'debug-supabase-import',
-        resolveId(source) {
-          if (source.includes('supabase')) {
-            console.log('Resolving:', source)
-          }
-        },
-      },
     ],
   },
   integrations: [react()],

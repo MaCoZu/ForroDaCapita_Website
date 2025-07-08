@@ -15,6 +15,7 @@
   "dependencies": {
     "@astrojs/netlify": "^6.4.0",
     "@astrojs/react": "^4.3.0",
+    "@astrojs/vercel": "^8.2.1",
     "@datocms/astro": "^0.6.2",
     "@datocms/cda-client": "^0.2.7",
     "@eslint/eslintrc": "^3.3.1",
