@@ -40,3 +40,4 @@ _*.astro
 .idea/
 
 
+.vercel
