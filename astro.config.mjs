@@ -10,7 +10,7 @@ export default defineConfig({
         context: 'server',
         access: 'secret',
       }),
-      // Add other environment variables you're using
+      // Add other environment variables you're usings
       SUPABASE_URL: envField.string({
         context: 'client',
         access: 'public',
@@ -22,13 +22,9 @@ export default defineConfig({
     },
   },
   output: 'server',
-  adapter: vercel({
-    webAnalytics: { enabled: true }, // Optional: enable Vercel analytics
-  }),
+  adapter: vercel(),
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
   },
   integrations: [react()],
 })
