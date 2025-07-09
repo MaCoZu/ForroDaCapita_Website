@@ -58,9 +58,7 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       <div class="flex flex-row justify-between gap-x-8 w-full">
         <div class={mergedTextClasses} set:html={whenwhere} />
         <div class="flex flex-col md:flex-row gap-8 justify-end items-start">
-          <label for="mapModal" class="cursor-pointer"
-            ><TreasureMapIcon className="w-8 md:w-13" /></label
-          >
+          <TreasureMapIcon id="mapIcon" className="w-8 md:w-13" />
           <GoogleIcon className="w-6 ml-1 md:ml-0 md:w-8" />
         </div>
       </div>
@@ -84,11 +82,14 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       </div>
     </div>
 
-    <!-- MAP modal  -->
-    <input type="checkbox" id="mapModal" class="modal-toggle" />
-    <div class="modal bg-base-100/60 backdrop-blur-md" role="dialog">
-      <!-- close X button -->
-      <label class="p-2 rounded-md absolute top-1/20 right-1/12" for="mapModal">
+    <div
+      id="mapModal"
+      class="hidden fixed inset-0 z-[9999] bg-base-100/60 backdrop-blur-md flex items-center justify-center"
+    >
+      <button
+        id="closeModal"
+        class="absolute top-1/20 right-1/12 z-[100] rounded-full p-2 transition-all duration-300 group"
+      >
         <svg
           width="40"
           height="40"
@@ -102,25 +103,20 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
             d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
           ></path>
         </svg>
-      </label>
+      </button>
       <div
-        class="modal-box max-h-[95vh] max-w-2xl items-center justify-center p-0"
+        id="mapModalContent"
+        class="pointer-events-auto bg-base-100 rounded-md shadow-xs md:max-h-[95vh] md:max-w-[55vw] flex items-center relative group"
       >
-        <div
-          id="imagesfu_modalContent"
-          class="pointer-events-auto bg-base-100 rounded-md shadow-xl md:max-h-[95vh] md:max-w-[50vw] flex flex-col md:flex-row items-center gap-5 relative group"
-        >
-          <Image
-            src={Map}
-            alt="Map showing Prinzenallee 58 public transport connections"
-            class="w-full md:max-h-[95vh] md:max-w-2xl rounded-md object-contain"
-            loading="eager"
-            widths={[300, 600, 800]}
-            sizes="(max-width: 768px) 80vw, 90vw"
-          />
-        </div>
+        <Image
+          src={Map}
+          alt="Map showing Prinzenallee 58 public transport connections"
+          class="w-full md:max-h-[95vh] md:max-w-2xl rounded-md object-contain"
+          loading="eager"
+          widths={[350, 650, 800]}
+          sizes="(max-width: 768px) 80vw, 90vw"
+        />
       </div>
-      <label class="modal-backdrop" for="mapModal">Close</label>
     </div>
 
     <Slider
@@ -133,44 +129,24 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     <script>
       import '@splidejs/splide/dist/css/splide.min.css'
 
-      // Get references to elements
-      const mapLink = document.getElementById('mapLink')
+      const mapIcon = document.getElementById('mapIcon')
       const mapModal = document.getElementById('mapModal')
       const mapModalContent = document.getElementById('mapModalContent')
+      const closeModal = document.getElementById('closeModal')
 
-      // --- Map Modal Logic ---
-      if (mapLink && mapModal && mapModalContent) {
-        mapLink.addEventListener('click', (e) => {
-          e.preventDefault() // Prevent default link navigation
-          mapModal.classList.remove('hidden') // Show the modal
-          // Optional: Add a class to body to prevent scrolling when modal is open
-          // document.body.classList.add('overflow-hidden');
+      if (mapIcon && mapModal && mapModalContent && closeModal) {
+        mapIcon.addEventListener('click', (e) => {
+          e.preventDefault()
+          mapModal.classList.remove('hidden')
         })
 
-        // Close when mouse leaves the modal content area
-        mapModalContent.addEventListener('mouseleave', () => {
-          mapModal.classList.add('hidden') // Hide the modal
-          // document.body.classList.remove('overflow-hidden');
+        closeModal.addEventListener('click', () => {
+          mapModal.classList.add('hidden')
         })
 
-        // Close when clicking on the backdrop itself (not the content) - robust implementation
         mapModal.addEventListener('click', (e) => {
-          const fu_modalContent = mapModal.querySelector(
-            '#imagesfu_modalContent'
-          )
-
-          if (!fu_modalContent) return
-
-          const rect = fu_modalContent.getBoundingClientRect()
-          const isInModal =
-            rect.top <= e.clientY &&
-            e.clientY <= rect.top + rect.height &&
-            rect.left <= e.clientX &&
-            e.clientX <= rect.left + rect.width
-
-          if (!isInModal) {
+          if (!mapModalContent.contains(e.target)) {
             mapModal.classList.add('hidden')
-            // document.body.classList.remove('overflow-hidden');
           }
         })
       }
@@ -178,7 +154,6 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
   </div>
 </div>
 <style>
-  /* Hide scrollbar for Chrome, Safari and Opera */
   .hidescrollbar::-webkit-scrollbar {
     display: none;
   }
