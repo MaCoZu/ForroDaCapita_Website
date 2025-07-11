@@ -70,10 +70,12 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
               images.map((image) => (
                 <li class="splide__slide">
                   <img
-                    src={image.url}
+                    src={`${image.url}?q=50`}
+                    srcset="small-image.avif 480w, medium-image.avif 768w, large-image.avif 1200w"
+                    sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px"
+                    loading="lazy"
                     alt={image.alt || 'Gallery image'}
                     class="w-full h-[75vh] object-contain"
-                    loading="lazy"
                   />
                 </li>
               ))
