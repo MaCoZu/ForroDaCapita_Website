@@ -111,10 +111,8 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
         <Image
           src={Map}
           alt="Map showing Prinzenallee 58 public transport connections"
-          class="w-full md:max-h-[95vh] md:max-w-2xl rounded-md object-contain"
+          class="w-full md:max-h-[95vh] max-w-[95vw]md:max-w-2xl rounded-md object-contain"
           loading="eager"
-          widths={[350, 650, 800]}
-          sizes="(max-width: 768px) 80vw, 90vw"
         />
       </div>
     </div>
@@ -145,7 +143,7 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
         })
 
         mapModal.addEventListener('click', (e) => {
-          if (!mapModalContent.contains(e.target)) {
+          if (!mapModalContent.contains(e.target as Node | null)) {
             mapModal.classList.add('hidden')
           }
         })
