@@ -70,8 +70,8 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
               images.map((image) => (
                 <li class="splide__slide">
                   <img
-                    src={`${image.url}?q=50`}
-                    srcset="small-image.avif 480w, medium-image.avif 768w, large-image.avif 1200w"
+                    src={`${image.url}?w=800&q=50`}
+                    srcset={`${image.url}?w=480&q=40 480w, ${image.url}?w=768&q=50 768w, ${image.url}?w=1200&q=60 1200w`}
                     sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px"
                     loading="lazy"
                     alt={image.alt || 'Gallery image'}
@@ -116,7 +116,7 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
               images.map((image) => (
                 <li class="splide__slide">
                   <img
-                    src={image.url}
+                    src={`${image.url}?w=200&q=40`}
                     alt={image.alt || 'Gallery thumbnail'}
                     class="w-full h-[15vh] object-cover cursor-pointer transition-opacity bg-transparent"
                     loading="lazy"
@@ -163,7 +163,7 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
               images.map((image) => (
                 <li class="splide__slide">
                   <img
-                    src={image.url}
+                    src={`${image.url}?w=800&q=50`}
                     alt={image.alt || 'Gallery image'}
                     class="w-full h-[75vh] max-w-[95vw] object-contain rounded-sm"
                     loading="lazy"
@@ -204,12 +204,12 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
       const showCounter = modal.dataset.showCounter === 'true'
 
       const triggers = triggerIDs
-        .map((id) => document.getElementById(id))
-        .filter((el) => el !== null)
+        .map((id: string) => document.getElementById(id))
+        .filter((el: string) => el !== null)
 
-      let mainSliderInstance = null
-      let thumbnailSliderInstance = null
-      let mobileSliderInstance = null
+      let mainSliderInstance: Splide | null = null
+      let thumbnailSliderInstance: Splide | null = null
+      let mobileSliderInstance: Splide | null = null
 
       const initializeSliders = () => {
         // Clean up existing instances
@@ -277,10 +277,11 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
 
           // Add counter for mobile if requested
           if (showCounter) {
-            mobileSliderInstance.on('mounted move', () => {
-              const current = mobileSliderInstance.index + 1
+            mobileSliderInstance?.on('mounted move', () => {
+              const current = (mobileSliderInstance?.index ?? 0) + 1
+
               const total =
-                mobileSliderInstance.Components.Controller.getEnd() + 1
+                mobileSliderInstance ? mobileSliderInstance.Components.Controller.getEnd() + 1 : 1
               // Update or create counter
               let counter = mobileSliderElement.querySelector('.slide-counter')
               if (!counter) {
@@ -321,7 +322,7 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
         addEnhancedModalClose(modal, modalContent, closeModal, isOpen)
       }
 
-      triggers.forEach((btn) => btn.addEventListener('click', openModal))
+      triggers.forEach((btn: HTMLElement) => btn.addEventListener('click', openModal))
       closeButton.addEventListener('click', closeModal)
     })
   })
