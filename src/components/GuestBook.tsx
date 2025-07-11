@@ -46,7 +46,7 @@ renderer.link = function ({ href = '', title, text = '' }: LinkRendererParams) {
   return `<a ${attributeString}>${sanitizedText}</a>`
 }
 
-// Fix heading rendering
+// Render markdown headings
 renderer.heading = function ({
   tokens,
   depth,
@@ -67,6 +67,8 @@ renderer.heading = function ({
   }
 
   const className =
+    // Determine the appropriate class name for the heading based on its depth.
+    // If the depth is not found in headingClasses, default to the class for depth 6.
     headingClasses[depth as keyof typeof headingClasses] || headingClasses[6]
   return `<h${depth} class="${className}">${sanitizedText}</h${depth}>`
 }
@@ -127,7 +129,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     fetchMessages()
 
     // Then poll every 10 seconds
-    const pollInterval = setInterval(fetchMessages, 10000)
+    const pollInterval = setInterval(fetchMessages, 100000)
 
     // Cleanup interval on unmount
     return () => clearInterval(pollInterval)
