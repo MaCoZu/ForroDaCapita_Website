@@ -246,7 +246,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
   return (
     <div className={mergedContentClasses}>
       <div className="w-full">
-        <h2 className="text-secondary-content font-gokhan text-center text-2xl font-bold tracking-wider">
+        <h2 className="text-secondary-content font-gokhan text-center text-xl font-bold tracking-wider">
           Guest Book
         </h2>
 
