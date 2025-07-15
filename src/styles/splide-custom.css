@@ -1,4 +1,4 @@
-/* ✅ Global Reset for All Splide Sliders */
+/* Global Reset for All Splide Sliders */
 .splide__slide,
 .splide__arrow {
   outline: none !important;
@@ -6,14 +6,14 @@
   box-shadow: none !important;
 }
 
-/* ✅ Shared Arrow Styles */
+/* Shared Arrow Styles */
 .splide__arrow {
   width: 2rem !important;
   height: 2rem !important;
-  top: 50% !important; 
-  transform: translateY(-50%) !important; 
-  opacity: 1 !important; /* Force visibility */
-  color: currentColor;  
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  opacity: 1 !important;
+  color: currentColor;
   border-radius: 9999px;
   backdrop-filter: blur(4px);
   background-color: color-mix(
@@ -33,7 +33,6 @@
   ) !important;
 }
 
-
 .splide__arrow svg {
   width: 1.25rem !important;
   height: 1.25rem !important;
@@ -42,16 +41,10 @@
   stroke-linecap: round;
   transition: fill 0.2s ease;
   transition: stroke 0.3s;
-
 }
 
 .splide__arrow:hover svg {
   fill: color-mix(in srgb, var(--color-accent) 90%, transparent) !important;
-}
-
-/* Override Splide's default arrow styles */
-.splide__arrows {
-  position: static; /* Remove absolute positioning */
 }
 
 .splide__arrow--prev {
@@ -72,35 +65,39 @@
   transform: translateY(-50%);
 }
 
+:root {
+  --splide-controls-top: 78%;
+}
+
 .mobile-splide .splide__arrow {
-  left: 1rem;
-  right: 1rem;
-  top: 85% !important;
-  transform: translateY(-85%) !important;
-}
-.mobile-splide .splide__arrow--next {
-  right: 1rem;
+  position: absolute;
+  top: var(--splide-controls-top) !important; 
+  transform: translateY(-50%) !important; 
   left: auto;
-}
-.mobile-splide .splide__arrow--prev {
-  left: 1rem;
   right: auto;
 }
 
-/* ✅ Slide Counter (Shared) */
-/* Updated Slide Counter Styles to Match Mobile Arrows */
+.mobile-splide .splide__arrow--prev {
+  left: 1rem !important;
+}
+
+.mobile-splide .splide__arrow--next {
+  right: 1rem !important;
+}
+
+/* Slide Counter (Shared) */
 .slide-counter {
   position: absolute;
-  left: 50%; /* Starts at 50% from left */
-  top: 85% !important;
-  transform: translate(-50%, -75%) !important;
+  top: var(--splide-controls-top) !important; 
+  left: 50%; 
+  transform: translate(-50%, -50%) !important; 
   background-color: color-mix(
     in srgb,
     var(--color-base-100) 80%,
     transparent
   ) !important;
   opacity: 0.8;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.8rem;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -112,7 +109,6 @@
   font-weight: 900;
   color: var(--color-accent);
 }
-
 
 /* ✅ Thumbnail Slider Specific */
 #lf_thumbnail-slider .splide__slide img {
@@ -130,7 +126,6 @@
   border: none;
 }
 
-/* ✅ Responsive Arrows */
 @media (max-width: 640px) {
   .splide__arrow {
     padding: 0.375rem;

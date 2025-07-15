@@ -2,11 +2,11 @@
 import '../styles/splide-custom.css'
 
 interface Props {
-  modalID?: string
-  prefix: string
   triggerIDs: string[]
   images: Array<{ id: string; url: string; alt?: string }>
   showCounter?: boolean
+  prefix: string
+  arrowPosition?: string
 }
 
 const {
@@ -14,6 +14,7 @@ const {
   images = [],
   showCounter = false,
   prefix = '',
+  arrowPosition = '',
 } = Astro.props
 
 const modalID = `${prefix ? `${prefix}_` : ''}modalID`
@@ -132,7 +133,7 @@ const mobileSlider = `${prefix ? `${prefix}_` : ''}mobileSlider`
     <div class="block md:hidden w-full">
       <section
         id={mobileSlider}
-        class="splide mobile-splide max-w-[95vw] mx-auto"
+        class={`splide mobile-splide max-w-[95vw] ${arrowPosition || 'h-[75vh]'} mx-auto`}
       >
         <!-- Custom Arrows  -->
         <div class="splide__arrows">
@@ -280,8 +281,9 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
             mobileSliderInstance?.on('mounted move', () => {
               const current = (mobileSliderInstance?.index ?? 0) + 1
 
-              const total =
-                mobileSliderInstance ? mobileSliderInstance.Components.Controller.getEnd() + 1 : 1
+              const total = mobileSliderInstance
+                ? mobileSliderInstance.Components.Controller.getEnd() + 1
+                : 1
               // Update or create counter
               let counter = mobileSliderElement.querySelector('.slide-counter')
               if (!counter) {
@@ -322,7 +324,9 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
         addEnhancedModalClose(modal, modalContent, closeModal, isOpen)
       }
 
-      triggers.forEach((btn: HTMLElement) => btn.addEventListener('click', openModal))
+      triggers.forEach((btn: HTMLElement) =>
+        btn.addEventListener('click', openModal)
+      )
       closeButton.addEventListener('click', closeModal)
     })
   })
