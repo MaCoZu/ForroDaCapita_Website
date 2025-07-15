@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+import Mascot from '../assets/images/mascot_bg.png'
 import About from '../components/About.astro'
 import FindUs from '../components/FindUs.astro'
 import GuestBook from '../components/GuestBook.js'
@@ -28,6 +30,13 @@ import Layout from '../layout/Layout.astro'
     </div>
     <div class="w-full md:w-6/12 mt-20 md:mt-3">
       <GuestBook client:only="react" containerClasses="order-4" />
+      <div class="hidden md:block w-full mt-12">
+        <Image
+          src={Mascot}
+          alt="PA58 Mascot"
+          class="h-64 w-fit ml-auto block hover:scale-125 transition-all object-contain dark:bg-white mr-4"
+        />
+      </div>
     </div>
   </div>
 </Layout>
