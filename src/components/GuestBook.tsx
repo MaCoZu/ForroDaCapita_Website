@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify'
+  import DOMPurify from 'dompurify'
 import { marked } from 'marked'
 import type { ChangeEvent, FC, FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -11,8 +11,6 @@ const formatDate = (dateString: string) => {
   const year = date.getFullYear()
   return `${day} ${month}. ${year}`
 }
-
-
 
 // Type for marked renderer link function parameters
 interface LinkRendererParams {
