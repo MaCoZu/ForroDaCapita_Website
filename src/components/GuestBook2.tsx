@@ -501,7 +501,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
           </button>
         </form>
 
-        <div className="border-base-content h-[72vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
+        <div className="border-base-content h-[92vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
           {error && <div className="text-error mt-2">{error}</div>}
           {renderMessages()}
         </div>
