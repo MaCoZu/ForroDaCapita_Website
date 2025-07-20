@@ -1,5 +1,7 @@
 ---
+import { twMerge } from 'tailwind-merge'
 import { executeQuery } from '../lib/datocms.js'
+
 const { news } = (await executeQuery(
   `query HomeQuery { news { paypal } }`
 )) as {
@@ -7,18 +9,36 @@ const { news } = (await executeQuery(
 }
 
 const paypal = news?.paypal ?? ''
+
+interface Props {
+  containerClasses?: string
+}
+
+const { containerClasses = '' }: Props = Astro.props
 ---
 
-<!-- PAYPAL BUTTON  -->
-<form action="https://www.paypal.com/donate" method="post" target="_top">
-  <input type="hidden" name="hosted_button_id" value="HRV8YBMHJVSWU" />
+<div class={twMerge('', containerClasses)}>
+  <!-- PAYPAL BUTTON  -->
+  <form
+    action="https://www.paypal.com/cgi-bin/webscr"
+    method="post"
+    target="_top"
+  >
+    <input type="hidden" name="cmd" value="_donations" />
+    <input type="hidden" name="business" value="forrodacapitaev@gmx.de" />
+    <input type="hidden" name="item_name" value="Donation to Forró da Capita" />
+    <input type="hidden" name="currency_code" value="EUR" />
+    <input type="hidden" name="no_shipping" value="1" />
+    <input type="hidden" name="no_note" value="1" />
+    <input type="hidden" name="return" value="https://forrodacapita.vercel.app" />
 
-  <div class="tooltip tooltip-bottom" data-tip={paypal}>
-    <input
-      type="image"
-      src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
-      name="submit"
-      alt="Donate with PayPal button"
-    />
-  </div>
-</form>
+    <div class="tooltip tooltip-bottom" data-tip={paypal}>
+      <input
+        type="image"
+        src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif"
+        name="submit"
+        alt="Donate with PayPal button"
+      />
+    </div>
+  </form>
+</div>

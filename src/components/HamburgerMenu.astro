@@ -1,8 +1,15 @@
 ---
+import { twMerge } from 'tailwind-merge'
 const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
+
+interface Props {
+  containerClasses?: string
+}
+
+const { containerClasses = '' }: Props = Astro.props
 ---
 
-<div class="md:hidden">
+<div class={twMerge(containerClasses)}>
   <!-- Hamburger Menu Toggle -->
   <input
     id="menu__toggle"
@@ -13,7 +20,10 @@ const adminUrl = import.meta.env.DEV ? 'http://localhost:4001/admin/' : '/admin'
   />
 
   <!-- Special SVG Hamburger Button -->
-  <label for="menu__toggle" class="ham-container absolute z-10 top-3 right-5">
+  <label
+    for="menu__toggle"
+    class='ham-container z-10'
+  >
     <svg
       class="ham hamRotate ham1"
       viewBox="0 0 100 100"

@@ -7,13 +7,30 @@ import ThemeSwitch from './ThemeSwitch.astro'
 ---
 
 <header class="w-full py-1 md:pt-8">
-  <div class="flex flex-row items-top justify-between mx-auto">
+  <!-- Desktop layout -->
+  <div class="hidden md:flex flex-row items-top justify-between mx-auto">
     <Logo />
-    <Menu />
-    <div class="flex flex-col gap-y-14 mt-4 items-center">
-      <ThemeSwitch />
-      <Paypal />
+    <div class="flex flex-col">
+      <Menu />
+      <div
+        class="flex flex-row gap-x-10 md:mt-12 md:items-center md:justify-center"
+      >
+        <Paypal containerClasses="" />
+        <ThemeSwitch />
+      </div>
     </div>
-    <Hamburger />
+
+    <!-- Desktop image -->
+    <img
+      src="/src/assets/icons/sofiaIcon.png"
+      alt="Forró da Capita"
+      class="w-9 h-9 md:w-38 md:h-38 mt-4 items-center justify-center dark:fill-iconColor"
+    />
+  </div>
+
+  <!-- Mobile layout -->
+  <div class="md:hidden flex flex-row items-center justify-between mx-auto my-4">
+    <Paypal containerClasses="" />
+    <Hamburger containerClasses="" />
   </div>
 </header>
