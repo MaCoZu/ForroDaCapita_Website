@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+import SofiaIcon from '../assets/icons/sofiaIcon.png'
 import Logo from './ForroDaCapita_Logo.astro'
 import Hamburger from './HamburgerMenu.astro'
 import Menu from './Menu.astro'
@@ -21,15 +23,17 @@ import ThemeSwitch from './ThemeSwitch.astro'
     </div>
 
     <!-- Desktop image -->
-    <img
-      src="/src/assets/icons/sofiaIcon.png"
-      alt="Forró da Capita"
-      class="w-9 h-9 md:w-38 md:h-38 mt-4 items-center justify-center dark:fill-iconColor"
+    <Image
+      src={SofiaIcon}
+      alt="Sofia Icon"
+      class="md:w-38 md:h-38 mt-4 items-center justify-center"
     />
   </div>
 
   <!-- Mobile layout -->
-  <div class="md:hidden flex flex-row items-center justify-between mx-auto my-4">
+  <div
+    class="md:hidden flex flex-row items-center justify-between mx-auto my-4"
+  >
     <Paypal containerClasses="" />
     <Hamburger containerClasses="" />
   </div>
