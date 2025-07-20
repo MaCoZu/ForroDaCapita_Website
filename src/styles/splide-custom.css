@@ -71,8 +71,8 @@
 
 .mobile-splide .splide__arrow {
   position: absolute;
-  top: var(--splide-controls-top) !important; 
-  transform: translateY(-50%) !important; 
+  top: var(--splide-controls-top) !important;
+  transform: translateY(-50%) !important;
   left: auto;
   right: auto;
 }
@@ -88,9 +88,9 @@
 /* Slide Counter (Shared) */
 .slide-counter {
   position: absolute;
-  top: var(--splide-controls-top) !important; 
-  left: 50%; 
-  transform: translate(-50%, -50%) !important; 
+  top: var(--splide-controls-top) !important;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
   background-color: color-mix(
     in srgb,
     var(--color-base-100) 80%,

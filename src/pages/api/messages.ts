@@ -1,9 +1,9 @@
 export const prerender = false
-import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabaseServer';
+import type { APIRoute } from 'astro'
+import { supabase } from '../../lib/supabaseServer'
 
 // Simple in-memory rate limit (replace with Redis for production)
-const rateLimit = new Map<string, number>();
+const rateLimit = new Map<string, number>()
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
@@ -22,7 +22,6 @@ export const GET: APIRoute = async () => {
   })
 }
 
-
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   // Rate limiting (5 requests per minute per IP)
   const ip = clientAddress || 'unknown'
@@ -39,7 +38,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
   rateLimit.set(ip, (rateLimit.get(ip) || 0) + 1)
   setTimeout(() => rateLimit.delete(ip), window)
-  
+
   try {
     const contentType = request.headers.get('content-type') || ''
     console.log('Incoming Content-Type:', contentType)

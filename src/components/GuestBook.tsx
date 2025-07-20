@@ -1,4 +1,4 @@
-  import DOMPurify from 'dompurify'
+import DOMPurify from 'dompurify'
 import { marked } from 'marked'
 import type { ChangeEvent, FC, FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -23,24 +23,26 @@ interface LinkRendererParams {
 const renderer = new marked.Renderer()
 
 renderer.list = (token: List) => {
-  const items = token.items.map(item => {
-    if (item.task) {
-      return `<li><input type="checkbox" ${item.checked ? 'checked' : ''} disabled>${item.text}</input></li>`;
-    } else {
-      return `<li>${item.text}</li>`;
-    }
-  }).join('\n');
+  const items = token.items
+    .map((item) => {
+      if (item.task) {
+        return `<li><input type="checkbox" ${item.checked ? 'checked' : ''} disabled>${item.text}</input></li>`
+      } else {
+        return `<li>${item.text}</li>`
+      }
+    })
+    .join('\n')
 
   if (token.ordered) {
-    let start = '';
+    let start = ''
     if (token.start !== 1 && token.start !== undefined) {
-      start = ` start="${token.start}"`;
+      start = ` start="${token.start}"`
     }
-    return `<ol${start}>\n${items}\n</ol>`;
+    return `<ol${start}>\n${items}\n</ol>`
   } else {
-    return `<ul>\n${items}\n</ul>`;
+    return `<ul>\n${items}\n</ul>`
   }
-};
+}
 
 // Customize image rendering
 renderer.image = (href: string | null, title: string | null, text: string) => {
@@ -61,7 +63,6 @@ renderer.image = (href: string | null, title: string | null, text: string) => {
 
   return `<img ${attributeString} class="custom-image-class" />`
 }
-
 
 // Enhanced link renderer with better security and accessibility
 renderer.link = function ({ href = '', title, text = '' }: LinkRendererParams) {
@@ -142,8 +143,6 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
   const baseContentClasses = 'flex items-center justify-center w-full'
   const mergedContentClasses = twMerge(baseContentClasses, containerClasses)
-
-  
 
   // Fetch messages from server-side API
   async function fetchMessages() {
@@ -356,7 +355,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-      
+
             {/* bold  */}
             <button
               type="button"
