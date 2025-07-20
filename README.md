@@ -1,6 +1,5 @@
 # Forró da Capita Website
 
-
 A labour of love for my favorite dance venue in Berlin.
 
 Code & Graphics were made by me [Marco Zausch](https://macozu.github.io).
