@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify'
-import { marked } from 'marked'
+import { marked, type Tokens } from 'marked'
 import type { ChangeEvent, FC, FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -19,33 +19,41 @@ interface LinkRendererParams {
   text?: string
 }
 
-// Custom renderer for marked to handle links and headings properly
+// Custom renderer for marked to handle links, headings, lists, and images properly
 const renderer = new marked.Renderer()
 
-renderer.list = (token: List) => {
-  const items = token.items
-    .map((item) => {
-      if (item.task) {
-        return `<li><input type="checkbox" ${item.checked ? 'checked' : ''} disabled>${item.text}</input></li>`
-      } else {
-        return `<li>${item.text}</li>`
-      }
-    })
-    .join('\n')
-
-  if (token.ordered) {
-    let start = ''
-    if (token.start !== 1 && token.start !== undefined) {
-      start = ` start="${token.start}"`
-    }
-    return `<ol${start}>\n${items}\n</ol>`
-  } else {
-    return `<ul>\n${items}\n</ul>`
-  }
+// Enhanced list renderer (token: Tokens.List)
+renderer.list = (token: Tokens.List) => {
+  const type = token.ordered ? 'ol' : 'ul'
+  const startAttr =
+    token.ordered && token.start !== 1 && token.start !== undefined
+      ? ` start="${token.start}"`
+      : ''
+  const listClass = token.ordered
+    ? 'list-decimal list-inside space-y-1 ml-4'
+    : 'list-disc list-inside space-y-1 ml-4'
+  const items = token.items.map((item) => renderer.listitem!(item)).join('')
+  return `<${type}${startAttr} class="${listClass}">${items}</${type}>`
 }
 
-// Customize image rendering
-renderer.image = (href: string | null, title: string | null, text: string) => {
+// Enhanced list item renderer (item: Tokens.ListItem)
+renderer.listitem = (item: Tokens.ListItem) => {
+  if (item.task) {
+    const checkedAttr = item.checked ? 'checked' : ''
+    return `<li class="flex items-center space-x-2">
+      <input type="checkbox" ${checkedAttr} disabled class="rounded">
+      <span class="${item.checked ? 'line-through text-gray-500' : ''}">${item.text}</span>
+    </li>`
+  }
+  return `<li class="text-base-content">${item.text}</li>`
+}
+
+// Enhanced image rendering with proper styling
+renderer.image = function (
+  href: string | null,
+  title: string | null,
+  text: string
+) {
   if (!href) return text
   const sanitizedHref = DOMPurify.sanitize(href)
   const sanitizedText = DOMPurify.sanitize(text)
@@ -54,6 +62,7 @@ renderer.image = (href: string | null, title: string | null, text: string) => {
   const attributes = {
     src: sanitizedHref,
     alt: sanitizedText,
+    loading: 'lazy',
     ...(sanitizedTitle && { title: sanitizedTitle }),
   }
 
@@ -61,33 +70,31 @@ renderer.image = (href: string | null, title: string | null, text: string) => {
     .map(([key, value]) => `${key}="${value}"`)
     .join(' ')
 
-  return `<img ${attributeString} class="custom-image-class" />`
+  return `<div class="my-4 flex justify-center">
+    <img ${attributeString} class="max-w-full h-auto rounded-lg shadow-md border border-base-content/20 max-h-96 object-contain" />
+  </div>`
 }
 
 // Enhanced link renderer with better security and accessibility
-renderer.link = function ({ href = '', title, text = '' }: LinkRendererParams) {
-  // Sanitize both href and text content
+renderer.link = ({ href = '', title, text = '' }: LinkRendererParams) => {
   const sanitizedHref = DOMPurify.sanitize(href.trim())
   const sanitizedText = DOMPurify.sanitize(text)
   const sanitizedTitle = title ? DOMPurify.sanitize(title) : null
 
-  // Validate URL format to prevent javascript: and other dangerous protocols
   const isValidUrl = /^https?:\/\/.+/i.test(sanitizedHref)
   if (!isValidUrl && sanitizedHref !== '') {
-    // If it's not a valid HTTP(S) URL, treat it as plain text
     return sanitizedText
   }
 
-  // Build attributes object for better maintainability
   const attributes = {
     href: sanitizedHref,
-    class: 'text-accent hover:text-accent/80 underline transition-colors',
+    class:
+      'text-accent hover:text-accent/80 underline transition-colors break-all',
     target: '_blank',
     rel: 'noopener noreferrer nofollow',
     ...(sanitizedTitle && { title: sanitizedTitle }),
   }
 
-  // Convert attributes object to string
   const attributeString = Object.entries(attributes)
     .map(([key, value]) => `${key}="${value}"`)
     .join(' ')
@@ -96,28 +103,20 @@ renderer.link = function ({ href = '', title, text = '' }: LinkRendererParams) {
 }
 
 // Render markdown headings
-renderer.heading = function ({
-  tokens,
-  depth,
-}: {
-  tokens: any[]
-  depth: number
-}) {
-  // Extract text from tokens
+renderer.heading = ({ tokens, depth }: { tokens: any[]; depth: number }) => {
   const text = tokens.map((token) => token.raw ?? token.text ?? '').join('')
   const sanitizedText = DOMPurify.sanitize(text)
+
   const headingClasses = {
-    1: 'text-2xl font-bold mb-4 mt-6',
-    2: 'text-xl font-semibold mb-3 mt-5',
-    3: 'text-lg font-medium mb-2 mt-4',
-    4: 'text-base font-medium mb-2 mt-3',
-    5: 'text-sm font-medium mb-1 mt-2',
-    6: 'text-xs font-medium mb-1 mt-2',
+    1: 'text-2xl font-bold mb-4 mt-6 text-base-content',
+    2: 'text-xl font-semibold mb-3 mt-5 text-base-content',
+    3: 'text-lg font-medium mb-2 mt-4 text-base-content',
+    4: 'text-base font-medium mb-2 mt-3 text-base-content',
+    5: 'text-sm font-medium mb-1 mt-2 text-base-content',
+    6: 'text-xs font-medium mb-1 mt-2 text-base-content',
   }
 
   const className =
-    // Determine the appropriate class name for the heading based on its depth.
-    // If the depth is not found in headingClasses, default to the class for depth 6.
     headingClasses[depth as keyof typeof headingClasses] || headingClasses[6]
   return `<h${depth} class="${className}">${sanitizedText}</h${depth}>`
 }
@@ -144,6 +143,56 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
   const baseContentClasses = 'flex items-center justify-center w-full'
   const mergedContentClasses = twMerge(baseContentClasses, containerClasses)
 
+  // Enhanced function to handle text selection and formatting
+  const insertMarkdown = (before: string, after = '', placeholder = '') => {
+    const textarea = textareaRef.current
+    if (!textarea) {
+      // If textarea is not focused, just add placeholder text
+      setMessage((prev) => prev + before + placeholder + after)
+      return
+    }
+
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = message.slice(start, end)
+
+    let newText: string
+    let newCursorPos: number
+
+    if (selectedText) {
+      // Text is selected - wrap it with formatting
+      newText =
+        message.slice(0, start) +
+        before +
+        selectedText +
+        after +
+        message.slice(end)
+      newCursorPos = start + before.length + selectedText.length + after.length
+    } else if (start === end && textarea === document.activeElement) {
+      // Cursor is positioned but no selection - insert formatting with placeholder
+      const textToInsert = placeholder || 'text'
+      newText =
+        message.slice(0, start) +
+        before +
+        textToInsert +
+        after +
+        message.slice(end)
+      newCursorPos = start + before.length + textToInsert.length
+    } else {
+      // Textarea not focused or other case - append to end
+      newText = message + before + placeholder + after
+      newCursorPos = newText.length
+    }
+
+    setMessage(newText)
+
+    // Focus and set cursor position
+    setTimeout(() => {
+      textarea.focus()
+      textarea.setSelectionRange(newCursorPos, newCursorPos)
+    }, 0)
+  }
+
   // Fetch messages from server-side API
   async function fetchMessages() {
     try {
@@ -159,15 +208,9 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     }
   }
 
-  // 1. Set up polling for real-time updates
   useEffect(() => {
-    // Fetch immediately on component mount
     fetchMessages()
-
-    // Then poll every 10 seconds
-    const pollInterval = setInterval(fetchMessages, 100000)
-
-    // Cleanup interval on unmount
+    const pollInterval = setInterval(fetchMessages, 10000)
     return () => clearInterval(pollInterval)
   }, [])
 
@@ -176,7 +219,6 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
       try {
         const res = await fetch('/api/auth', { method: 'POST' })
         const result = await res.json()
-
         if (result.user) {
           setUserId(result.user.id)
           await fetchMessages()
@@ -188,23 +230,12 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
         console.error('Initialization error:', err)
       }
     }
-    // Uncomment to enable authentication/init logic
-    // init()
-    // For now, just fetch messages without auth
     fetchMessages()
   }, [])
 
   const preprocessMessage = (text: string) => {
-    // Replace single newlines not followed by another newline with two spaces + newline (Markdown line break)
     return text.replace(/([^\n])\n(?!\n)/g, '$1  \n')
   }
-
-  // 1. Polling/Realtime Logic (useEffect)
-  useEffect(() => {
-    fetchMessages() // Initial load
-    const interval = setInterval(fetchMessages, 10000) // Polling fallback
-    return () => clearInterval(interval)
-  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -223,7 +254,6 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
       })
 
       const result = await res.json()
-
       if (!res.ok) {
         console.error('Failed to post:', result.error)
         setError(result.error ?? 'Failed to post message')
@@ -240,37 +270,74 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
   const renderMessages = () => {
     if (loading) {
-      return <p>Loading messages...</p>
+      return <p className="text-center text-gray-500">Loading messages...</p>
     }
 
     if (messages.length === 0) {
-      return <p className="text-gray-500">No messages yet. Be the first!</p>
+      return (
+        <p className="text-center text-gray-500">
+          No messages yet. Be the first!
+        </p>
+      )
     }
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-4">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className="text-base-content bg-base-100 border-base-content/20 border-b p-2 text-lg"
+            className="text-base-content bg-base-100 border-base-content/20 border-b pb-4 text-lg"
           >
             <div
+              className="prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(
                   marked(msg.content, {
                     renderer,
-                    breaks: true, // Convert line breaks to <br>
-                    gfm: true, // Enable GitHub Flavored Markdown
+                    breaks: true,
+                    gfm: true,
                   }) as string,
                   {
-                    // Allow target attribute for links to open in new tab
-                    ADD_ATTR: ['target', 'rel'],
-                    ALLOWED_ATTR: ['href', 'title', 'class', 'target', 'rel'],
+                    ADD_ATTR: ['target', 'rel', 'loading'],
+                    ALLOWED_ATTR: [
+                      'href',
+                      'title',
+                      'class',
+                      'target',
+                      'rel',
+                      'src',
+                      'alt',
+                      'loading',
+                    ],
+                    ALLOWED_TAGS: [
+                      'p',
+                      'br',
+                      'strong',
+                      'em',
+                      'u',
+                      's',
+                      'del',
+                      'h1',
+                      'h2',
+                      'h3',
+                      'h4',
+                      'h5',
+                      'h6',
+                      'ul',
+                      'ol',
+                      'li',
+                      'a',
+                      'img',
+                      'div',
+                      'span',
+                      'hr',
+                      'input',
+                    ],
                   }
                 ),
               }}
             />
-            <small className="text-gray-500">
+            <small className="mt-2 block text-gray-500">
               {formatDate(msg.created_at)}
             </small>
           </div>
@@ -281,37 +348,26 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
   return (
     <div className={mergedContentClasses}>
-      <div className="w-full">
-        <h2 className="text-secondary-content font-gokhan text-center text-xl font-bold tracking-wider">
+      <div className="mx-auto w-full max-w-4xl">
+        <h2 className="text-secondary-content font-gokhan mb-2 text-center text-xl font-bold tracking-wider">
           Guest Book
         </h2>
 
-        {/* Markdown Buttons  */}
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="right-0 mt-2 flex justify-end gap-3">
-            {/* H1  */}
+        <form onSubmit={handleSubmit} className="mb-2 flex flex-col">
+          <div className="mb-0 flex flex-wrap justify-end gap-2">
+            {/* H1 */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}# Heading 1\n${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('# ', '\n', 'Heading 1')}
+              title="Heading 1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -322,29 +378,20 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-            {/* H2  */}
+
+            {/* H2 */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}## Heading 2\n${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('## ', '\n', 'Heading 2')}
+              title="Heading 2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -356,29 +403,19 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
               </svg>
             </button>
 
-            {/* bold  */}
+            {/* Bold */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}**bold**${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('**', '**', 'bold')}
+              title="Bold"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -389,29 +426,20 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-            {/* italic  */}
+
+            {/* Italic */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}*italic*${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('*', '*', 'italic')}
+              title="Italic"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -423,29 +451,19 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
               </svg>
             </button>
 
-            {/* bolditalic  */}
+            {/* Bold Italic */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}***bold italics***${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('***', '***', 'bold italic')}
+              title="Bold Italic"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -456,29 +474,20 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-            {/* striketrough  */}
+
+            {/* Strikethrough */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}~striketrough~${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('~~', '~~', 'strikethrough')}
+              title="Strikethrough"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -489,29 +498,20 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-            {/* dividing line  */}
+
+            {/* Horizontal Rule */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}\n\n---\n\n${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('\n\n---\n\n', '', '')}
+              title="Horizontal Rule"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
               >
                 <g fill="none">
                   <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
@@ -522,28 +522,66 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
                 </g>
               </svg>
             </button>
-            {/* soft return  */}
+
+            {/* Unordered List */}
             <button
               type="button"
-              className=""
-              onClick={() => {
-                const start = message.slice(
-                  0,
-                  textareaRef.current?.selectionStart ?? 0
-                )
-                const end = message.slice(
-                  textareaRef.current?.selectionEnd ?? 0
-                )
-                setMessage(`${start}\n${end}`)
-                setTimeout(() => {
-                  textareaRef.current?.focus()
-                }, 0)
-              }}
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('\n- ', '\n', 'List item')}
+              title="Unordered List"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="2em"
-                height="2em"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
+              >
+                <g fill="none">
+                  <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                  <path
+                    fill="currentColor"
+                    d="M4.5 17.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 18a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2zM4.5 10.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 11a1 1 0 0 1 .117 1.993L20 13H9a1 1 0 0 1-.117-1.993L9 11zM4.5 3.5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M20 4a1 1 0 0 1 .117 1.993L20 6H9a1 1 0 0 1-.117-1.993L9 4z"
+                  />
+                </g>
+              </svg>
+            </button>
+
+            {/* Ordered List */}
+            <button
+              type="button"
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('\n1. ', '\n', 'List item')}
+              title="Ordered List"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 md:h-5 md:w-5"
+              >
+                <g fill="none">
+                  <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                  <path
+                    fill="currentColor"
+                    d="M5.436 16.72a1.466 1.466 0 0 1 1.22 2.275a1.466 1.466 0 0 1-1.22 2.275c-.65 0-1.163-.278-1.427-.901a.65.65 0 1 1 1.196-.508a.18.18 0 0 0 .165.109c.109 0 .23-.03.23-.167c0-.1-.073-.143-.156-.154l-.051-.004a.65.65 0 0 1-.096-1.293l.096-.007c.102 0 .207-.037.207-.158c0-.137-.12-.167-.23-.167a.18.18 0 0 0-.164.11a.65.65 0 1 1-1.197-.509c.264-.622.777-.9 1.427-.9ZM20 18a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2zM6.08 9.945a1.552 1.552 0 0 1 .43 2.442l-.554.593h.47a.65.65 0 1 1 0 1.3H4.573a.655.655 0 0 1-.655-.654c0-.207.029-.399.177-.557L5.559 11.5c.11-.117.082-.321-.06-.392c-.136-.068-.249.01-.275.142l-.006.059a.65.65 0 0 1-.65.65c-.39 0-.65-.327-.65-.697a1.482 1.482 0 0 1 2.163-1.317ZM20 11a1 1 0 0 1 .117 1.993L20 13H9a1 1 0 0 1-.117-1.993L9 11zM6.15 3.39v3.24a.65.65 0 1 1-1.3 0V4.522a.65.65 0 0 1-.46-1.183l.742-.495a.655.655 0 0 1 1.018.545ZM20 4a1 1 0 0 1 .117 1.993L20 6H9a1 1 0 0 1-.117-1.993L9 4z"
+                  />
+                </g>
+              </svg>
+            </button>
+
+            {/* Line Break */}
+            <button
+              type="button"
+              className="hover:bg-base-200 rounded p-1 transition-colors md:p-2"
+              onClick={() => insertMarkdown('\n', '', '')}
+              title="Line Break"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
                 viewBox="0 0 256 256"
               >
                 <path
@@ -556,22 +594,24 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
           <textarea
             ref={textareaRef}
-            className="textarea textarea-bordered text-base-content bg-base-100 placeholder-base-content/40 focus:ring-base-content mt-1 h-28 w-full rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none md:h-18"
-            placeholder={`Feedback, wish, or link to your playlist.\nUse Markdown formatting or the buttons above.`}
+            className="textarea textarea-bordered text-base-content bg-base-100 placeholder-base-content/40 focus:ring-base-content mt-1 h-32 w-full resize-y rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
+            placeholder={`Share your feedback, thoughts, or links!\nUse Markdown formatting or the buttons above.`}
             value={message}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
               setMessage(e.target.value)
             }
-          ></textarea>
+          />
+
           <button
-            className="btn bg-base-200 my-2 rounded-md font-bold"
+            type="submit"
+            className="btn bg-base-200 hover:bg-base-300 my-2 rounded-md font-bold transition-colors"
             disabled={!message.trim()}
           >
-            Post
+            Post Message
           </button>
         </form>
 
-        <div className="border-base-content h-[72vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
+        <div className="border-base-content h-[92vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
           {error && <div className="text-error mt-2">{error}</div>}
           {renderMessages()}
         </div>
@@ -579,4 +619,5 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
     </div>
   )
 }
+
 export default MessageBoard
