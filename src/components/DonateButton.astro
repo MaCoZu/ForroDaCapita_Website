@@ -1,0 +1,73 @@
+---
+const paypalFormAction = 'https://www.paypal.com/cgi-bin/webscr'
+const paypalFields = {
+  cmd: '_donations',
+  business: 'forrodacapitaev@gmx.de',
+  item_name: 'Donation to Forró da Capita',
+  currency_code: 'EUR',
+  no_shipping: '1',
+  no_note: '1',
+  return: 'https://forrodacapita.vercel.app',
+}
+// Use a random string for unique IDs (Astro does not have generateUniqueId)
+const uniqueId = Math.random().toString(36).slice(2, 10)
+const donateBtnId = `donate-btn-${uniqueId}`
+const donateFormId = `paypal-donate-form-${uniqueId}`
+---
+
+<!-- Donate Button with Golden Glow -->
+<div
+  class="tooltip tooltip-bottom tooltip-info p-2"
+  data-tip="Donate or pay our drinks with PayPal"
+>
+  <a
+    id={donateBtnId}
+    class="text-2xl font-gokhan tracking-wider transition duration-600 ease-in-out golden-glow cursor-pointer"
+    tabindex="0"
+    role="button"
+  >
+    Donate
+  </a>
+</div>
+
+<!-- PAYPAL  -->
+<form
+  id={donateFormId}
+  action={paypalFormAction}
+  method="post"
+  target="_top"
+  style="display:none;"
+>
+  {
+    Object.entries(paypalFields).map(([name, value]) => (
+      <input type="hidden" name={name} value={value} />
+    ))
+  }
+</form>
+
+<script define:vars={{ donateBtnId, donateFormId }}>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById(donateBtnId)
+    const form = document.getElementById(donateFormId)
+    if (btn && form) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault()
+        if (form instanceof HTMLFormElement) form.submit()
+      })
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          if (form instanceof HTMLFormElement) form.submit()
+        }
+      })
+    }
+  })
+</script>
+
+<style>
+  .golden-glow:hover {
+    filter: drop-shadow(0 0 2px #fcc200) drop-shadow(0 0 5px #fcc200)
+      drop-shadow(0 0 10px #ffd700);
+    color: rgb(254, 244, 187);
+  }
+</style>
