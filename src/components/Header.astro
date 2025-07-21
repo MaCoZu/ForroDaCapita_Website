@@ -2,39 +2,39 @@
 import { Image } from 'astro:assets'
 import SofiaIcon from '../assets/icons/sofiaIcon.png'
 import Logo from './ForroDaCapita_Logo.astro'
-import Hamburger from './HamburgerMenu.astro'
 import Menu from './Menu.astro'
-import Paypal from './Paypal.astro'
-import ThemeSwitch from './ThemeSwitch.astro'
+import MobileHeader from './MobileHeader.astro'
 ---
 
 <header class="w-full py-1 md:pt-8">
   <!-- Desktop layout -->
   <div class="hidden md:flex flex-row items-top justify-between mx-auto">
     <Logo />
-    <div class="flex flex-col">
-      <Menu />
+
+      <Menu containerClasses="md:mt-4" />
+
+      <!-- Desktop image -->
       <div
-        class="flex flex-row gap-x-10 md:mt-12 md:items-center md:justify-center"
+        class="tooltip tooltip-bottom tooltip-info"
+        style="--tooltip-offset: 0.01rem;"
+        data-tip="Toggle theme"
       >
-        <Paypal containerClasses="" />
-        <ThemeSwitch />
+        <Image
+          src={SofiaIcon}
+          alt="Toggle dark/light theme"
+          class="md:w-38 md:h-38 mt-4 items-center justify-center cursor-pointer"
+          id="theme-switch-img"
+          role="button"
+          tabindex="0"
+        />
       </div>
     </div>
 
-    <!-- Desktop image -->
-    <Image
-      src={SofiaIcon}
-      alt="Sofia Icon"
-      class="md:w-38 md:h-38 mt-4 items-center justify-center"
-    />
-  </div>
-
-  <!-- Mobile layout -->
-  <div
-    class="md:hidden flex flex-row items-center justify-between mx-auto my-4"
-  >
-    <Paypal containerClasses="" />
-    <Hamburger containerClasses="" />
+    <!-- Mobile layout -->
+    <div
+      class="md:hidden flex flex-row items-center justify-between mx-auto my-4"
+    >
+      <MobileHeader containerClasses="" />
+    </div>
   </div>
 </header>
