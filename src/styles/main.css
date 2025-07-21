@@ -20,6 +20,7 @@
   --color-map_bg: #fcf9ee;
 
   --color-accent: rgb(169 15 43);
+  --color-info: rgb(90, 104, 59);
 }
 
 @plugin "daisyui/theme" {
@@ -38,6 +39,7 @@
   --color-map_bg: rgb(252, 249, 238);
 
   --color-accent: rgb(255, 92, 92);
+  --color-info: rgb(255, 247, 174);
 }
 
 .font-gokhan {
