@@ -1,0 +1,22 @@
+---
+import Article from '../components/Article.astro'
+import MetaCalendar from '../components/Calendar.jsx'
+import Layout from '../layout/Layout.astro'
+---
+
+<Layout>
+  <div class="mt-10">
+    <MetaCalendar client:only="react" />
+  </div>
+  <div class="mt-10">
+    <Article>
+      <h2>Forró in Germany</h2>
+      <a href="https://forrodecolonia.com/freiestanzen/" target="_blank"
+        >Colone, Aachen, Bonn, Duisburg</a
+      >
+      <br />
+      <a href="https://www.forroconnects.de/" target="_blank">Dresden</a>
+   
+    </Article>
+  </div>
+</Layout>

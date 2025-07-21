@@ -44,19 +44,20 @@ const { containerClasses = '' }: Props = Astro.props
 
       <!-- Dropdown Menu -->
       <div
-        class="absolute pt-2 right-0 -mr-4 bg-base-100 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
+        class="absolute pt-2 right-0 -mr-2.5 bg-base-100 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
       >
-        <div class="flex flex-row items-center gap-x-4">
+        <div class="flex flex-row items-center gap-x-2">
+          <!-- pa58  -->
           <a
             href="/pa58"
-            class="block px-4 py-2 text-[1.4rem] font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
+            class="block px-2 py-2 text-[1.4rem] font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
           >
             PA58
           </a>
           <!--  Forró SVG -->
           <a
             href="/forro"
-            class="block px-4 py-2 text-2xl font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
+            class="block px-2 py-2 text-2xl font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
           >
             <svg
               fill="currentColor"
@@ -75,10 +76,18 @@ const { containerClasses = '' }: Props = Astro.props
             </svg>
           </a>
 
+          <!-- Calendar -->
+          <a
+            href="/calendar"
+            class="block px-2 py-2 text-[1.4rem] font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
+          >
+            Calendar
+          </a>
+          <!-- Admin -->
           <a
             href="https://forrocapita.admin.datocms.com/editor"
             target="_blank"
-            class="block px-4 py-2 text-[1.4rem] font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
+            class="block px-2 py-2 text-[1.4rem] font-gokhan tracking-wider transition duration-300 ease-in-out hover:text-secondary-content"
           >
             Admin
           </a>
@@ -96,4 +105,3 @@ const { containerClasses = '' }: Props = Astro.props
     color: rgb(254, 244, 187);
   }
 </style>
-  
