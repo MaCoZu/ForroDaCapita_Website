@@ -96,6 +96,7 @@ export default function Calendar() {
         eventSources={eventSources}
         googleCalendarApiKey={PUBLIC_GOOGLE_CALENDAR_API}
         height="auto"
+        firstDay={1} // Start the week on Monday
         headerToolbar={{
           left: 'prev next today',
           center: "title",
