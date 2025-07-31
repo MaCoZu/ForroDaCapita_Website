@@ -64,17 +64,19 @@
   --fc-button-text-color: var(--color-secondary-content, #fff);
   --fc-button-bg-color: var(--color-base-200, #2C3E50);
   --fc-button-border-color: var(--color-base-200, #2C3E50);
-  --fc-button-hover-bg-color: var(--color-base-300, #1e2b37);
+  --fc-button-hover-bg-color: var(--color-base-200, #1e2b37);
   --fc-button-hover-border-color: var(--color-base-200, #1a252f);
   --fc-button-active-bg-color: var(--color-base-200, #1a252f);
   --fc-button-active-border-color: var(--color-base-200, #151e27);
+
+
 
   --fc-event-bg-color: var(--color-base-200, #3788d8);
   --fc-event-border-color: var(--color-base-200, #3788d8);
   --fc-event-text-color: var(--color-secondary-content, #fff);
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
 
-  --fc-more-link-bg-color: var(--color-base-200, #d0d0d0);
+  --fc-more-link-bg-color: var(--color-base-300, #d0d0d0);
   --fc-more-link-text-color: inherit;
 
   --fc-event-resizer-thickness: 8px;
