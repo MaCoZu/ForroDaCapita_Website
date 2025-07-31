@@ -1,7 +1,29 @@
 ---
+import { marked } from 'marked'
 import Article from '../components/Article.astro'
 import MetaCalendar from '../components/Calendar.jsx'
 import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+const result = await executeQuery(`
+  query CalendarQuery {
+    eventlink { 
+      title 
+      links 
+    }
+  }
+`)
+
+const eventlink = (result as { eventlink?: any }).eventlink
+
+// Parse the markdown links with default renderer
+const parsedLinks = eventlink?.links ? await marked(eventlink.links) : ''
+
+// Post-process to add target="_blank" to all links
+const finalLinks = parsedLinks.replace(
+  /<a\s+href=/g, 
+  '<a target="_blank" rel="noopener noreferrer" href='
+)
 ---
 
 <Layout>
@@ -10,13 +32,11 @@ import Layout from '../layout/Layout.astro'
   </div>
   <div class="mt-10">
     <Article>
-      <h2>Forró in Germany</h2>
-      <a href="https://forrodecolonia.com/freiestanzen/" target="_blank"
-        >Colone, Aachen, Bonn, Duisburg</a
-      >
-      <br />
-      <a href="https://www.forroconnects.de/" target="_blank">Dresden</a>
-   
+      <h2>{eventlink.title}</h2>
+      <div
+        class="prose text-lg prose-a:no-underline prose-a:hover:text-secondary-content"
+        set:html={finalLinks}
+      />
     </Article>
   </div>
 </Layout>
