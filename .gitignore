@@ -2,6 +2,14 @@
 dist/client/
 dist/
 
+# key files 
+key_file
+key_file.pub 
+
+# .env files
+.env
+.env.production
+
 # BUT allow the SSR server files
 !dist/server/
 
