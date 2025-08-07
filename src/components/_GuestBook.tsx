@@ -22,9 +22,9 @@ interface LinkRendererParams {
 // Custom renderer for marked to handle links and headings properly
 const renderer = new marked.Renderer()
 
-renderer.list = (token: List) => {
+renderer.list = (token: any) => {
   const items = token.items
-    .map((item) => {
+    .map((item: any) => {
       if (item.task) {
         return `<li><input type="checkbox" ${item.checked ? 'checked' : ''} disabled>${item.text}</input></li>`
       } else {
@@ -45,7 +45,7 @@ renderer.list = (token: List) => {
 }
 
 // Customize image rendering
-renderer.image = (href: string | null, title: string | null, text: string) => {
+renderer.image = ({ href, title, text }: { href: string | null, title: string | null, text: string }) => {
   if (!href) return text
   const sanitizedHref = DOMPurify.sanitize(href)
   const sanitizedText = DOMPurify.sanitize(text)
@@ -572,7 +572,6 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
         </form>
 
         <div className="border-base-content h-[72vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
-          {error && <div className="text-error mt-2">{error}</div>}
           {renderMessages()}
         </div>
       </div>
