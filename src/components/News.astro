@@ -25,8 +25,8 @@ const baseHeadingClasses =
   'prose text-xl font-gokhan text-secondary-content tracking-wider'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
-const { news } = (await executeQuery(`query { news { newstext } }`)) as {
-  news?: { newstext?: string }
+const { news } = (await executeQuery(`query { news { newsheader, newstext } }`)) as {
+  news?: { newsheader?: string; newstext?: string }
 }
 
 // const newstext = news?.newstext ?? ''
@@ -34,6 +34,6 @@ const newstext = marked.parse(news?.newstext ?? '')
 ---
 
 <div class={mergedContainerClasses}>
-  <h1 class={mergedHeadingClasses}>NEWS</h1>
+  <h1 class={mergedHeadingClasses}>{news?.newsheader}</h1>
   <div class={mergedTextClasses} set:html={newstext} />
 </div>
