@@ -46,7 +46,7 @@ const forro = (result as { forro?: any }).forro
 
 <Layout title="Forro">
   <div class="flex mx-auto items-start justify-center">
-    <Article className="max-w-4xl">
+    <Article className="md:w-7/12">
       <h1
         class="text-3xl font-merri font-semibold md:mt-15 mt-5"
         set:html={forro.forrotitle}
@@ -61,9 +61,8 @@ const forro = (result as { forro?: any }).forro
         />
       </div>
     </Article>
-  
   </div>
-    <!-- <Image
+  <!-- <Image
       src={Mascot}
       alt="PA58 Mascot"
       class="flex mx-auto items-start justify-between h-auto w-1/4 hover:scale-110 transition-all object-contain dark:bg-transparent"
