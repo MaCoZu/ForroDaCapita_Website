@@ -49,14 +49,10 @@ renderer.listitem = (item: Tokens.ListItem) => {
 }
 
 // Enhanced image rendering with proper styling
-renderer.image = function (
-  href: string | null,
-  title: string | null,
-  text: string
-) {
-  if (!href) return text
+renderer.image = function ({ href, title, text }: { href?: string; title?: string | null; text?: string }) {
+  if (!href) return text || ''
   const sanitizedHref = DOMPurify.sanitize(href)
-  const sanitizedText = DOMPurify.sanitize(text)
+  const sanitizedText = DOMPurify.sanitize(text || '')
   const sanitizedTitle = title ? DOMPurify.sanitize(title) : null
 
   const attributes = {
@@ -130,9 +126,10 @@ interface Message {
 
 interface MessageBoardProps {
   containerClasses?: string
+  HeadingClasses?: string
 }
 
-const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
+const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses }) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [message, setMessage] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
@@ -142,6 +139,9 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
 
   const baseContentClasses = 'flex items-center justify-center w-full'
   const mergedContentClasses = twMerge(baseContentClasses, containerClasses)
+
+  const baseHeadingClasses = 'text-secondary-content font-gokhan mb-2 text-center text-3xl font-bold tracking-wider'
+  const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
   // Enhanced function to handle text selection and formatting
   const insertMarkdown = (before: string, after = '', placeholder = '') => {
@@ -349,7 +349,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses }) => {
   return (
     <div className={mergedContentClasses}>
       <div className="mx-auto w-full max-w-4xl">
-        <h2 className="text-secondary-content font-gokhan mb-2 text-center text-xl font-bold tracking-wider">
+        <h2 className={mergedHeadingClasses}>
           Guest Book
         </h2>
 
