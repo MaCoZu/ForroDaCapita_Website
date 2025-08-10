@@ -18,13 +18,13 @@ const {
 const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses =
-  'prose font-merri base-content font-merri items-center text-xl'
-const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
-
 const baseHeadingClasses =
-  'prose text-3xl font-gokhan text-secondary-content tracking-wider'
-const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+  'prose text-3xl font-gokhan text-primary tracking-wider'
+  const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+  
+const baseTextClasses =
+  'prose font-merri text-primary-content font-merri items-center text-xl'
+const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
 
 const { news } = (await executeQuery(
   `query { news { newsheader, newstext } }`

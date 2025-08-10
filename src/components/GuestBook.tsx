@@ -45,7 +45,7 @@ renderer.listitem = (item: Tokens.ListItem) => {
       <span class="${item.checked ? 'line-through text-gray-500' : ''}">${item.text}</span>
     </li>`
   }
-  return `<li class="text-base-content">${item.text}</li>`
+  return `<li class="text-primary-content">${item.text}</li>`
 }
 
 // Enhanced image rendering with proper styling
@@ -67,7 +67,7 @@ renderer.image = function ({ href, title, text }: { href?: string; title?: strin
     .join(' ')
 
   return `<div class="my-4 flex justify-center">
-    <img ${attributeString} class="max-w-full h-auto rounded-lg shadow-md border border-base-content/20 max-h-96 object-contain" />
+    <img ${attributeString} class="max-w-full h-auto rounded-lg shadow-md border border-primary-content/20 max-h-96 object-contain" />
   </div>`
 }
 
@@ -85,7 +85,7 @@ renderer.link = ({ href = '', title, text = '' }: LinkRendererParams) => {
   const attributes = {
     href: sanitizedHref,
     class:
-      'text-accent hover:text-accent/80 underline transition-colors break-all',
+      'text-secondary hover:text-secondary/80 underline transition-colors break-all',
     target: '_blank',
     rel: 'noopener noreferrer nofollow',
     ...(sanitizedTitle && { title: sanitizedTitle }),
@@ -104,12 +104,12 @@ renderer.heading = ({ tokens, depth }: { tokens: any[]; depth: number }) => {
   const sanitizedText = DOMPurify.sanitize(text)
 
   const headingClasses = {
-    1: 'text-2xl font-bold mb-4 mt-6 text-base-content',
-    2: 'text-xl font-semibold mb-3 mt-5 text-base-content',
-    3: 'text-lg font-medium mb-2 mt-4 text-base-content',
-    4: 'text-base font-medium mb-2 mt-3 text-base-content',
-    5: 'text-sm font-medium mb-1 mt-2 text-base-content',
-    6: 'text-xs font-medium mb-1 mt-2 text-base-content',
+    1: 'text-2xl font-bold mb-4 mt-6 text-primary-content',
+    2: 'text-xl font-semibold mb-3 mt-5 text-primary-content',
+    3: 'text-lg font-medium mb-2 mt-4 text-primary-content',
+    4: 'text-base font-medium mb-2 mt-3 text-primary-content',
+    5: 'text-sm font-medium mb-1 mt-2 text-primary-content',
+    6: 'text-xs font-medium mb-1 mt-2 text-primary-content',
   }
 
   const className =
@@ -140,7 +140,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
   const baseContentClasses = 'flex items-center justify-center w-full'
   const mergedContentClasses = twMerge(baseContentClasses, containerClasses)
 
-  const baseHeadingClasses = 'text-secondary-content font-gokhan mb-2 text-center text-3xl font-bold tracking-wider'
+  const baseHeadingClasses = 'text-primary font-gokhan mb-2 text-center text-3xl font-bold tracking-wider'
   const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
   // Enhanced function to handle text selection and formatting
@@ -286,7 +286,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className="text-base-content bg-base-100 border-base-content/20 border-b pb-4 text-lg"
+            className="text-primary-content bg-base-100 border-primary-content/20 border-b pb-4 text-lg"
           >
             <div
               className="prose prose-sm max-w-none"
@@ -594,7 +594,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
 
           <textarea
             ref={textareaRef}
-            className="textarea textarea-bordered text-base-content bg-base-100 placeholder-base-content/40 focus:ring-base-content mt-1 h-32 w-full resize-y rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
+            className="textarea textarea-bordered text-primary-content bg-base-100 placeholder-primary-content/40 focus:ring-primary-content mt-1 h-32 w-full resize-y rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
             placeholder={`Share your feedback, thoughts, or links!\nUse Markdown formatting or the buttons above.`}
             value={message}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
@@ -611,7 +611,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
           </button>
         </form>
 
-        <div className="border-base-content h-[92vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
+        <div className="border-primary-content h-[92vh] w-full resize-y space-y-4 overflow-y-auto rounded-md border p-2">
           {error && <div className="text-error mt-2">{error}</div>}
           {renderMessages()}
         </div>

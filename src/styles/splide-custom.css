@@ -36,7 +36,7 @@
 .splide__arrow svg {
   width: 1.25rem !important;
   height: 1.25rem !important;
-  fill: var(--color-base-content) !important;
+  fill: var(--color-primary-content) !important;
   stroke-width: 1.5;
   stroke-linecap: round;
   transition: fill 0.2s ease;
