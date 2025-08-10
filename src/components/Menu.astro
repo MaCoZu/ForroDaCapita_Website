@@ -2,17 +2,6 @@
 import { twMerge } from 'tailwind-merge'
 import DonateButton from './DonateButton.astro'
 
-const paypalFormAction = 'https://www.paypal.com/cgi-bin/webscr'
-const paypalFields = {
-  cmd: '_donations',
-  business: 'forrodacapitaev@gmx.de',
-  item_name: 'Donation to Forró da Capita',
-  currency_code: 'EUR',
-  no_shipping: '1',
-  no_note: '1',
-  return: 'https://forrodacapita.vercel.app',
-}
-
 interface Props {
   containerClasses?: string
 }

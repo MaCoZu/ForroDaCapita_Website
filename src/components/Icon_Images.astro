@@ -2,12 +2,11 @@
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
-  id: string,
+  id: string
   className?: string
-
 }
 
-const { id ='' ,className = '' } = Astro.props
+const { id = '', className = '' }: Props = Astro.props
 
 // Base styles that are always applied
 const baseClasses = `group hover:scale-110 transition-transform duration-900`

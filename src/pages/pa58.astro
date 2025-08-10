@@ -7,6 +7,34 @@ import VideoBlock from '../components/Block_Video.astro'
 import Layout from '../layout/Layout.astro'
 import { executeQuery } from '../lib/datocms.js'
 
+interface Picture {
+  id: string
+  url: string
+  alt?: string
+  title?: string
+  height: number
+  width: number
+}
+
+interface Pa58Data {
+  pa58title: string
+  pa58pictures: Picture[]
+  pa58content: {
+    value: any
+    blocks: Array<{
+      __typename: string
+      id: string
+      asset?: {
+        url: string
+        alt?: string
+        title?: string
+        width?: number
+        height?: number
+      }
+    }>
+  }
+}
+
 const result = await executeQuery(`
   query Pa58Query {
   pa58 {
@@ -52,20 +80,19 @@ const result = await executeQuery(`
 }
 `)
 
-const pa58 = (result as { pa58?: any }).pa58
-console.log(pa58.pa58pictures[0])
+const pa58 = (result as { pa58?: Pa58Data }).pa58
 ---
 
 <Layout title="PA 58">
   <h1
     class="text-3xl font-merri font-semibold mb-5 md:mt-15 mt-5"
-    set:html={pa58.pa58title}
+    set:html={pa58?.pa58title}
   />
   <div class="flex flex-col lg:flex-row justify-between">
     <div class="w-full lg:w-3/5 lg:pr-15">
       <Article>
         <StructuredText
-          data={pa58.pa58content}
+          data={pa58?.pa58content}
           blockComponents={{
             ImageBlockRecord: ImageBlock,
             VideoBlockRecord: VideoBlock,
@@ -74,60 +101,79 @@ console.log(pa58.pa58pictures[0])
       </Article>
     </div>
     <div class="flex flex-col lg:w-2/5 gap-3">
+      {pa58?.pa58pictures[0] && (
       <Image
-        src={pa58.pa58pictures[0].url}
-        height={pa58.pa58pictures[0].height}
-        width={pa58.pa58pictures[0].width}
-        alt={pa58.pa58pictures[0].alt || 'Prinzenallee 58'}
+        src={pa58?.pa58pictures[0].url}
+        height={pa58?.pa58pictures[0].height}
+        width={pa58?.pa58pictures[0].width}
+        alt={pa58?.pa58pictures[0].alt || 'Prinzenallee 58'}
         class="h-auto w-full rounded-sm"
       />
+      )}
+      {pa58?.pa58pictures[1] && (
       <Image
-        src={pa58.pa58pictures[1].url}
-        height={pa58.pa58pictures[1].height}
-        width={pa58.pa58pictures[1].width}
-        alt={pa58.pa58pictures[1].alt || 'Prinzenallee 58'}
+        src={pa58?.pa58pictures[1].url}
+        height={pa58?.pa58pictures[1].height}
+        width={pa58?.pa58pictures[1].width}
+        alt={pa58?.pa58pictures[1].alt || 'Prinzenallee 58'}
         class="h-auto w-full rounded-sm"
       />
+      )}
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-5 lg:gap-x-5 mt-5">
+    {pa58?.pa58pictures[2] && (
+      <Image
+        src={pa58.pa58pictures[2].url}
+        height={pa58.pa58pictures[2].height}
+        width={pa58.pa58pictures[2].width}
+        alt={pa58.pa58pictures[2].alt || 'Prinzenallee 58'}
+        class="h-auto w-full rounded-sm"
+      />
+    )}
+     {pa58?.pa58pictures[3] && (
     <Image
-      src={pa58.pa58pictures[2].url}
-      height={pa58.pa58pictures[2].height}
-      width={pa58.pa58pictures[2].width}
-      alt={pa58.pa58pictures[2].alt || 'Prinzenallee 58'}
+      src={pa58?.pa58pictures[3].url}
+      height={pa58?.pa58pictures[3].height}
+      width={pa58?.pa58pictures[3].width}
+      alt={pa58?.pa58pictures[3].alt || 'Prinzenallee 58'}
       class="h-auto w-full rounded-sm"
     />
-    <Image
-      src={pa58.pa58pictures[3].url}
-      height={pa58.pa58pictures[3].height}
-      width={pa58.pa58pictures[3].width}
-      alt={pa58.pa58pictures[3].alt || 'Prinzenallee 58'}
-      class="h-auto w-full rounded-sm"
-    />
+     )}
   </div>
   <div class="mt-5">
+    {pa58?.pa58pictures[4] && (
     <Image
-      src={pa58.pa58pictures[4].url}
-      height={pa58.pa58pictures[4].height}
-      width={pa58.pa58pictures[4].width}
-      alt={pa58.pa58pictures[4].alt || 'Prinzenallee 58'}
+      src={pa58?.pa58pictures[4].url}
+      height={pa58?.pa58pictures[4].height}
+      width={pa58?.pa58pictures[4].width}
+      alt={pa58?.pa58pictures[4].alt || 'Prinzenallee 58'}
       class="h-auto w-full rounded-sm"
     />
+    )}
   </div>
   {
-    pa58.pa58pictures?.length > 5 && (
+    (pa58?.pa58pictures?.length || 0) > 5 && (
       <div class="mt-5 flex flex-col gap-5">
-        {pa58.pa58pictures.slice(5).map((pic: any) => (
-          <Image
-            src={pic.url}
-            height={pic.height}
-            width={pic.width}
-            alt={pic.alt || 'Prinzenallee 58'}
-            class="h-auto w-full rounded-sm"
-          />
-        ))}
+        {pa58?.pa58pictures
+          .slice(5)
+          .map(
+            (pic: {
+              url: string
+              height: number
+              width: number
+              alt?: string
+            }) => (
+              <Image
+                src={pic.url}
+                height={pic.height}
+                width={pic.width}
+                alt={pic.alt || 'Prinzenallee 58'}
+                class="h-auto w-full rounded-sm"
+              />
+            )
+          )}
       </div>
     )
   }

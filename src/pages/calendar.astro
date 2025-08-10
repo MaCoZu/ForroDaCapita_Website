@@ -14,7 +14,7 @@ const result = await executeQuery(`
   }
 `)
 
-const eventlink = (result as { eventlink?: any }).eventlink
+const eventlink = (result as { eventlink?: { title: string; links: string } }).eventlink
 
 // Parse the markdown links with default renderer
 const parsedLinks = eventlink?.links ? await marked(eventlink.links) : ''
@@ -32,7 +32,7 @@ const finalLinks = parsedLinks.replace(
   </div>
   <div class="mt-10">
     <Article>
-      <h2>{eventlink.title}</h2>
+      <h2>{eventlink?.title || 'Calendar'}</h2>
       <div
         class="prose text-lg prose-a:no-underline prose-a:hover:text-secondary-content"
         set:html={finalLinks}

@@ -6,7 +6,7 @@ interface Props {
   ContainerClasses: string
 }
 
-const { ContainerClasses } = Astro.props
+const { ContainerClasses }: Props = Astro.props
 const baseContainerClasses =
   'w-full items-top justify-between mx-auto mt-5 mb-5 base-content'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)

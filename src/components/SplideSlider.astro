@@ -15,7 +15,7 @@ const {
   showCounter = false,
   prefix = '',
   arrowPosition = '',
-} = Astro.props
+}:Props = Astro.props
 
 const modalID = `${prefix ? `${prefix}_` : ''}modalID`
 const modalContent = `${prefix ? `${prefix}_` : ''}modalContent`
@@ -189,7 +189,7 @@ import { addEnhancedModalClose } from '../scripts/modalUtils'
       document.querySelectorAll<HTMLDivElement>('[data-trigger-ids]')
     modals.forEach((modal) => {
       const prefix = modal?.dataset?.prefix || ''
-      const modalID = `${prefix}${prefix ? '_' : ''}modalID`
+      // const modalID = `${prefix}${prefix ? '_' : ''}modalID`
       const modalContentID = `${prefix}${prefix ? '_' : ''}modalContent`
       const closeGalleryID = `${prefix}${prefix ? '_' : ''}closeGallery`
       const mainSliderID = `${prefix}${prefix ? '_' : ''}mainSlider`

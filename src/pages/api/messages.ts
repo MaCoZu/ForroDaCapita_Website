@@ -25,7 +25,7 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   // Rate limiting (5 requests per minute per IP)
   const ip = clientAddress || 'unknown'
-  const now = Date.now()
+  // const now = Date.now()
   const window = 60 * 1000 // 1 minute
   const maxRequests = 5
 
