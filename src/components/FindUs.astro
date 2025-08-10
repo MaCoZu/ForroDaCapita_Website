@@ -63,103 +63,96 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
         </div>
       </div>
 
-      <div
-        class="flex flex-row gap-x-4 md:gap-x-8 mt-2 md:mt-4 items-center justify-between w-full"
-      >
+      <div class="flex flex-row justify-between gap-x-8 w-full mt-3 items-baseline">
         <div class={mergedTextClasses}>
-          Once at Prinzenalle 58.<br />
-          <a
-            id="wayLink"
-            class="underline underline-offset-4 hover:no-underline cursor-pointer"
-            >This is the way</a
+          Once at Prinzenalle 58,
+          <a id="wayLink" class="no-underline cursor-pointer">this is the way</a
           >
           to go.
         </div>
-
-        <div>
-          <ImagesIcon id="imagesIcon" className="w-8 md:w-12" />
-        </div>
+            <ImagesIcon id="imagesIcon" className="w-8 md:w-12" />
       </div>
     </div>
-
-    <div
-      id="mapModal"
-      class="hidden fixed inset-0 z-[9999] bg-base-100/60 backdrop-blur-md flex items-center justify-center"
-    >
-      <button
-        id="closeModal"
-        class="absolute top-1/20 right-1/12 z-[100] rounded-full p-2 transition-all duration-300 group"
-      >
-        <svg
-          width="40"
-          height="40"
-          class="w-5 h-5 sm:w-7 sm:h-7 text-base-content hover:text-accent/90"
-          fill="currentColor"
-          stroke="currentColor"
-          viewBox="0 0 512 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
-          ></path>
-        </svg>
-      </button>
-      <div
-        id="mapModalContent"
-        class="pointer-events-auto bg-base-100 rounded-md shadow-xs md:max-h-[95vh] md:max-w-[55vw] flex items-center relative group"
-      >
-        <Image
-          src={Map}
-          alt="Map showing Prinzenallee 58 public transport connections"
-          class="w-full md:max-h-[95vh] max-w-[95vw]md:max-w-2xl rounded-md object-contain"
-          loading="eager"
-        />
-      </div>
-    </div>
-
-    <Slider
-      prefix="way"
-      triggerIDs={['imagesIcon', 'wayLink']}
-      images={wayimages}
-      showCounter={false}
-      arrowPosition='h-[70vh]'
-    />
-
-    <script>
-      import '@splidejs/splide/dist/css/splide.min.css'
-
-      const mapIcon = document.getElementById('mapIcon')
-      const mapModal = document.getElementById('mapModal')
-      const mapModalContent = document.getElementById('mapModalContent')
-      const closeModal = document.getElementById('closeModal')
-
-      if (mapIcon && mapModal && mapModalContent && closeModal) {
-        mapIcon.addEventListener('click', (e) => {
-          e.preventDefault()
-          mapModal.classList.remove('hidden')
-        })
-
-        closeModal.addEventListener('click', () => {
-          mapModal.classList.add('hidden')
-        })
-
-        mapModal.addEventListener('click', (e) => {
-          if (!mapModalContent.contains(e.target as Node | null)) {
-            mapModal.classList.add('hidden')
-          }
-        })
-      }
-    </script>
   </div>
-</div>
-<style>
-  .hidescrollbar::-webkit-scrollbar {
-    display: none;
-  }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .hidescrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-</style>
+  <div
+    id="mapModal"
+    class="hidden fixed inset-0 z-[9999] bg-base-100/60 backdrop-blur-md flex items-center justify-center"
+  >
+    <button
+      id="closeModal"
+      class="absolute top-1/20 right-1/12 z-[100] rounded-full p-2 transition-all duration-300 group"
+    >
+      <svg
+        width="40"
+        height="40"
+        class="w-5 h-5 sm:w-7 sm:h-7 text-base-content hover:text-accent/90"
+        fill="currentColor"
+        stroke="currentColor"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
+        ></path>
+      </svg>
+    </button>
+    <div
+      id="mapModalContent"
+      class="pointer-events-auto bg-base-100 rounded-md shadow-xs md:max-h-[95vh] md:max-w-[55vw] flex items-center relative group"
+    >
+      <Image
+        src={Map}
+        alt="Map showing Prinzenallee 58 public transport connections"
+        class="w-full md:max-h-[95vh] max-w-[95vw]md:max-w-2xl rounded-md object-contain"
+        loading="eager"
+      />
+    </div>
+  </div>
+
+  <Slider
+    prefix="way"
+    triggerIDs={['imagesIcon', 'wayLink']}
+    images={wayimages}
+    showCounter={false}
+    arrowPosition="h-[70vh]"
+  />
+
+  <script>
+    import '@splidejs/splide/dist/css/splide.min.css'
+
+    const mapIcon = document.getElementById('mapIcon')
+    const mapModal = document.getElementById('mapModal')
+    const mapModalContent = document.getElementById('mapModalContent')
+    const closeModal = document.getElementById('closeModal')
+
+    if (mapIcon && mapModal && mapModalContent && closeModal) {
+      mapIcon.addEventListener('click', (e) => {
+        e.preventDefault()
+        mapModal.classList.remove('hidden')
+      })
+
+      closeModal.addEventListener('click', () => {
+        mapModal.classList.add('hidden')
+      })
+
+      mapModal.addEventListener('click', (e) => {
+        if (!mapModalContent.contains(e.target as Node | null)) {
+          mapModal.classList.add('hidden')
+        }
+      })
+    }
+  </script>
+
+  <style>
+    .hidescrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .hidescrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  </style>
+</div>
