@@ -9,29 +9,32 @@ import Layout from '../layout/Layout.astro'
 
 <Layout title="Forró da Capita">
   <div
-    class="flex flex-col md:flex-row justify-between items-top mt-7 md:mt-10 gap-x-10"
+    class="flex flex-col md:flex-row justify-between items-top mt-7 md:mt-20 gap-x-10"
   >
-    <div class="w-full md:w-7/12 flex flex-col">
-      <div class="flex flex-col gap-y-10">
-        <News ContainerClasses="order-1" TextClasses="text-xl pt-2" />
-        <div class="flex flex-col gap-y-10 md:w-[70%] order-2">
-          <FindUs
-            ContainerClasses="order-2"
-            TextClasses="text-base-content text-lg"
-          />
-          <Lost_Found
-            ContainerClasses="order-3"
-            TextClasses="text-base-content text-lg"
-          />
-          <About
-            ContainerClasses="order-4"
-            TextClasses="text-base-content text-lg"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="w-full md:w-5/12 md:mt-0 mt-15">
-      <GuestBook client:only="react" containerClasses="order-4" />
+    <div class="w-full md:w-7/12 flex flex-col justify-center mx-auto gap-y-15">
+      <News
+        HeadingClasses="text-3xl"
+        ContainerClasses="order-1"
+        TextClasses="text-xl pt-2"
+      />
+      <FindUs
+        HeadingClasses="text-2xl"
+        ContainerClasses="order-2 mt-10"
+        TextClasses="text-base-content text-lg"
+      />
+      <Lost_Found
+        HeadingClasses="text-2xl"
+        ContainerClasses="order-3"
+        TextClasses="text-base-content text-lg"
+      />
+      <About
+        HeadingClasses="text-2xl"
+        ContainerClasses="order-4"
+        TextClasses="text-base-content text-lg"
+      />
+      <GuestBook client:only="react" 
+        HeadingClasses="text-3xl"
+      containerClasses="order-4 mt-20" />
       <!-- <div class="hidden md:block w-full mt-12">
         <Image
           src={Mascot}
