@@ -51,21 +51,20 @@ const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
 
 <div class="order-3">
   <h1 class={mergedHeadingClasses}>Lost and Found</h1>
-  <div class="flex flex-row items-center gap-x-8 justify-between">
+  <div class="flex flex-row items-center justify-between">
     <!-- The button to open modal -->
     <div class={mergedTextClasses}>
-      Miss something? <br />
-      Have a look in the
+      Miss something? Have a look in the
       <a
         id="boxLink"
-        class="underline underline-offset-4 hover:no-underline cursor-pointer"
+        class="no-underline cursor-pointer"
       >
         box</a
       >.
+      <div class={mergedTextClasses + ' mt-3'} set:html={lf_conditions} />s
     </div>
     <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
   </div>
-  <div class={mergedTextClasses + ' mt-4'} set:html={lf_conditions} />
 </div>
 
 <Slider
