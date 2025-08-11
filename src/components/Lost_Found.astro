@@ -58,7 +58,7 @@ const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
       <a id="boxLink" class="no-underline cursor-pointer"> box</a>.
       <div class={mergedTextClasses + ' mt-3'} set:html={lf_conditions} />
     </div>
-    <BoxIcon id="boxIcon" className="mb-2 w-9 md:w-12" />
+    <BoxIcon id="boxIcon" className="mb-2 min-w-9 md:w-12" />
   </div>
 </div>
 
