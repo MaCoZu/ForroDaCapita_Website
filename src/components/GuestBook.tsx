@@ -29,11 +29,24 @@ renderer.list = (token: Tokens.List) => {
     token.ordered && token.start !== 1 && token.start !== undefined
       ? ` start="${token.start}"`
       : ''
-  const listClass = token.ordered
-    ? 'list-decimal list-inside space-y-1 ml-4'
-    : 'list-disc list-inside space-y-1 ml-4'
+
+  // Detect zero-padded numbering like "01." from the first item's raw
+  const firstRaw = ((token.items?.[0] as any)?.raw as string | undefined) || ''
+  let padDigits = 0
+  if (token.ordered) {
+    const m = firstRaw.match(/^\s*(\d+)\.\s/)
+    if (m && /^0\d/.test(m[1])) {
+      padDigits = Math.min(m[1].length, 4)
+    }
+  }
+
+  const listClassBase = token.ordered ? 'space-y-1 ml-4' : 'list-disc list-inside space-y-1 ml-4'
+  const padClass = padDigits >= 2 ? ` ol-pad-${padDigits} px-3 rounded` : (token.ordered ? ' list-decimal list-inside' : '')
+  const listClass = `${listClassBase}${padClass}`
+  const styleAttr = padDigits >= 2 ? ` style="--ol-start: ${Number(token.start ?? 1) - 1}"` : ''
+
   const items = token.items.map((item) => renderer.listitem!(item)).join('')
-  return `<${type}${startAttr} class="${listClass}">${items}</${type}>`
+  return `<${type}${startAttr}${styleAttr} class="${listClass}">${items}</${type}>`
 }
 
 // Enhanced list item renderer (item: Tokens.ListItem)
@@ -85,7 +98,7 @@ renderer.link = ({ href = '', title, text = '' }: LinkRendererParams) => {
   const attributes = {
     href: sanitizedHref,
     class:
-      'text-secondary hover:text-secondary/80 underline transition-colors break-all',
+      'text-secondary/80 hover:text-secondary underline transition-colors break-all',
     target: '_blank',
     rel: 'noopener noreferrer nofollow',
     ...(sanitizedTitle && { title: sanitizedTitle }),
@@ -300,44 +313,17 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
                   {
                     ADD_ATTR: ['target', 'rel', 'loading'],
                     ALLOWED_ATTR: [
-                      'href',
-                      'title',
-                      'class',
-                      'target',
-                      'rel',
-                      'src',
-                      'alt',
-                      'loading',
+                      'href', 'title', 'class', 'target', 'rel', 'src', 'alt', 'loading', 'style',
                     ],
                     ALLOWED_TAGS: [
-                      'p',
-                      'br',
-                      'strong',
-                      'em',
-                      'u',
-                      's',
-                      'del',
-                      'h1',
-                      'h2',
-                      'h3',
-                      'h4',
-                      'h5',
-                      'h6',
-                      'ul',
-                      'ol',
-                      'li',
-                      'a',
-                      'img',
-                      'div',
-                      'span',
-                      'hr',
-                      'input',
+                      'p', 'br', 'strong', 'em', 'u', 's', 'del', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                      'ul', 'ol', 'li', 'a', 'img', 'div', 'span', 'hr', 'input', 'pre', 'code',
                     ],
                   }
                 ),
               }}
             />
-            <small className="mt-2 block text-gray-500">
+            <small className="mt-2 block text-primary-content/50">
               {formatDate(msg.created_at)}
             </small>
           </div>
@@ -594,7 +580,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
 
           <textarea
             ref={textareaRef}
-            className="textarea textarea-bordered text-primary-content bg-base-100 placeholder-primary-content/40 focus:ring-primary-content mt-1 h-32 w-full resize-y rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
+            className="textarea textarea-bordered text-primary-content bg-base-100 placeholder-primary-content/50 focus:ring-primary-content mt-1 h-32 w-full resize-y rounded-md text-lg focus:border-transparent focus:ring-1 focus:outline-none"
             placeholder={`Share your feedback, thoughts, or links!\nUse Markdown formatting or the buttons above.`}
             value={message}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
