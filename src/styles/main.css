@@ -137,7 +137,7 @@
 
 /* Use inline-block width so markers align like list-inside */
 .ol-pad-2 > li::before {
-  content: counter(ol, decimal-leading-zero) !important;
+  content: counter(ol, decimal-leading-zero) ". " !important;
   display: inline-block !important;
   width: 3ch !important;
   margin-left: -3ch !important;
@@ -146,7 +146,7 @@
 }
 
 .ol-pad-3 > li::before {
-  content: counter(ol, decimal-leading-zero) !important;
+  content: "00" counter(ol) ". " !important;
   display: inline-block !important;
   width: 4ch !important;
   margin-left: -4ch !important;
@@ -155,7 +155,7 @@
 }
 
 .ol-pad-4 > li::before {
-  content: counter(ol, decimal-leading-zero) !important;
+  content: "000" counter(ol) ". " !important;
   display: inline-block !important;
   width: 5ch !important;
   margin-left: -5ch !important;
