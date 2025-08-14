@@ -42,7 +42,7 @@ renderer.list = (token: Tokens.List) => {
 
   // Use responsive Tailwind classes for dynamic padding
   const listClassBase = token.ordered
-    ? 'space-y-1 mx-0 sm:mx-3 md:mx-4 lg:mx-6 bg-base-200 [&>li]:mb-3 md:[&>li]:mb-1 tracking-tighter md:tracking-normal leading-5 md:leading-7'
+    ? 'space-y-1 mx-0 sm:mx-3 md:mx-4 lg:mx-6 bg-base-200/65 [&>li]:mb-3 md:[&>li]:mb-1 tracking-tighter md:tracking-normal leading-5 md:leading-7'
     : 'list-disc list-inside space-y-1 mx-2 sm:mx-3 md:mx-4 lg:mx-6 [&>li]:mb-2'
 
   const padClass = padDigits >= 2
