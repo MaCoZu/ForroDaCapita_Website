@@ -40,8 +40,15 @@ renderer.list = (token: Tokens.List) => {
     }
   }
 
-  const listClassBase = token.ordered ? 'space-y-1 ml-4' : 'list-disc list-inside space-y-1 ml-4'
-  const padClass = padDigits >= 2 ? ` ol-pad-${padDigits} px-3 rounded` : (token.ordered ? ' list-decimal list-inside' : '')
+  // Use responsive Tailwind classes for dynamic padding
+  const listClassBase = token.ordered
+    ? 'space-y-1 mx-0 sm:mx-3 md:mx-4 lg:mx-6 bg-base-200 [&>li]:mb-3 md:[&>li]:mb-1 tracking-tighter md:tracking-normal leading-5 md:leading-7'
+    : 'list-disc list-inside space-y-1 mx-2 sm:mx-3 md:mx-4 lg:mx-6 [&>li]:mb-2'
+
+  const padClass = padDigits >= 2
+    ? ` ol-pad-${padDigits} pl-9 pr-3 py-4 sm:px-6 md:px-10 lg:pl-12 rounded`
+    : (token.ordered ? ' list-decimal list-inside' : '')
+
   const listClass = `${listClassBase}${padClass}`
   const styleAttr = padDigits >= 2 ? ` style="--ol-start: ${Number(token.start ?? 1) - 1}"` : ''
 
