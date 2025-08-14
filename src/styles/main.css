@@ -157,3 +157,27 @@
   margin-right: 0.25ch !important;
   font-weight: normal !important;
 }
+
+/* Tippy.js Custom Tooltip Theme */
+.tippy-box[data-theme~='custom-tooltip'] {
+  background-color: var(--color-secondary-content);
+  color: var(--color-base-100);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.2;
+  padding: 3px 7px;
+
+}
+
+.tippy-box[data-theme~='custom-tooltip'] .tippy-arrow {
+  color: var(--color-secondary-content);
+}
+
+/* Mobile-specific adjustments for Tippy.js */
+@media (max-width: 768px) {
+  .tippy-box[data-theme~='custom-tooltip'] {
+    font-size: 12px;
+    padding: 2px 5px;
+    max-width: 280px;
+  }
+}

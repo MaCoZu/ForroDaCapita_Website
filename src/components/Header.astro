@@ -11,23 +11,19 @@ import MobileHeader from './MobileHeader.astro'
   <div class="hidden md:flex flex-row items-top justify-between mx-auto">
     <FDCLogo />
 
-      <Menu containerClasses="md:mt-4" />
+    <Menu containerClasses="md:mt-4" />
 
-      <!-- Desktop image -->
-      <div
-        class="tooltip tooltip-bottom tooltip-info"
-        style="--tooltip-offset: 0.01rem;"
-        data-tip="Change theme"
-      >
-        <Image
-          src={SofiaIcon}
-          alt="Toggle dark/light theme"
-          class="md:w-25 md:h-25 mt-7 items-center justify-center cursor-pointer"
-          id="theme-switch-img"
-          role="button"
-          tabindex="0"
-        />
-      </div>
+    <!-- Desktop image -->
+      <Image
+        src={SofiaIcon}
+        alt="Toggle dark/light theme"
+        class="md:w-25 md:h-25 mt-7 items-center justify-center cursor-pointer"
+        id="theme-switch-img"
+        data-tippy-content="Toggle theme"
+        data-tippy-placement="bottom"
+        role="button"
+        tabindex="0"
+      />
   </div>
 
   <!-- Mobile layout -->

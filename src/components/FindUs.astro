@@ -58,19 +58,27 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
       <div class="flex flex-row justify-between gap-x-8 w-full">
         <div class={mergedTextClasses} set:html={whenwhere} />
         <div class="flex flex-col md:flex-row gap-8 justify-end items-start">
-          <TreasureMapIcon id="mapIcon" className="w-8 md:w-13" />
+          <TreasureMapIcon
+            id="mapIcon"
+            className="w-8 md:w-13  cursor-pointer"
+          />
           <GoogleIcon className="w-6 ml-1 md:ml-0 md:w-8" />
         </div>
       </div>
 
-      <div class="flex flex-row justify-between gap-x-8 w-full mt-3 items-baseline">
+      <div
+        class="flex flex-row justify-between gap-x-8 w-full mt-3 items-baseline"
+      >
         <div class={mergedTextClasses}>
           Once at Prinzenalle 58,
           <a id="wayLink" class="no-underline cursor-pointer">this is the way</a
           >
           to go.
         </div>
-            <ImagesIcon id="imagesIcon" className="min-w-8 md:w-12" />
+        <ImagesIcon
+          id="imagesIcon"
+          className="min-w-8 md:w-12 cursor-pointer"
+        />
       </div>
     </div>
   </div>
