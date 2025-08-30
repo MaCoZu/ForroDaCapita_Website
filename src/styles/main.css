@@ -42,17 +42,18 @@
   --color-info: #FFDE85;
 }
 
-.font-gokhan {
-  font-family: 'Gokhan';
+/* Font Variables - Change these to quickly switch fonts */
+:root {
+  --menu-font: 'Gokhan';
+  --heading-font: 'Gokhan';
+  --content-font: 'Merriweather', serif;
+  --tech-font: 'Work Sans', sans-serif;
 }
 
-.font-merri {
-  font-family: 'Merriweather', serif;
-}
-
-.font-work {
-  font-family: 'Work Sans', sans-serif;
-}
+.font-menu { font-family: var(--menu-font); }
+.font-heading { font-family: var(--heading-font); }
+.font-content { font-family: var(--content-font); }
+.font-tech { font-family: var(--tech-font); }
 
 :root {
   --fc-small-font-size: .85em;

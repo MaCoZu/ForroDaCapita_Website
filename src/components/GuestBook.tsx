@@ -160,7 +160,7 @@ const MessageBoard: FC<MessageBoardProps> = ({ containerClasses, HeadingClasses 
   const baseContentClasses = 'flex items-center justify-center w-full'
   const mergedContentClasses = twMerge(baseContentClasses, containerClasses)
 
-  const baseHeadingClasses = 'text-primary font-gokhan mb-2 text-center text-3xl font-bold tracking-wider'
+  const baseHeadingClasses = 'text-primary font-heading mb-2 text-center text-3xl font-bold tracking-wider'
   const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
   // Enhanced function to handle text selection and formatting

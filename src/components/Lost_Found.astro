@@ -20,11 +20,11 @@ const {
 const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'prose font-merri items-center text-primary-content'
+const baseTextClasses = 'prose font-content items-center text-primary-content'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
 
 const baseHeadingClasses =
-  'prose text-xl font-gokhan text-primary tracking-wider'
+  'prose text-xl font-heading text-primary tracking-wider'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
 const { lostfound } = (await executeQuery(`query Homepage { 
