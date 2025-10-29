@@ -55,7 +55,9 @@ const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
     <!-- The button to open modal -->
     <div class={mergedTextClasses}>
       Miss something? Have a look in the
-      <a id="boxLink" class="no-underline cursor-pointer"> box</a>.
+      <a id="boxLink" class="underline underline-offset-4 cursor-pointer">
+        box</a
+      >.
       <div class={mergedTextClasses + ' mt-3'} set:html={lf_conditions} />
     </div>
     <BoxIcon id="boxIcon" className="mb-2 min-w-9 md:w-12" />
