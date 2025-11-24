@@ -32,7 +32,7 @@ import 'tippy.js/dist/tippy.css'
     <main class="w-[90%] md:w-[80%] mx-auto">
       <Header />
       <slot />
-      <Footer ContainerClasses="mt-30" />
+      <Footer ContainerClasses="mt-30 font-content text-small" />
     </main>
     <script>
       import tippy from 'tippy.js'
@@ -111,38 +111,40 @@ import 'tippy.js/dist/tippy.css'
 
   // Centralized Tippy.js initialization
   function initializeTippy() {
-    // Find all elements with data-tippy-content
-    const tippyElements = document.querySelectorAll('[data-tippy-content]')
+      // Find all elements with data-tippy-content
+      const tippyElements = document.querySelectorAll('[data-tippy-content]')
 
-    tippyElements.forEach((element) => {
-      const content = element.getAttribute('data-tippy-content')
-      const placement = element.getAttribute('data-tippy-placement') || 'auto'
+      tippyElements.forEach((element) => {
+        const content = element.getAttribute('data-tippy-content')
+        const placement = element.getAttribute('data-tippy-placement')
 
-      tippy(element as any, {
-        content: content,
-        placement: placement,
-        arrow: true,
-        theme: 'custom-tooltip',
-        offset: [0, 8],
-        animation: 'scale',
-        duration: [200, 150],
-        hideOnClick: false,
-        trigger: 'mouseenter focus',
-        onShow(instance) {
-          const isMobile = window.innerWidth < 768
-          const elementPlacement = element.getAttribute('data-tippy-placement')
+        if (!content) return
 
-          if (isMobile && !elementPlacement) {
-            // Auto-adjust to top on mobile unless placement is explicitly set
-            instance.setProps({ placement: 'top' })
-          } else if (!elementPlacement) {
-            // Use auto placement on desktop
-            instance.setProps({ placement: 'auto' })
-          }
-        },
+        tippy(element as Element, {
+          content: content,
+          placement: (placement as any) || 'auto',
+          arrow: true,
+          theme: 'custom-tooltip',
+          offset: [0, 8],
+          animation: 'scale',
+          duration: [200, 150],
+          hideOnClick: false,
+          trigger: 'mouseenter focus',
+          onShow(instance) {
+            const isMobile = window.innerWidth < 768
+            const elementPlacement = element.getAttribute('data-tippy-placement')
+
+            if (isMobile && !elementPlacement) {
+              // Auto-adjust to top on mobile unless placement is explicitly set
+              instance.setProps({ placement: 'top' })
+            } else if (!elementPlacement) {
+              // Use auto placement on desktop
+              instance.setProps({ placement: 'auto' })
+            }
+          },
+        })
       })
-    })
-  }
+    }
 
   // Initialize when DOM is ready
   document.addEventListener('DOMContentLoaded', initializeTippy)

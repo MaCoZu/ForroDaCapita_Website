@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets'
+import safehands from '../assets/icons/safehands.svg'
+import { marked } from 'marked'
+import Article from '../components/Article.astro'
+import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+const response = await executeQuery(`query Homepage {
+    awareness {
+      awarepagetitle
+      awaremessage
+	  ateam
+	  ateamcontact
+      codeofconduct
+      }
+    }`)
+
+console.log('Query response:', response)
+
+const { awareness } = response as {
+  awareness?: {
+    awarepagetitle?: string
+    awaremessage?: string
+	ateam?: string
+	ateamcontact?: string
+    codeofconduct?: string
+  }
+}
+
+const pagetitle = marked.parse(awareness?.awarepagetitle ?? '')
+const message = marked.parse(awareness?.awaremessage ?? '')
+const coc = marked.parse(awareness?.codeofconduct ?? '')
+const contact = marked.parse(awareness?.ateamcontact ?? '')
+const ateam = marked.parse(awareness?.ateam ?? '')
+---
+
+<Layout title="Report">
+	<div class="w-full md:w-7/12 flex flex-col justify-center mx-auto">
+	  <h1
+	    class="flex justify-center page-title mb-5 md:mt-15 mt-5 mx-auto"
+	    set:html={pagetitle}
+	  />
+	  <div class="flex justify-center w-full">
+		<!-- <Image
+			src={safehands}
+	        alt="Safe Party"
+	        class="w-24 h-24 md:w-32 md:h-32 mt-7 mx-auto cursor-pointer transition-all duration-300 hover:scale-110 hover:opacity-80 [filter:brightness(0)_saturate(100%)_invert(21%)_sepia(11%)_saturate(1011%)_hue-rotate(314deg)_brightness(95%)_contrast(92%)] dark:[filter:brightness(0)_saturate(100%)_invert(98%)_sepia(8%)_saturate(370%)_hue-rotate(349deg)_brightness(104%)_contrast(96%)]"
+	        role="button"
+	        tabindex="0"
+	    /> -->
+	  </div>
+   <Article>
+    <div set:html={message}/>
+     <div set:html={ateam} />
+     <div set:html={contact} />
+     <div set:html={coc} />
+   </Article>
+
+
+
+	</div>
+</Layout>

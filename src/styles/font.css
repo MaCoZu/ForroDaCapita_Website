@@ -1,42 +1,17 @@
 @font-face {
-  font-family: 'Gokhan';
-  font-weight: normal;
-  font-style: normal;
-  src: url('/fonts/Gokhan.ttf') format('truetype');
-}
-
-
-
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 300;
-  /* Light */
-  font-style: normal;
-  src: url('/fonts/Merriweather-Light.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 400;
-  /* Regular */
-  font-style: normal;
-  src: url('/fonts/Merriweather-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Merriweather';
-  font-weight: 400;
-  /* Italic */
-  font-style: italic;
-  src: url('/fonts/Merriweather-Italic.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Merriweather';
+  font-family: 'LouisGeorge';
   font-weight: 700;
   /* Bold */
   font-style: normal;
-  src: url('/fonts/Merriweather-Bold.ttf') format('truetype');
+  src: url('/fonts/Louis George Cafe.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LouisGeorgeBold';
+  font-weight: 700;
+  /* Bold */
+  font-style: normal;
+  src: url('/fonts/Louis George Cafe Bold.ttf') format('truetype');
 }
 
 @font-face {
@@ -56,17 +31,15 @@
 }
 
 @font-face {
-  font-family: 'Work Sans';
-  font-weight: 600;
-  /* SemiBold */
+  font-family: 'Gokhan';
+  font-weight: normal;
   font-style: normal;
-  src: url('/fonts/WorkSans-SemiBold.ttf') format('truetype');
+  src: url('/fonts/Gokhan.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work Sans';
-  font-weight: 700;
-  /* Bold */
+  font-family: 'Gokhan+';
+  font-weight: normal;
   font-style: normal;
-  src: url('/fonts/WorkSans-Bold.ttf') format('truetype');
+  src: url('/fonts/Gokhan+.ttf') format('truetype');
 }

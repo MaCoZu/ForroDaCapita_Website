@@ -1,0 +1,244 @@
+<!-- SumUp Payment Modal -->
+<div id={sumupModalId} class="sumup-modal-overlay fixed inset-0 z-50 hidden w-screen h-screen">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-xs w-full h-full"></div>
+
+  <!-- Modal Content -->
+  <div class="relative flex min-h-full items-center justify-center p-4">
+    <div
+      class="relative w-full max-w-lg transform overflow-hidden rounded-md bg-white shadow-2xl transition-all"
+    >
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between border-b border-gray-200 px-2 py-4 sm:px-6"
+      >
+        <h3 class="text-lg font-semibold text-gray-900">
+          Donate to Forró da Capitá
+        </h3>
+
+        <!-- Close Cross  -->
+        <button
+          class="relative rounded-full p-2 transition-all duration-300 group"
+          aria-label="Close payment window"
+        >
+          <svg
+            width="40"
+            height="40"
+            class="w-5 h-5 sm:w-7 sm:h-7 text-primary-content group-hover:text-accent/90"
+            fill="currentColor"
+            stroke="currentColor"
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+         <!-- Widget Container -->
+         <div id={sumupWidgetId} class="sumup-widget-container p-4 sm:p-6 min-h-[400px]"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SumUp SDK Script -->
+  <!-- <script src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script> -->
+
+  <script
+    define:vars={{
+      donateBtnId,
+      sumupModalId,
+      sumupWidgetId,
+      returnUrl,
+    }}
+  >
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.getElementById(donateBtnId)
+      const modal = document.getElementById(sumupModalId)
+      const widgetContainer = document.getElementById(sumupWidgetId)
+      const closeBtn = modal.querySelector(
+        'button[aria-label="Close payment window"]'
+      )
+      const backdrop = modal.querySelector('.absolute.inset-0')
+
+      if (btn && modal && widgetContainer) {
+        let sumupCard = null
+        let isLoading = false
+
+         // Function to create checkout and show modal
+         async function showModal() {
+           if (isLoading) return
+
+           modal.classList.remove('hidden')
+           document.body.classList.add('modal-open') // Prevent background scrolling
+
+           // Show loading state
+           widgetContainer.innerHTML = '<div class="flex items-center justify-center min-h-[400px]"><div class="text-center"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div><p class="mt-4 text-gray-600">Creating payment...</p></div></div>'
+           isLoading = true
+
+           try {
+             // Create checkout via API
+             const response = await fetch('/api/sumup/checkout', {
+               method: 'POST',
+               headers: {
+                 'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                 amount: 1, // Minimum donation amount (1 EUR) - can be customized
+                 currency: 'EUR',
+                 description: 'Donation to Forró da Capita',
+                 return_url: returnUrl,
+               }),
+             })
+
+             if (!response.ok) {
+               const error = await response.json()
+               throw new Error(error.error || 'Failed to create checkout')
+             }
+
+             const { checkout_id } = await response.json()
+
+             // Clear loading state
+             widgetContainer.innerHTML = ''
+
+             // Wait a bit for the modal to be visible before mounting
+             setTimeout(() => {
+               try {
+                 // Mount the SumUp payment widget
+                 sumupCard = SumUpCard.mount({
+                   id: sumupWidgetId,
+                   checkoutId: checkout_id,
+                   onResponse: function (type, body) {
+                     console.log('SumUp Response Type:', type)
+                     console.log('SumUp Response Body:', body)
+
+                     switch (type) {
+                       case 'success':
+                         // Payment successful - redirect to return URL
+                         window.location.href = returnUrl
+                         break
+                       case 'fail':
+                         // Payment failed or cancelled
+                         console.log('Payment failed or cancelled')
+                         break
+                       case 'error':
+                         // Server error
+                         console.error('Payment error:', body)
+                         break
+                       case 'auth-screen':
+                         // User is being prompted for authentication
+                         console.log('Authentication required')
+                         break
+                       case 'invalid':
+                         // Form validation errors
+                         console.log('Form validation errors:', body)
+                         break
+                       case 'sent':
+                         // Form submitted for processing
+                         console.log('Payment form submitted')
+                         break
+                     }
+                   },
+                   showSubmitButton: true,
+                   country: 'DE',
+                   locale: 'en-GB',
+                   currency: 'EUR',
+                   showFooter: false,
+                 })
+               } catch (error) {
+                 console.error('Error mounting SumUp widget:', error)
+                 widgetContainer.innerHTML = '<div class="flex items-center justify-center min-h-[400px]"><div class="text-center text-red-600"><p>Error loading payment form. Please try again.</p></div></div>'
+               } finally {
+                 isLoading = false
+               }
+             }, 100)
+           } catch (error) {
+             console.error('Error creating checkout:', error)
+             widgetContainer.innerHTML = `<div class="flex items-center justify-center min-h-[400px]"><div class="text-center text-red-600"><p>Error: ${error.message || 'Failed to create payment checkout'}</p><button class="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" onclick="location.reload()">Retry</button></div></div>`
+             isLoading = false
+           }
+         }
+
+         // Function to hide modal
+         function hideModal() {
+           modal.classList.add('hidden')
+           document.body.classList.remove('modal-open') // Restore scrolling
+         }
+
+        // Handle button click to show modal
+        btn.addEventListener('click', function (e) {
+          e.preventDefault()
+          showModal()
+        })
+
+        // Handle close button
+        if (closeBtn) {
+          closeBtn.addEventListener('click', hideModal)
+        }
+
+        // Handle backdrop click
+        if (backdrop) {
+          backdrop.addEventListener('click', hideModal)
+        }
+
+        // Handle escape key
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            hideModal()
+          }
+        })
+
+        // Handle keyboard navigation for donate button
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            btn.click()
+          }
+        })
+      }
+    })
+  </script>
+
+   <style>
+     .golden-glow:hover {
+       filter: drop-shadow(0 0 2px #fcc200) drop-shadow(0 0 5px #fcc200)
+         drop-shadow(0 0 10px #ffd700);
+       color: rgb(254, 244, 187);
+     }
+
+     /* Ensure modal covers full viewport including scrollbar area */
+     .sumup-modal-overlay {
+       position: fixed !important;
+       top: 0 !important;
+       left: 0 !important;
+       width: 100vw !important;
+       height: 100vh !important;
+       margin: 0 !important;
+       padding: 0 !important;
+     }
+
+     /* Prevent body scroll when modal is open */
+     body.modal-open {
+       overflow: hidden !important;
+       padding-right: 0 !important;
+     }
+
+     /* Ensure SumUp widget has proper spacing */
+     .sumup-widget-container {
+       min-height: 400px !important;
+       padding: 1rem !important;
+     }
+
+     /* Fix SumUp widget text spacing */
+     .sumup-widget-container [data-sumup-id] {
+       line-height: 1.5 !important;
+     }
+
+     /* Ensure SumUp widget container doesn't overflow */
+     .sumup-widget-container .sumup-widget {
+       max-width: 100% !important;
+       overflow: visible !important;
+     }
+   </style>

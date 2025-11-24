@@ -1,20 +1,14 @@
 ---
 import { executeQuery } from '../lib/datocms.js'
 
-const paypalFormAction = 'https://www.paypal.com/cgi-bin/webscr'
-const paypalFields = {
-  cmd: '_donations',
-  business: 'forrodacapitaev@gmx.de',
-  item_name: 'Donation to Forró da Capita',
-  currency_code: 'EUR',
-  no_shipping: '1',
-  no_note: '1',
-  return: 'https://forrodacapita.vercel.app',
-}
+// SumUp configuration
+const returnUrl = 'https://forrodacapita.vercel.app'
+
 // Use a random string for unique IDs (Astro does not have generateUniqueId)
-const uniqueId = Math.random().toString(36).slice(2, 10)
+const uniqueId = "410fc44a-5956-44e1-b5cc-19c6f8d727a4"
 const donateBtnId = `donate-btn-${uniqueId}`
-const donateFormId = `paypal-donate-form-${uniqueId}`
+const sumupModalId = `sumup-modal-${uniqueId}`
+const sumupWidgetId = `sumup-widget-${uniqueId}`
 
 const { paypal } = (await executeQuery(
   `query { paypaltooltip { tooltiptext } }`
@@ -22,63 +16,35 @@ const { paypal } = (await executeQuery(
   paypal?: { tooltiptext: string }
 }
 const tooltipText =
-  paypal?.tooltiptext || 'Donate or pay for your drinks with PayPal'
+  paypal?.tooltiptext || 'Donate or pay for your drinks with SumUp'
 ---
 
 <!-- Donate Button with Tippy.js Tooltip -->
-<button
-  id={donateBtnId}
-  class="text-2xl font-menu tracking-wider transition duration-600 ease-in-out golden-glow cursor-pointer"
-  tabindex="0"
-  role="button"
-  data-tippy-content={tooltipText}
-  data-tippy-placement="auto"
->
-  Donate
-</button>
-
-<!-- PAYPAL  -->
 <form
-  id={donateFormId}
-  action={paypalFormAction}
+  action="https://www.paypal.com/cgi-bin/webscr"
   method="post"
   target="_top"
-  style="display:none;"
+  style="display: inline;"
 >
-  {
-    Object.entries(paypalFields).map(([name, value]) => (
-      <input type="hidden" name={name} value={value} />
-    ))
-  }
+  <input type="hidden" name="cmd" value="_donations" />
+  <input type="hidden" name="business" value="forrodacapitaev@gmx.de" />
+  <input type="hidden" name="item_name" value="Donation to Forró da Capita" />
+  <input type="hidden" name="currency_code" value="EUR" />
+  <input type="hidden" name="no_shipping" value="1" />
+  <input type="hidden" name="no_note" value="1" />
+  <input type="hidden" name="return" value="https://forrodacapita.vercel.app" />
+
+  <button
+    id={donateBtnId}
+    type="submit"
+    class="text-menu-large font-menu uppercase tracking-wider transition duration-600 ease-in-out golden-glow cursor-pointer"
+    tabindex="0"
+    data-tippy-content={tooltipText}
+    data-tippy-placement="auto"
+  >
+    Donate
+  </button>
 </form>
 
-<script define:vars={{ donateBtnId, donateFormId }}>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Handle PayPal form submission (Tippy.js is now handled centrally)
-    const btn = document.getElementById(donateBtnId)
-    const form = document.getElementById(donateFormId)
-    
-    if (btn && form) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault()
-        if (form instanceof HTMLFormElement) form.submit()
-      })
-      
-      btn.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          if (form instanceof HTMLFormElement) form.submit()
-        }
-      })
-    }
-  })
-</script>
 
-<style>
-  .golden-glow:hover {
-    filter: drop-shadow(0 0 2px #fcc200) 
-    drop-shadow(0 0 5px #fcc200)
-      drop-shadow(0 0 10px #ffd700);
-    color: rgb(254, 244, 187);
-  }
-</style>
+</div>

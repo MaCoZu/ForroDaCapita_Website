@@ -20,15 +20,14 @@ const {
 const baseContainerClasses = 'w-full'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 
-const baseTextClasses = 'prose font-content items-center text-primary-content'
+const baseTextClasses = 'text-base-flex'
 const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
 
-const baseHeadingClasses =
-  'prose text-xl font-heading text-primary tracking-wider'
+const baseHeadingClasses = 'heading-base-styles'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 
-const { lostfound } = (await executeQuery(`query Homepage { 
-    lostfound { 
+const { lostfound } = (await executeQuery(`query Homepage {
+    lostfound {
            lfinfo
            lfimages {
             id
@@ -53,12 +52,14 @@ const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
   <h1 class={mergedHeadingClasses}>Lost and Found</h1>
   <div class="flex flex-row items-center justify-between">
     <!-- The button to open modal -->
-    <div class={mergedTextClasses}>
-      Miss something? Have a look in the
-      <a id="boxLink" class="underline underline-offset-4 cursor-pointer">
-        box</a
-      >.
-      <div class={mergedTextClasses + ' mt-3'} set:html={lf_conditions} />
+    <div class={mergedTextClasses} data-typography="applied">
+      <span>
+        Miss something? Have a look in the
+        <a id="boxLink" class="no-underline cursor-pointer">
+          box</a
+        >.
+      </span>
+      <div class="markdown-content" set:html={lf_conditions} />
     </div>
     <BoxIcon id="boxIcon" className="mb-2 min-w-9 md:w-12" />
   </div>

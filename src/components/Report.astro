@@ -1,0 +1,43 @@
+---
+import { twMerge } from 'tailwind-merge'
+
+interface Props {
+  ContainerClasses?: string
+  TextClasses?: string
+  HeadingClasses?: string
+}
+
+const {
+  ContainerClasses = '',
+  TextClasses = '',
+  HeadingClasses,
+}: Props = Astro.props
+
+const baseContainerClasses = 'w-full'
+const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
+
+const baseTextClasses = 'text-base-flex'
+const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
+
+const baseHeadingClasses = 'heading-base-styles'
+const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+---
+
+<div class={mergedContainerClasses}>
+  <h1 class={mergedHeadingClasses}>Report An Issue</h1>
+  <div class="flex flex-row items-center justify-between">
+    <!-- The button to open modal -->
+    <div class={mergedTextClasses} data-typography="applied">
+      <span>
+        Our awareness team is here to help you with any issues you may have. Read our code of conduct and who to talk to <a href="/coc" class="underline underline-offset-4 cursor-pointer"
+          >here</a
+        >.
+
+        <!-- You can approach them personally, per email, telegram or anonymously via this
+        <a href="/report" class="underline underline-offset-4 cursor-pointer"
+          >form</a
+        >. -->
+      </span>
+    </div>
+  </div>
+</div>

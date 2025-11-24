@@ -8,7 +8,7 @@ interface Props {
 
 const { ContainerClasses }: Props = Astro.props
 const baseContainerClasses =
-  'w-full items-top justify-between mx-auto mt-5 mb-5 text-primary-content'
+  'w-full items-top justify-between mx-auto mt-5 mb-5 text-primary-content text-small'
 const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
 ---
 
@@ -27,7 +27,7 @@ const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
           ></path>
         </svg>
       </div>
-      <div class="flex flex-col text-xs md:text-sm font-normal text-left ml-1">
+      <div class="flex flex-col text-left ml-1">
         <span class="">{today.getFullYear()} Forró da Capita.</span>
         <span class="">All rights reserved.</span>
       </div>
@@ -37,7 +37,7 @@ const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
       <a href="https://macozu.github.io" class="font-semibold">
         <div class="flex flex-row gap-x-3 items-center justify-end w-full">
           <div
-            class="flex flex-col text-xs md:text-sm font-normal text-right transition delay-50 duration-300 ease-in-out will-change-transform"
+            class="flex flex-col text-right transition delay-50 duration-300 ease-in-out will-change-transform"
           >
             <span class="">Code & Graphics</span>
             <span class="">Marco Zausch</span>

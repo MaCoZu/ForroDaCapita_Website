@@ -1,0 +1,163 @@
+---
+import { marked } from 'marked'
+import Article from '../components/Article.astro'
+import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+const response = await executeQuery(`query Homepage {
+    awareness {
+      awarepagetitle
+      awaremessage
+	  ateam
+	  ateamcontact
+      codeofconduct
+      }
+    }`)
+
+console.log('Query response:', response)
+
+const { awareness } = response as {
+  awareness?: {
+    awarepagetitle?: string
+    awaremessage?: string
+	ateam?: string
+	ateamcontact?: string
+    codeofconduct?: string
+  }
+}
+
+const pagetitle = marked.parse(awareness?.awarepagetitle ?? '')
+const message = marked.parse(awareness?.awaremessage ?? '')
+const coc = marked.parse(awareness?.codeofconduct ?? '')
+const contact = marked.parse(awareness?.ateamcontact ?? '')
+const ateam = marked.parse(awareness?.ateam ?? '')
+---
+
+<Layout title="Report">
+	<div class="w-full md:w-7/12 flex flex-col justify-center mx-auto">
+	  <h1
+	    class="flex justify-center page-title mb-5 md:mt-15 mt-5 mx-auto"
+	    set:html={pagetitle}
+	  />
+	  <h2
+	    class="flex-col justify-center markdown-content mb-5 mx-auto"
+	    set:html={message}
+	  />
+
+	  <div class="flex flex-col w-full mx-auto">
+	    <div class="w-full">
+	      <div class="tabs-container">
+	        <!-- Tab Buttons -->
+	        <div class="border-b border-gray-300">
+	          <ul class="flex flex-wrap text-small font-content text-center">
+	            <li class="me-2">
+	              <button
+	                data-tab-target="#tab_team"
+	                class="tab-button inline-flex items-center justify-center px-6 py-3 border-b-2 border-content text-content font-semibold rounded-t-lg transition-all duration-300 ease-in-out active"
+	              >
+	                Awareness Team
+	              </button>
+	            </li>
+	            <li class="me-2">
+	              <button
+	                data-tab-target="#tab_coc"
+	                class="tab-button inline-flex items-center justify-center px-6 py-3 border-b-2 border-transparent text-gray-500 rounded-t-lg hover:text-content hover:border-content/50 hover:bg-base-200/30 transition-all duration-300 ease-in-out"
+	              >
+	                Code of Conduct
+	              </button>
+	            </li>
+	            <li class="me-2">
+	              <button
+	                data-tab-target="#tab_contact"
+	                class="tab-button inline-flex items-center justify-center px-6 py-3 border-b-2 border-transparent text-gray-500 rounded-t-lg hover:text-content hover:border-content/50 hover:bg-base-200/30 transition-all duration-300 ease-in-out"
+	              >
+	                Contact
+	              </button>
+	            </li>
+	            <!-- <li class="me-2">
+	              <button
+	                data-tab-target="#tab_report"
+	                class="tab-button inline-flex items-center justify-center px-6 py-3 border-b-2 border-transparent text-gray-500 rounded-t-lg hover:text-content hover:border-content/50 hover:bg-base-200/30 transition-all duration-300 ease-in-out"
+	              >
+	                Report Anonymously
+	              </button>
+	            </li> -->
+	          </ul>
+	        </div>
+
+	        <!-- Tab Content -->
+	        <div class="w-full">
+	          <div id="tab_team" class="tab-content mt-8" role="tabpanel">
+	            <Article>
+	              <div set:html={ateam} />
+	            </Article>
+	          </div>
+	          <div id="tab_coc" class="tab-content mt-8 hidden" role="tabpanel">
+	            <Article>
+	              <div set:html={coc} />
+	            </Article>
+	          </div>
+	          <div id="tab_contact" class="tab-content mt-8 hidden" role="tabpanel">
+	            <Article>
+	              <div set:html={contact} />
+	            </Article>
+	          </div>
+
+	          <!-- <div id="tab_report" class="tab-content mt-8 hidden" role="tabpanel">
+	            <h3 class="heading-2-styles mb-4">Report Anonymously</h3>
+	            <form
+	              action="https://formsubmit.co/forrodacapitaev@gmx.de"
+	              method="POST"
+	            >
+	              <textarea
+	                name="report"
+	                class="textarea textarea-bordered text-primary-content bg-base-100 placeholder-primary-content/50 focus:ring-primary-content mt-1 h-32 w-full resize-y rounded-md font-content text-content focus:border-transparent focus:ring-1 focus:outline-none"
+	                placeholder={`Describe what happened...`}
+	                required></textarea>
+
+	              <button
+	                type="submit"
+	                class="btn bg-base-200 hover:bg-base-300 my-2 rounded-md font-content font-semibold transition-colors"
+	              >
+	                Submit Anonymously
+	              </button>
+	            </form>
+	          </div> -->
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('[data-tab-target]')
+      const tabs = document.querySelectorAll('[role="tabpanel"]')
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault()
+
+          const targetId = button.getAttribute('data-tab-target')
+          const targetTab = targetId ? document.querySelector(targetId) : null
+
+          // Hide all tabs and remove active class from buttons
+          tabs.forEach((tab) => tab.classList.add('hidden'))
+          buttons.forEach((btn) => {
+            btn.classList.remove('text-content', 'border-content', 'font-semibold', 'active')
+            btn.classList.add('text-gray-500', 'border-transparent')
+          })
+
+          // Show the selected tab and set active class on the button
+          if (targetTab) {
+            targetTab.classList.remove('hidden')
+          }
+
+          button.classList.remove('text-gray-500', 'border-transparent')
+          button.classList.add('text-content', 'border-content', 'font-semibold', 'active')
+        })
+      })
+    })
+  </script>
+</Layout>

@@ -11,11 +11,11 @@ const { containerClasses = '' }: Props = Astro.props
 
 <!-- Custom Menu Container -->
 <div class={twMerge('hidden md:block relative', containerClasses)}>
-  <nav class="flex items-center space-x-8 text-primary">
+  <nav class="flex items-center space-x-8 text-primary uppercase">
     <!-- Home Button -->
     <a
       href="/"
-      class="text-2xl font-menu tracking-wider transition duration-600 ease-in-out hover:text-secondary"
+      class="text-menu-large font-menu tracking-wider transition duration-600 ease-in-out hover:text-secondary"
     >
       Home
     </a>
@@ -26,7 +26,7 @@ const { containerClasses = '' }: Props = Astro.props
     <!-- More Dropdown -->
     <div class="relative group">
       <button
-        class="text-2xl font-menu tracking-wider transition duration-600 ease-in-out hover:text-secondary flex items-center"
+        class="text-menu-large font-menu uppercase tracking-wider transition duration-600 ease-in-out hover:text-secondary flex items-center"
       >
         More
       </button>
@@ -39,12 +39,19 @@ const { containerClasses = '' }: Props = Astro.props
           <!-- pa58  -->
           <a
             href="/pa58"
-            class="block px-2 py-2 text-[1.4rem] font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
+            class="block px-2 py-2 text-menu-small font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
           >
             PA58
           </a>
-          <!--  Forró SVG -->
           <a
+            href="/forro"
+            class="block px-2 py-2 text-menu-small font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
+          >
+            FORRÓ
+          </a>
+
+          <!--  Forró SVG -->
+          <!-- <a
             href="/forro"
             class="block px-2 py-2 text-2xl font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
           >
@@ -63,12 +70,12 @@ const { containerClasses = '' }: Props = Astro.props
                 </path>
               </g>
             </svg>
-          </a>
+          </a> -->
 
           <!-- Calendar -->
           <a
             href="/calendar"
-            class="block px-2 py-2 text-[1.4rem] font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
+            class="block px-2 py-2 text-menu-small font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
           >
             Calendar
           </a>
@@ -76,13 +83,13 @@ const { containerClasses = '' }: Props = Astro.props
           <a
             href="https://forrocapita.admin.datocms.com/editor"
             target="_blank"
-            class="block px-2 py-2 text-[1.4rem] font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
+            class="block px-2 py-2 text-menu-small font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
           >
             Admin
           </a>
         </div>
       </div>
-    </div> 
+    </div>
   </nav>
 </div>
 

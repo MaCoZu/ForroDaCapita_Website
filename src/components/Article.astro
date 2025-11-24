@@ -3,15 +3,20 @@ import { twMerge } from 'tailwind-merge'
 const { className = '', lang = 'en' } = Astro.props
 
 // Base styles that are always applied
+// prose classes now properly configured in tailwind.config.mjs
 const baseClasses = `
   max-w-prose
-  markdown-content
-  prose prose-stone text-lg
-  font-content font-normal
-  leading-loose tracking-normal
+  prose prose-stone
+  font-content
+  text-content
+  leading-loose
+  tracking-normal
   dark:prose-invert
   prose-p:text-pretty
   prose-img:rounded-xl
+  prose-headings:font-heading
+  prose-headings:text-primary
+  prose-a:text-primary-content
 `
 
 // Merge with any custom classes

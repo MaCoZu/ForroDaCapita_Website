@@ -1,0 +1,224 @@
+---
+import Layout from '../layout/Layout.astro'
+import Article from '../components/Article.astro'
+---
+
+<Layout title="Typography Test">
+  <div class="max-w-4xl mx-auto py-10">
+    <h1 class="page-title mb-10">Typography System Test Page</h1>
+
+    <!-- Test 1: Heading Styles -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-3">Heading 1 - Base Styles</h1>
+      <h2 class="heading-2-styles mb-3">Heading 2 - Secondary Styles</h2>
+      <p class="text-base-styles mb-5">
+        This paragraph uses <strong>text-base-styles</strong>. It should use
+        the LouisGeorge font, have proper line height (2), and use the
+        primary-content color. <a href="#test">This is a link</a> with
+        underline styling.
+      </p>
+    </section>
+
+    <!-- Test 2: Markdown Content Class -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Markdown Content Styles</h1>
+      <div class="markdown-content">
+        <h2>This is an H2 inside markdown-content</h2>
+        <p>
+          This paragraph is inside a <code>markdown-content</code> div. It
+          should render with LouisGeorge font and proper spacing. The text
+          should wrap prettily and maintain good readability.
+        </p>
+        <ul>
+          <li>First list item with LouisGeorge font</li>
+          <li>Second list item testing font application</li>
+          <li>Third item with <strong>bold text</strong> and <em>italic</em></li>
+        </ul>
+        <p>
+          Here's another paragraph with a
+          <a href="#link">clickable link</a> that should be underlined.
+        </p>
+        <h3>Subheading Level 3</h3>
+        <p>
+          Testing <strong>strong emphasis</strong> and normal text together.
+        </p>
+      </div>
+    </section>
+
+    <!-- Test 3: Text with Flex (Icon Layout) -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Flex Layout (for icons)</h1>
+      <div class="text-base-flex gap-3">
+        <p>This text uses text-base-flex for icon alignment</p>
+        <svg
+          class="w-6 h-6"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Test 4: Article Component with Prose -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Article Component (Full Prose)</h1>
+      <Article>
+        <h1>Article H1 - Should use LouisGeorge Heading Font</h1>
+        <p>
+          This content is inside the <code>Article</code> component. It should
+          use the full Tailwind Typography prose styles combined with our
+          custom font families.
+        </p>
+        <h2>Article H2 - Also LouisGeorge</h2>
+        <p>
+          The Article component is configured with:
+        </p>
+        <ul>
+          <li>LouisGeorge font for body text (font-content)</li>
+          <li>LouisGeorge for headings (font-heading)</li>
+          <li>Responsive text sizing via CSS variables</li>
+          <li>Line height of 2 (leading-loose)</li>
+          <li>Proper color theming with primary-content</li>
+        </ul>
+        <blockquote>
+          <p>
+            This is a blockquote. It should maintain the LouisGeorge font and
+            proper styling from the prose plugin.
+          </p>
+        </blockquote>
+        <p>
+          Here's a paragraph with <strong>bold text</strong>,
+          <em>italic text</em>, and a <a href="#test">test link</a> to verify
+          all inline styles work correctly.
+        </p>
+        <ol>
+          <li>Ordered list item one</li>
+          <li>Ordered list item two</li>
+          <li>Ordered list item three</li>
+        </ol>
+        <h3>Article H3</h3>
+        <p>
+          All heading levels should use the heading font (LouisGeorge) and be
+          clearly distinguishable from body text.
+        </p>
+        <h4>Article H4</h4>
+        <p>Even smaller headings should maintain proper hierarchy.</p>
+      </Article>
+    </section>
+
+    <!-- Test 5: Font Family Classes -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Font Family Classes</h1>
+      <div class="space-y-3">
+        <p class="font-menu text-2xl">
+          This uses <code>font-menu</code> - LouisGeorgeBold
+        </p>
+        <p class="font-heading text-2xl">
+          This uses <code>font-heading</code> - LouisGeorge
+        </p>
+        <p class="font-content text-2xl">
+          This uses <code>font-content</code> - LouisGeorge
+        </p>
+        <p class="font-tech text-2xl">
+          This uses <code>font-tech</code> - Work Sans
+        </p>
+      </div>
+    </section>
+
+    <!-- Test 6: Responsive Text Sizes -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Responsive Text Sizes</h1>
+      <div class="space-y-3">
+        <p class="text-heading-1">text-heading-1 (1.7rem mobile / 1.69rem desktop)</p>
+        <p class="text-heading-2">text-heading-2 (1.5rem mobile / 1.43rem desktop)</p>
+        <p class="text-content">text-content (1rem mobile / 1.3rem desktop)</p>
+        <p class="text-small">text-small (0.95rem mobile / 0.975rem desktop)</p>
+      </div>
+    </section>
+
+    <!-- Test 7: Color Theming -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Color System</h1>
+      <div class="space-y-2">
+        <p class="text-primary">text-primary (--color-primary)</p>
+        <p class="text-primary-content">
+          text-primary-content (--color-primary-content)
+        </p>
+        <p class="text-secondary">text-secondary (--color-secondary)</p>
+        <p class="text-accent">text-accent (--color-accent)</p>
+        <p class="text-base-content">text-base-content (--color-base-content)</p>
+      </div>
+    </section>
+
+    <!-- Test 8: Dark Mode Toggle Hint -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Dark Mode Test</h1>
+      <p class="text-base-styles">
+        Toggle the theme using the theme switcher to verify all typography
+        maintains proper contrast and readability in both light (retro) and
+        dark (coffee) themes.
+      </p>
+      <div class="markdown-content mt-5">
+        <h2>Markdown in Dark Mode</h2>
+        <p>
+          All text should automatically adjust colors for optimal readability.
+        </p>
+        <ul>
+          <li>Check heading contrast</li>
+          <li>Verify link visibility</li>
+          <li>Test body text readability</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Test 9: Page Title Style -->
+    <section class="mb-15">
+      <h1 class="heading-base-styles mb-5">Page Title Example</h1>
+      <h1 class="page-title">This is a Page Title (3xl, semibold)</h1>
+      <p class="text-base-styles mt-3">
+        Page titles use the <code>page-title</code> class and should be
+        prominently displayed at 3xl size with semibold weight.
+      </p>
+    </section>
+
+    <!-- Instructions -->
+    <section class="mt-20 p-8 bg-base-200 rounded-lg">
+      <h2 class="heading-2-styles mb-5">Test Checklist</h2>
+      <div class="markdown-content">
+        <p>Verify the following:</p>
+        <ol>
+          <li>✓ All text uses LouisGeorge font (except font-tech which uses Work Sans)</li>
+          <li>✓ Headings are clearly distinguishable from body text</li>
+          <li>✓ Links are underlined and use primary-content color</li>
+          <li>✓ Text sizes are responsive (check mobile vs desktop)</li>
+          <li>✓ Dark mode (coffee theme) has proper contrast</li>
+          <li>✓ Lists maintain proper indentation and styling</li>
+          <li>✓ Flex layouts keep text aligned with icons</li>
+          <li>✓ Article component properly styles structured content</li>
+        </ol>
+        <p><strong>How to use this page:</strong></p>
+        <ul>
+          <li>View at different screen sizes (mobile &lt;768px, desktop ≥768px)</li>
+          <li>Toggle between light and dark themes</li>
+          <li>Inspect elements to verify computed styles</li>
+          <li>Compare against the original design specifications</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Spacing helper */
+  .space-y-2 > * + * {
+    margin-top: 0.5rem;
+  }
+  .space-y-3 > * + * {
+    margin-top: 0.75rem;
+  }
+</style>

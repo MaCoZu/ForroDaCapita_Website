@@ -13,9 +13,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@astrojs/netlify": "^6.4.0",
-    "@astrojs/react": "^4.3.0",
-    "@astrojs/vercel": "^8.2.1",
+    "@astrojs/netlify": "^6.6.0",
+    "@astrojs/react": "^4.4.0",
+    "@astrojs/vercel": "^9.0.0",
     "@datocms/astro": "^0.6.2",
     "@datocms/cda-client": "^0.2.7",
     "@eslint/eslintrc": "^3.3.1",
@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "^8.35.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "^5.10.1",
+    "astro": "^5.15.1",
     "astro-eslint-parser": "^1.2.2",
     "daisyui": "^5.0.43",
     "datocms-client": "^3.5.24",
@@ -60,7 +60,7 @@
     "typescript-eslint": "^8.35.0"
   },
   "devDependencies": {
-    "@astrojs/node": "^9.3.0",
+    "@astrojs/node": "^9.5.0",
     "@tailwindcss/typography": "^0.5.16",
     "typescript": "^5.8.3"
   }

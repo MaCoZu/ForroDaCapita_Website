@@ -4,6 +4,7 @@ import FindUs from '../components/FindUs.astro'
 import GuestBook from '../components/GuestBook.tsx'
 import Lost_Found from '../components/Lost_Found.astro'
 import News from '../components/News.astro'
+import Report from '../components/Report.astro'
 import Layout from '../layout/Layout.astro'
 ---
 
@@ -11,30 +12,41 @@ import Layout from '../layout/Layout.astro'
   <div
     class="flex flex-col md:flex-row justify-between items-top mt-7 md:mt-20 gap-x-10"
   >
-    <div class="w-full md:w-7/12 flex flex-col justify-center mx-auto gap-y-10 md:gap-y-15">
+    <!-- <h1 class="font-heading text-8xl">ÜÄÖáíç</h1> -->
+
+    <div
+      class="w-full md:w-7/12 flex flex-col justify-center mx-auto gap-y-10 md:gap-y-18"
+    >
       <News
-        HeadingClasses="text-2xl"
+        HeadingClasses="text-heading-1"
         ContainerClasses="order-1"
-        TextClasses="text-xl pt-2"
+        TextClasses="text-content pt-2"
       />
       <FindUs
-        HeadingClasses="text-2xl"
+        HeadingClasses="text-heading-1"
         ContainerClasses="order-2 mt-0"
-        TextClasses="text-primary-content text-lg"
+        TextClasses="text-primary-content text-content"
       />
       <Lost_Found
-        HeadingClasses="text-2xl"
+        HeadingClasses="text-heading-1"
         ContainerClasses="order-3"
-        TextClasses="text-primary-content text-lg"
+        TextClasses="text-primary-content text-content"
+      />
+      <Report
+        HeadingClasses="text-heading-1"
+        ContainerClasses="order-4"
+        TextClasses="text-primary-content text-content"
       />
       <About
-        HeadingClasses="text-2xl"
+        HeadingClasses="text-heading-1"
         ContainerClasses="order-4"
-        TextClasses="text-primary-content text-lg"
+        TextClasses="text-primary-content text-content"
       />
-      <GuestBook client:only="react" 
-        HeadingClasses="text-2xl"
-      containerClasses="order-4 mt-20" />
+      <!-- <GuestBook
+        client:only="react"
+        HeadingClasses="text-heading-1"
+        containerClasses="order-4 mt-20"
+      /> -->
       <!-- <div class="hidden md:block w-full mt-12">
         <Image
           src={Mascot}
