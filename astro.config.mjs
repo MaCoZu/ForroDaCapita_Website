@@ -13,6 +13,7 @@ export default defineConfig({
       SUMUP_API_KEY: envField.string({
         context: 'server',
         access: 'secret',
+        optional: true,
       }),
       // Add other environment variables you're usings
       SUPABASE_URL: envField.string({
