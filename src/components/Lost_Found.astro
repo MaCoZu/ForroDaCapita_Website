@@ -6,12 +6,14 @@ import BoxIcon from './Icon_Box.astro'
 import Slider from './SplideSlider.astro'
 
 interface Props {
+  id?: string
   ContainerClasses?: string
   TextClasses?: string
   HeadingClasses?: string
 }
 
 const {
+  id,
   ContainerClasses = '',
   TextClasses = '',
   HeadingClasses,
@@ -48,7 +50,7 @@ const lf_images = lostfound?.lfimages ?? []
 const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
 ---
 
-<div class={mergedContainerClasses}>
+<div id={id} class={mergedContainerClasses}>
   <h1 class={mergedHeadingClasses}>Lost and Found</h1>
   <div class="flex flex-row items-center justify-between">
     <!-- The button to open modal -->

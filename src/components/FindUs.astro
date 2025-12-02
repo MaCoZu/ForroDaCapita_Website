@@ -29,12 +29,15 @@ const whenwhere = marked.parse(find58?.whenwhere ?? '')
 const wayimages = find58?.findus ?? []
 
 interface Props {
+
+  id?: string
   ContainerClasses?: string
   TextClasses?: string
   HeadingClasses?: string
 }
 
 const {
+  id,
   ContainerClasses = '',
   TextClasses = '',
   HeadingClasses,
@@ -50,7 +53,7 @@ const baseHeadingClasses = 'heading-base-styles'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 ---
 
-<div class={mergedContainerClasses}>
+<div id={id} class={mergedContainerClasses}>
   <div>
     <h1 class={mergedHeadingClasses}>Find Us</h1>
     <div class="w-full">
@@ -134,19 +137,49 @@ const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
     const mapModalContent = document.getElementById('mapModalContent')
     const closeModal = document.getElementById('closeModal')
 
+    function openMapModal() {
+      if (mapModal) {
+        mapModal.classList.remove('hidden')
+        window.location.hash = 'map'
+      }
+    }
+
+    function closeMapModal() {
+      if (mapModal) {
+        mapModal.classList.add('hidden')
+        if (window.location.hash === '#map') {
+          history.replaceState(null, '', window.location.pathname)
+        }
+      }
+    }
+
     if (mapIcon && mapModal && mapModalContent && closeModal) {
       mapIcon.addEventListener('click', (e) => {
         e.preventDefault()
-        mapModal.classList.remove('hidden')
+        openMapModal()
       })
 
       closeModal.addEventListener('click', () => {
-        mapModal.classList.add('hidden')
+        closeMapModal()
       })
 
       mapModal.addEventListener('click', (e) => {
         if (!mapModalContent.contains(e.target as Node | null)) {
-          mapModal.classList.add('hidden')
+          closeMapModal()
+        }
+      })
+
+      // Check if page loaded with #map hash
+      if (window.location.hash === '#map') {
+        openMapModal()
+      }
+
+      // Listen for hash changes
+      window.addEventListener('hashchange', () => {
+        if (window.location.hash === '#map') {
+          openMapModal()
+        } else if (mapModal && !mapModal.classList.contains('hidden')) {
+          closeMapModal()
         }
       })
     }

@@ -1,4 +1,4 @@
-// src/components/Calendar.jsx
+	// src/components/Calendar.jsx
 import dayGridPlugin from "@fullcalendar/daygrid";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import icalendarPlugin from "@fullcalendar/icalendar";

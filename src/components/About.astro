@@ -2,12 +2,14 @@
 import { twMerge } from 'tailwind-merge'
 
 interface Props {
+  id: string
   ContainerClasses?: string
   TextClasses?: string
   HeadingClasses?: string
 }
 
 const {
+  id,
   ContainerClasses = '',
   TextClasses = '',
   HeadingClasses,
@@ -23,7 +25,7 @@ const baseHeadingClasses = 'heading-base-styles'
 const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
 ---
 
-<div class={mergedContainerClasses}>
+<div id={id} class={mergedContainerClasses}>
   <div>
     <h1 class={mergedHeadingClasses}>About</h1>
     <div class={mergedTextClasses} data-typography="applied">
