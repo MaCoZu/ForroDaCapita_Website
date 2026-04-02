@@ -1,51 +1,18 @@
 ---
-import { twMerge } from 'tailwind-merge'
-
-interface Props {
-  id: string
-  ContainerClasses?: string
-  TextClasses?: string
-  HeadingClasses?: string
-}
-
-const {
-  id,
-  ContainerClasses = '',
-  TextClasses = '',
-  HeadingClasses,
-}: Props = Astro.props
-
-const baseContainerClasses = 'w-full order-4'
-const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
-
-const baseTextClasses = 'text-base-flex rounded-xl'
-const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
-
-const baseHeadingClasses = 'heading-base-styles'
-const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+const { id } = Astro.props
 ---
 
-<div id={id} class={mergedContainerClasses}>
-  <div>
-    <h1 class={mergedHeadingClasses}>About</h1>
-    <div class={mergedTextClasses} data-typography="applied">
-      <p>
-        Read about the
-        <a
-          href="/pa58"
-          class="underline underline-offset-4 hover:no-underline cursor-pointer"
-          role="button"
-        >
-          housing project
-        </a> at Prinzenallee 58 or our
-        <a
-          href="/forro"
-          class="underline underline-offset-4 hover:no-underline cursor-pointer"
-          role="button"
-        >
-          Forró venue
-        </a> there.
-      </p>
-    </div>
+<div id={id} class="w-full">
+  <h2 class="text-heading-2">About</h2>
+  <div class="text-base-styles">
+    <p>
+      Read about the
+      <a href="/pa58" class="underline underline-offset-4 hover:no-underline">
+        housing project
+      </a> at Prinzenallee 58 or our
+      <a href="/forro" class="underline underline-offset-4 hover:no-underline">
+        Forró venue
+      </a> there.
+    </p>
   </div>
 </div>

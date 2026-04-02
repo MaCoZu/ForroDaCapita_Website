@@ -1,48 +1,20 @@
 ---
 import { marked } from 'marked'
-import { twMerge } from 'tailwind-merge'
 import { executeQuery } from '../lib/datocms.js'
 import BoxIcon from './Icon_Box.astro'
 import Slider from './SplideSlider.astro'
 
-interface Props {
-  id?: string
-  ContainerClasses?: string
-  TextClasses?: string
-  HeadingClasses?: string
-}
-
-const {
-  id,
-  ContainerClasses = '',
-  TextClasses = '',
-  HeadingClasses,
-}: Props = Astro.props
-
-const baseContainerClasses = 'w-full'
-const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
-
-const baseTextClasses = 'text-base-flex'
-const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
-
-const baseHeadingClasses = 'heading-base-styles'
-const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+const { id } = Astro.props
 
 const { lostfound } = (await executeQuery(`query Homepage {
     lostfound {
-           lfinfo
-           lfimages {
-            id
-            url
-            alt
-      }} }`)) as {
+      lfinfo
+      lfimages { id url alt }
+    }
+}`)) as {
   lostfound?: {
     lfinfo?: string
-    lfimages?: Array<{
-      id: string
-      url: string
-      alt?: string
-    }>
+    lfimages?: Array<{ id: string; url: string; alt?: string }>
   }
 }
 
@@ -50,18 +22,14 @@ const lf_images = lostfound?.lfimages ?? []
 const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
 ---
 
-<div id={id} class={mergedContainerClasses}>
-  <h1 class={mergedHeadingClasses}>Lost and Found</h1>
+<div id={id} class="w-full">
+  <h2 class="text-heading-2">Lost and Found</h2>
   <div class="flex flex-row items-center justify-between">
-    <!-- The button to open modal -->
-    <div class={mergedTextClasses} data-typography="applied">
-      <span>
-        Miss something? Have a look in the
-        <a id="boxLink" class="no-underline cursor-pointer">
-          box</a
-        >.
+    <div class="text-base-styles">
+      <span>Miss something? Have a look in the 
+        <a id="boxLink" class="no-underline">box</a>.
       </span>
-      <div class="markdown-content" set:html={lf_conditions} />
+      <div set:html={lf_conditions} />
     </div>
     <BoxIcon id="boxIcon" className="mb-2 min-w-9 md:w-12" />
   </div>

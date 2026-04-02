@@ -1,47 +1,24 @@
 ---
-import { twMerge } from 'tailwind-merge'
+import { marked } from 'marked'
+import { executeQuery } from '../lib/datocms.js'
 
-interface Props {
-  id: string
-  ContainerClasses?: string
-  TextClasses?: string
-  HeadingClasses?: string
-}
+const { id } = Astro.props
 
-const {
-  id,
-  ContainerClasses = '',
-  TextClasses = '',
-  HeadingClasses,
-}: Props = Astro.props
+const { awareness } = (await executeQuery(
+  `query { awareness { awaremessage } }`
+)) as { awareness?: { awaremessage?: string } }
 
-const baseContainerClasses = 'w-full'
-const mergedContainerClasses = twMerge(baseContainerClasses, ContainerClasses)
-
-const baseTextClasses = 'text-base-flex'
-const mergedTextClasses = twMerge(baseTextClasses, TextClasses)
-
-const baseHeadingClasses = 'heading-base-styles'
-const mergedHeadingClasses = twMerge(baseHeadingClasses, HeadingClasses)
+const content = awareness?.awaremessage ?? ''
+const parsedContent = marked.parse(content)
 ---
 
-<div id={id} class={mergedContainerClasses}>
-  <h1 class={mergedHeadingClasses}>Help & Code of Conduct</h1>
-  <div class="flex flex-row items-center justify-between">
-    <!-- The button to open modal -->
-    <div class={mergedTextClasses} data-typography="applied">
-      <span>
-        Our awareness team is here to help you with any issues you may have.
-        </br>
-        Read our code of conduct and find out who to talk to <a href="/coc" class="underline underline-offset-4 cursor-pointer"
-          >here</a
-        >.
-
-        <!-- You can approach them personally, per email, telegram or anonymously via this
-        <a href="/report" class="underline underline-offset-4 cursor-pointer"
-          >form</a
-        >. -->
-      </span>
-    </div>
+<div id={id} class="w-full">
+  <h2 class="text-heading-2">
+    <a href="/coc" class="hover:underline underline-offset-4">
+      Help & Code of Conduct
+    </a>
+  </h2>
+  <div class="text-base-styles">
+    <span set:html={parsedContent} />
   </div>
 </div>

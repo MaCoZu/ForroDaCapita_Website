@@ -120,11 +120,11 @@
   } */
 
   .svg-glow {
-    transition: none; /* default, no transition */
+    transition: none;
   }
 
   .svg-glow.active {
-    transition: filter 2s ease-in-out;
+    transition: none;
   }
 
   .svg-glow:hover {
@@ -241,34 +241,39 @@
 
 <!-- <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const paths = document.querySelectorAll('.svg-glow')
-
-    function glowRandomLetters() {
-      paths.forEach((p) => p.classList.remove('active'))
-
-      const pathsCopy = Array.from(paths)
-      const randomPaths = []
-      while (pathsCopy.length) {
-        const randomIndex = Math.floor(Math.random() * pathsCopy.length)
-        const randomPath = pathsCopy.splice(randomIndex, 1)[0]
-        randomPaths.push(randomPath)
+    const letterIds = ['F', 'O', 'R1', 'R2', 'Ó', 'D', 'A1', 'C', 'A2', 'P', 'I', 'T', 'A3']
+    
+    // Adjust these to control the flicker effect
+    const FLICKER_MIN_COUNT = 3    // minimum flicker cycles
+    const FLICKER_MAX_COUNT = 6    // maximum flicker cycles
+    const FLICKER_SPEED_MS = 80    // speed of each flicker (lower = faster)
+    const DELAY_MIN_MS = 18000     // minimum time between flickers
+    const DELAY_MAX_MS = 26000     // maximum time between flickers
+    
+    function shortCircuit(letterId) {
+      const path = document.getElementById(letterId)
+      if (!path) return
+      
+      path.classList.add('active')
+      
+      const flickers = FLICKER_MIN_COUNT + Math.floor(Math.random() * (FLICKER_MAX_COUNT - FLICKER_MIN_COUNT + 1))
+      
+      for (let i = 0; i < flickers; i++) {
+        setTimeout(() => path.classList.remove('active'), (i + 1) * FLICKER_SPEED_MS)
+        setTimeout(() => path.classList.add('active'), (i + 1) * FLICKER_SPEED_MS + FLICKER_SPEED_MS / 2)
       }
-
-      const glowDuration = 1500 + Math.random() * 2000
-      const pauseDuration = 500 + Math.random() * 1000
-
-      randomPaths.forEach((randomPath) => {
-        setTimeout(() => {
-          randomPath.classList.add('active')
-        }, 100)
-        setTimeout(() => {
-          randomPath.classList.remove('active'), 5000
-        }, glowDuration)
-      })
-
-      setTimeout(glowRandomLetters, pauseDuration)
+      
+      setTimeout(() => path.classList.remove('active'), flickers * FLICKER_SPEED_MS + 50)
     }
-
-    glowRandomLetters()
+    
+    function flickerRandomLetter() {
+      const randomIndex = Math.floor(Math.random() * letterIds.length)
+      shortCircuit(letterIds[randomIndex])
+      
+      const nextFlicker = DELAY_MIN_MS + Math.random() * (DELAY_MAX_MS - DELAY_MIN_MS)
+      setTimeout(flickerRandomLetter, nextFlicker)
+    }
+    
+    setTimeout(flickerRandomLetter, 5000)
   })
 </script> -->
