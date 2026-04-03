@@ -124,156 +124,190 @@
   }
 
   .svg-glow.active {
-    transition: none;
+    animation: flicker 0.7s linear forwards;
   }
 
   .svg-glow:hover {
-    transition: all 0.4s ease; /* fast on hover */
+    filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor);
   }
 
-  /* .yellow_glow,
-  .green_glow,
-  .darkorange_glow,
-  .navy_glow,
-  .red_glow,
-  .pink_glow,
-  .blue_glow,
-  .violet_glow,
-  .lightblue_glow,
-  .darkred_glow,
-  .gold_glow,
-  .lime_glow,
-  .purple_glow {
-    transition: all 0.5s ease;
-  } */
-
-  /* Orange glow effect */
-  .yellow_glow.active,
-  .yellow_glow:hover {
+  .svg-glow:hover.yellow_glow {
     filter: drop-shadow(0 0 2px #ffa500) drop-shadow(0 0 5px #ffa500)
       drop-shadow(0 0 10px #fdc85f);
     fill: #fff6a9;
   }
-
-  .green_glow.active,
-  .green_glow:hover {
+  .svg-glow:hover.green_glow {
     filter: drop-shadow(0 0 2px #109c15) drop-shadow(0 0 5px #27aa39)
       drop-shadow(0 0 10px #0ba708);
     fill: #aff2bb;
   }
-
-  .darkorange_glow.active,
-  .darkorange_glow:hover {
+  .svg-glow:hover.darkorange_glow {
     filter: drop-shadow(0 0 2px #ff9f00) drop-shadow(0 0 5px #ff8c00)
       drop-shadow(0 0 10px #fd5800);
     fill: #fff6a9;
   }
-
-  .blue_glow.active,
-  .blue_glow:hover {
+  .svg-glow:hover.blue_glow {
     filter: drop-shadow(0 0 2px #5852ff) drop-shadow(0 0 5px #0037ff)
       drop-shadow(0 0 10px #497cf2);
     fill: #d3d9ff;
   }
-
-  .navy_glow.active,
-  .navy_glow:hover {
+  .svg-glow:hover.navy_glow {
     filter: drop-shadow(0 0 2px #000080) drop-shadow(0 0 5px #0000cd)
       drop-shadow(0 0 10px #002395);
     fill: #caf3f8;
   }
-
-  .red_glow.active,
-  .red_glow:hover {
+  .svg-glow:hover.red_glow {
     filter: drop-shadow(0 0 5px #ff5252) drop-shadow(0 0 5px #ff0000)
       drop-shadow(0 0 10px #c5400b);
     fill: #ffc7c7;
   }
-
-  .pink_glow.active,
-  .pink_glow:hover {
+  .svg-glow:hover.pink_glow {
     filter: drop-shadow(0 0 2px #ff52f3) drop-shadow(0 0 5px #ff00d4)
       drop-shadow(0 0 10px #c50baf);
     fill: #ffc7fa;
   }
-
-  .violet_glow.active,
-  .violet_glow:hover {
+  .svg-glow:hover.violet_glow {
     filter: drop-shadow(0 0 2px #d752ff) drop-shadow(0 0 5px #bb00ff)
       drop-shadow(0 0 10px #840bc5);
     fill: #f3c7ff;
   }
-
-  .lightblue_glow.active,
-  .lightblue_glow:hover {
+  .svg-glow:hover.lightblue_glow {
     filter: drop-shadow(0 0 2px #52ffeb) drop-shadow(0 0 5px #41e2dc)
       drop-shadow(0 0 10px #4ee8ee);
     fill: #d6f3f4;
   }
-  .darkred_glow:hover,
-  .darkred_glow.active {
+  .svg-glow:hover.darkred_glow {
     filter: drop-shadow(0 0 2px #cf1020) drop-shadow(0 0 5px #be0032)
       drop-shadow(0 0 10px #af002a);
     fill: #fcbdcf;
   }
-
-  .gold_glow.active,
-  .gold_glow:hover {
+  .svg-glow:hover.gold_glow {
     filter: drop-shadow(0 0 2px #ffd700) drop-shadow(0 0 5px #fcc200)
       drop-shadow(0 0 10px #ffcc00);
     fill: #f7ef79;
   }
-
-  .lime_glow.active,
-  .lime_glow:hover {
+  .svg-glow:hover.lime_glow {
     filter: drop-shadow(0 0 2px #86c626) drop-shadow(0 0 5px #7fff00)
       drop-shadow(0 0 10px #7cfc00);
     fill: #e4fe20;
   }
-
-  .purple_glow.active,
-  .purple_glow:hover {
+  .svg-glow:hover.purple_glow {
     filter: drop-shadow(0 0 2px #966fd6) drop-shadow(0 0 5px #bf00ff)
       drop-shadow(0 0 10px #b19cd9);
     fill: #e6e6fa;
   }
+
+  @keyframes flicker {
+    0% {
+      opacity: 1;
+    }
+    5% {
+      opacity: 0;
+    }
+    7% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 0;
+    }
+    14% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 0;
+    }
+    78% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes flip-vertical {
+    0%,
+    80% {
+      transform: rotateY(360deg);
+    }
+  }
+
+  .svg-glow.flipping {
+    animation: flip-vertical 2.2s ease-in-out forwards;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
 </style>
 
-<!-- <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
-    const letterIds = ['F', 'O', 'R1', 'R2', 'Ó', 'D', 'A1', 'C', 'A2', 'P', 'I', 'T', 'A3']
-    
-    // Adjust these to control the flicker effect
-    const FLICKER_MIN_COUNT = 3    // minimum flicker cycles
-    const FLICKER_MAX_COUNT = 6    // maximum flicker cycles
-    const FLICKER_SPEED_MS = 80    // speed of each flicker (lower = faster)
-    const DELAY_MIN_MS = 18000     // minimum time between flickers
-    const DELAY_MAX_MS = 26000     // maximum time between flickers
-    
-    function shortCircuit(letterId) {
-      const path = document.getElementById(letterId)
-      if (!path) return
-      
-      path.classList.add('active')
-      
-      const flickers = FLICKER_MIN_COUNT + Math.floor(Math.random() * (FLICKER_MAX_COUNT - FLICKER_MIN_COUNT + 1))
-      
-      for (let i = 0; i < flickers; i++) {
-        setTimeout(() => path.classList.remove('active'), (i + 1) * FLICKER_SPEED_MS)
-        setTimeout(() => path.classList.add('active'), (i + 1) * FLICKER_SPEED_MS + FLICKER_SPEED_MS / 2)
-      }
-      
-      setTimeout(() => path.classList.remove('active'), flickers * FLICKER_SPEED_MS + 50)
-    }
-    
+    const letterIds = [
+      'F',
+      'O',
+      'R1',
+      'R2',
+      'Ó',
+      'D',
+      'A1',
+      'C',
+      'A2',
+      'P',
+      'I',
+      'T',
+      'A3',
+    ]
+
+    const FLICKER_DELAY_MIN = 8000
+    const FLICKER_DELAY_MAX = 16000
+    const FLIP_DELAY_MIN = 12000
+    const FLIP_DELAY_MAX = 24000
+
     function flickerRandomLetter() {
       const randomIndex = Math.floor(Math.random() * letterIds.length)
-      shortCircuit(letterIds[randomIndex])
-      
-      const nextFlicker = DELAY_MIN_MS + Math.random() * (DELAY_MAX_MS - DELAY_MIN_MS)
+      const letterId = letterIds[randomIndex]
+      const path = document.getElementById(letterId)
+
+      if (path) {
+        path.classList.add('active')
+        path.addEventListener(
+          'animationend',
+          () => {
+            path.classList.remove('active')
+          },
+          { once: true }
+        )
+      }
+
+      const nextFlicker =
+        FLICKER_DELAY_MIN +
+        Math.random() * (FLICKER_DELAY_MAX - FLICKER_DELAY_MIN)
       setTimeout(flickerRandomLetter, nextFlicker)
     }
-    
-    setTimeout(flickerRandomLetter, 5000)
+
+    function flipRandomLetter() {
+      const randomIndex = Math.floor(Math.random() * letterIds.length)
+      const letterId = letterIds[randomIndex]
+      const path = document.getElementById(letterId)
+
+      if (path) {
+        path.classList.add('flipping')
+        path.addEventListener(
+          'animationend',
+          () => {
+            path.classList.remove('flipping')
+          },
+          { once: true }
+        )
+      }
+
+      const nextFlip =
+        FLIP_DELAY_MIN + Math.random() * (FLIP_DELAY_MAX - FLIP_DELAY_MIN)
+      setTimeout(flipRandomLetter, nextFlip)
+    }
+
+    setTimeout(flickerRandomLetter, 2000)
+    setTimeout(flipRandomLetter, 5000)
   })
-</script> -->
+</script>
