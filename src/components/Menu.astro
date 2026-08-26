@@ -1,4 +1,6 @@
 ---
+export { MenuAstroComponent as Menu }
+
 import { twMerge } from 'tailwind-merge'
 import DonateButton from './DonateButton.astro'
 
@@ -72,6 +74,13 @@ const { containerClasses = '' }: Props = Astro.props
             </svg>
           </a> -->
 
+          <!-- Gallery  -->
+          <a
+            href="/gallery"
+            class="block px-2 py-2 text-menu-small font-menu tracking-wider transition duration-300 ease-in-out hover:text-secondary"
+          >
+            Gallery
+          </a>
           <!-- Calendar -->
           <a
             href="/calendar"

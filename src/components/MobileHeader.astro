@@ -7,11 +7,15 @@ interface Props {
   containerClasses?: string
 }
 
-
 const { containerClasses = '' }: Props = Astro.props
 ---
 
-<div class={twMerge('flex flex-row items-center justify-between', containerClasses)}>
+<div
+  class={twMerge(
+    'flex flex-row items-center justify-between',
+    containerClasses
+  )}
+>
   <!-- Donate button  -->
   <DonateButton />
   <!-- Hamburger Menu Toggle -->
@@ -24,11 +28,7 @@ const { containerClasses = '' }: Props = Astro.props
   />
 
   <!-- Special SVG Hamburger Button -->
-  <label
-
-    for="menu__toggle"
-    class='ham-container z-10'
-  >
+  <label for="menu__toggle" class="ham-container z-10">
     <svg
       class="ham hamRotate ham1"
       viewBox="0 0 100 100"
@@ -62,7 +62,7 @@ const { containerClasses = '' }: Props = Astro.props
         <a
           href="/forro"
           class="text-menu-large font-menu uppercase tracking-wider hover:primary-content"
-        >Forró
+          >Forró
           <!-- <svg
             fill="currentColor"
             stroke="currentColor"
@@ -84,8 +84,7 @@ const { containerClasses = '' }: Props = Astro.props
         <a
           href="/coc"
           class="text-menu-large font-menu uppercase tracking-wider hover:primary-content"
-        >Code of Conduct
-
+          >Code of Conduct
         </a>
       </li>
       <li>
@@ -93,6 +92,13 @@ const { containerClasses = '' }: Props = Astro.props
           href="/pa58"
           class="text-menu-large font-menu uppercase tracking-wider hover:primary-content"
           >PA58</a
+        >
+      </li>
+      <li>
+        <a
+          href="/gallery"
+          class="text-menu-large font-menu uppercase tracking-wider hover:primary-content"
+          >Gallery</a
         >
       </li>
 

@@ -1,0 +1,311 @@
+---
+import { StructuredText } from '@datocms/astro/StructuredText'
+import { Image } from 'astro:assets'
+import { marked } from 'marked'
+import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+interface GalleryImageBlock {
+  id: string
+  galleryImageTitle: string
+  galleryImageDescription?: string
+  galleryImage: {
+    url: string
+    alt?: string
+    title?: string
+    filename: string
+    height: number
+    width: number
+  }
+}
+
+interface GalleryData {
+  galleryHeader: string
+  galleryText: { value: any }
+  galleryImageBlocks: GalleryImageBlock[]
+}
+
+const result = await executeQuery(`
+  query GalleryQuery {
+    gallery {
+      galleryHeader
+      galleryText { value }
+      galleryImageBlocks {
+        __typename
+        ... on GalleryimageblockRecord {
+          id
+          galleryImageTitle
+          galleryImageDescription
+          galleryImage { url alt title filename width height }
+        }
+      }
+    }
+  }
+`)
+
+const gallery = (result as { gallery?: GalleryData }).gallery
+
+function parseDescription(text?: string): string {
+  if (!text) return ''
+  const html = marked.parse(text) as string
+  return html.replace(/^<p>(.*)<\/p>$/s, '$1')
+}
+---
+
+<Layout title="Gallery">
+  <div class="flex mx-auto items-start justify-center">
+    <div class="md:w-7/12 text-base-styles">
+      <h1
+        class="page-title mb-5 md:mt-15 mt-5"
+        set:html={gallery?.galleryHeader}
+      />
+      <StructuredText data={gallery?.galleryText} />
+    </div>
+  </div>
+
+  <div class="gallery-grid">
+    {
+      gallery?.galleryImageBlocks.map((block) => {
+        const label =
+          block.galleryImageTitle ||
+          block.galleryImage.alt ||
+          block.galleryImage.filename
+            .replace(/\.[^.]+$/, '')
+            .replace(/[-_]/g, ' ')
+        return (
+          <div
+            class="gallery-tile group"
+            data-url={block.galleryImage.url}
+            data-alt={block.galleryImage.alt || label}
+            data-title={block.galleryImageTitle}
+            data-description={block.galleryImageDescription || ''}
+            data-description-html={parseDescription(
+              block.galleryImageDescription
+            )}
+          >
+            <Image
+              src={block.galleryImage.url}
+              height={block.galleryImage.height}
+              width={block.galleryImage.width}
+              alt={block.galleryImage.alt || label}
+              class="gallery-image"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">{label}</span>
+            </div>
+          </div>
+        )
+      })
+    }
+  </div>
+
+  <div
+    id="galleryLightbox"
+    class="hidden fixed inset-0 z-[9999] bg-base-100/60 backdrop-blur-md items-center justify-center p-4 pt-12 sm:p-6"
+  >
+    <button
+      id="closeLightbox"
+      class="absolute top-3 right-3 sm:top-1/20 sm:right-1/12 z-[100] rounded-full p-2 transition-all duration-300 group"
+    >
+      <svg
+        width="40"
+        height="40"
+        class="w-5 h-5 sm:w-7 sm:h-7 text-primary-content hover:text-accent/90"
+        fill="currentColor"
+        stroke="currentColor"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
+        ></path>
+      </svg>
+    </button>
+    <div
+      id="lightboxContent"
+      class="relative max-h-[85vh] sm:max-h-[90vh] max-w-full sm:max-w-[90vw] flex flex-col items-center overflow-y-auto"
+    >
+      <div id="lightboxInner" class="flex flex-col items-stretch">
+        <img
+          id="lightboxImage"
+          class="max-h-[70vh] sm:max-h-[85vh] max-w-full sm:max-w-[80vw] object-contain rounded-sm mx-auto"
+        />
+        <p
+          id="lightboxTitle"
+          class="text-base-styles mt-3"
+          style="font-family: var(--content-font)"
+        >
+        </p>
+        <div
+          id="lightboxDescription"
+          class="text-base-styles mt-4 opacity-80"
+          style="font-family: var(--content-font)"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import {
+    addEnhancedModalClose,
+    createHiddenClassChecker,
+  } from '../scripts/modalUtils.js'
+
+  const lightbox = document.getElementById('galleryLightbox')
+  const lightboxContent = document.getElementById('lightboxContent')
+  const lightboxInner = document.getElementById('lightboxInner')
+  const lightboxImage = document.getElementById(
+    'lightboxImage'
+  ) as HTMLImageElement
+  const lightboxTitle = document.getElementById('lightboxTitle')
+  const lightboxDescription = document.getElementById('lightboxDescription')
+  const closeBtn = document.getElementById('closeLightbox')
+  const tiles = document.querySelectorAll('.gallery-tile')
+
+  const isOpen = createHiddenClassChecker(lightbox)
+
+  function syncDescImageSize() {
+    if (!lightboxInner || !lightboxDescription) return
+    const w = lightboxImage.offsetWidth
+    lightboxInner.style.width = w + 'px'
+    const imgs = lightboxDescription.querySelectorAll('img')
+    imgs.forEach((img) => {
+      img.style.width = w + 'px'
+      img.style.height = 'auto'
+      img.style.objectFit = 'contain'
+    })
+  }
+
+  function openLightbox(
+    url: string,
+    alt: string,
+    title: string,
+    descriptionHtml: string
+  ) {
+    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxDescription)
+      return
+
+    if (lightboxInner) lightboxInner.style.width = ''
+
+    lightboxDescription.innerHTML = descriptionHtml
+    lightboxDescription.style.display = descriptionHtml.trim() ? '' : 'none'
+
+    lightboxImage.onload = syncDescImageSize
+    lightboxImage.src = url
+    lightboxImage.alt = alt
+    lightboxTitle.textContent = title
+
+    lightbox.classList.remove('hidden')
+    document.body.style.overflow = 'hidden'
+
+    if (lightboxImage.complete) syncDescImageSize()
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return
+    lightbox.classList.add('hidden')
+    document.body.style.overflow = ''
+  }
+
+  window.addEventListener('resize', syncDescImageSize)
+
+  let lastTapTile: Element | null = null
+
+  tiles.forEach((tile) => {
+    tile.addEventListener('click', (e) => {
+      const isMobile = window.matchMedia('(hover: none)').matches
+      if (isMobile && tile !== lastTapTile) {
+        tiles.forEach((t) => t.classList.remove('active'))
+        tile.classList.add('active')
+        lastTapTile = tile
+        e.preventDefault()
+        return
+      }
+      lastTapTile = null
+      tiles.forEach((t) => t.classList.remove('active'))
+      const url = tile.getAttribute('data-url') || ''
+      const alt = tile.getAttribute('data-alt') || ''
+      const title = tile.getAttribute('data-title') || ''
+      const descriptionHtml = tile.getAttribute('data-description-html') || ''
+      openLightbox(url, alt, title, descriptionHtml)
+    })
+  })
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeLightbox)
+  }
+
+  addEnhancedModalClose(lightbox, lightboxContent, closeLightbox, isOpen)
+</script>
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .gallery-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fcf9ee;
+    font-family: var(--content-font);
+    font-size: 1.25rem;
+    font-weight: 600;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .gallery-tile:hover .gallery-overlay,
+  .gallery-tile.active .gallery-overlay {
+    transform: translateY(0);
+  }
+
+  @media (hover: none) {
+    .gallery-overlay {
+      transform: translateY(0);
+    }
+  }
+
+  #lightboxInner {
+    transition: width 0.1s;
+  }
+
+  #lightboxTitle {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+  }
+</style>
