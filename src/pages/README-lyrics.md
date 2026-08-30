@@ -75,6 +75,7 @@ query SongQuery($slug: String!) {
 
 ## Customization
 
-- Detail width: edit `md:w-8/12` on the wrapping `div` in `[slug].astro`
+- Detail columns: full-width (outer `div` in `[slug].astro` has no width cap)
+- Notes width: edit `md:w-7/12` on the notes `article` in `[slug].astro`
 - Landing width: edit `md:w-7/12` on the wrapping `article` in `lyrics.astro`
 - Language header / section header color: `--color-secondary` used in `.lyrics-lang` and `.lyrics-header` styles
