@@ -2,6 +2,8 @@
 
 Date: 2026-08-30
 Status: Approved for implementation
+Refined 2026-08-30: detail page layout — full-width title/writer/columns with
+notes centered at `md:w-7/12` (replacing the previous `md:w-8/12` page cap).
 
 ## Overview
 
