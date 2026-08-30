@@ -35,10 +35,13 @@ const songs = (result as { allSongs?: Song[] }).allSongs || []
               <li class="lyrics-item">
                 <a href={`/lyrics/${song.songSlug}`} class="song-heading">
                   {song.songTitle}
+                  {song.songWriter && (
+                    <>
+                      {' '}
+                      - <span class="song-writer">{song.songWriter}</span>
+                    </>
+                  )}
                 </a>
-                {song.songWriter && (
-                  <div class="song-writer">{song.songWriter}</div>
-                )}
                 {song.songDescription && (
                   <p class="song-description">{song.songDescription}</p>
                 )}
@@ -66,8 +69,8 @@ const songs = (result as { allSongs?: Song[] }).allSongs || []
   .song-heading {
     display: inline-block;
     font-family: var(--heading-font);
-    font-size: var(--text-heading-2);
-    font-weight: 600;
+    font-size: var(--text-heading-1);
+    font-weight: 700;
     color: var(--color-primary-content);
     text-decoration: none;
   }
@@ -76,15 +79,15 @@ const songs = (result as { allSongs?: Song[] }).allSongs || []
     color: var(--color-secondary);
   }
 
-  .song-writer {
+  /* .song-writer {
     font-family: var(--content-font);
     font-size: var(--text-small);
-    opacity: 0.7;
-    margin-top: 0.15rem;
-  }
+    font-weight: 900;
+    opacity: 0.9;
+  } */
 
   .song-description {
-    margin-top: 0.4rem;
+    margin-top: 0.2rem;
   }
 
   .song-divider {

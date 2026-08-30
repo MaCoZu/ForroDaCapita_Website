@@ -73,76 +73,78 @@ const notesHtml = marked.parse(song.songNotes ?? '') as string
 <Layout title={displayTitle}>
   <div class="w-full">
     <h1 class="page-title mb-2 md:mt-15 mt-5">{displayTitle}</h1>
-    {song.songWriter && (
-      <p class="song-writer mb-6">{song.songWriter}</p>
-    )}
+    {song.songWriter && <p class="song-writer mb-6">{song.songWriter}</p>}
 
-    {rows.length > 0 && (
-      <>
-        <div class="lyrics-desktop hidden md:block">
-          <table class="lyrics-table">
-            <thead>
-              <tr>
-                {columns.map((col) => (
-                  <th class="lyrics-lang">{col.lang}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) =>
-                row.isHeader ? (
-                  <tr class="lyrics-section">
-                    <td colspan={columns.length} class="lyrics-header">
-                      {row.pt}
-                    </td>
-                  </tr>
-                ) : (
-                  <tr class={row.pt.trim() === '' ? 'lyrics-verse-gap' : ''}>
-                    {columns.map((col) => (
-                      <td class="lyrics-cell">{col.lines[i]}</td>
-                    ))}
-                  </tr>
-                ),
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="lyrics-mobile md:hidden">
-          {columns.map((col) => (
-            <div class="mb-6">
-              <div class="lyrics-lang">{col.lang}</div>
-              <div>
+    {
+      rows.length > 0 && (
+        <>
+          <div class="lyrics-desktop hidden md:block">
+            <table class="lyrics-table">
+              <thead>
+                <tr>
+                  {columns.map((col) => (
+                    <th class="lyrics-lang">{col.lang}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
                 {rows.map((row, i) =>
                   row.isHeader ? (
-                    <p class="lyrics-header">{row.pt}</p>
+                    <tr class="lyrics-section">
+                      <td colspan={columns.length} class="lyrics-header">
+                        {row.pt}
+                      </td>
+                    </tr>
                   ) : (
-                    <p class="lyrics-cell">
-                      {row.pt.trim() === '' ? '' : col.lines[i]}
-                    </p>
-                  ),
+                    <tr class={row.pt.trim() === '' ? 'lyrics-verse-gap' : ''}>
+                      {columns.map((col) => (
+                        <td class="lyrics-cell">{col.lines[i]}</td>
+                      ))}
+                    </tr>
+                  )
                 )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </>
-    )}
+              </tbody>
+            </table>
+          </div>
 
-    {notesHtml && (
-      <div class="flex mx-auto items-start justify-center mt-8">
-        <article class="text-base-styles md:w-7/12 w-full">
-          <div set:html={notesHtml} />
-        </article>
-      </div>
-    )}
+          <div class="lyrics-mobile md:hidden">
+            {columns.map((col) => (
+              <div class="mb-6">
+                <div class="lyrics-lang">{col.lang}</div>
+                <div>
+                  {rows.map((row, i) =>
+                    row.isHeader ? (
+                      <p class="lyrics-header">{row.pt}</p>
+                    ) : (
+                      <p class="lyrics-cell">
+                        {row.pt.trim() === '' ? '' : col.lines[i]}
+                      </p>
+                    )
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )
+    }
+
+    {
+      notesHtml && (
+        <div class="flex mx-auto items-start justify-center mt-8">
+          <article class="text-base-styles md:w-7/12 w-full">
+            <div set:html={notesHtml} />
+          </article>
+        </div>
+      )
+    }
   </div>
 </Layout>
 
 <style>
   .song-writer {
     font-family: var(--content-font);
-    font-size: var(--text-small);
+    font-size: var(--text-heading-2);
     opacity: 0.7;
   }
 
@@ -159,16 +161,16 @@ const notesHtml = marked.parse(song.songNotes ?? '') as string
     font-family: var(--heading-font);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.2em;
     color: var(--color-secondary);
     text-align: left;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.7rem;
     border-bottom: 1px solid var(--color-base-content);
     font-size: var(--text-small);
   }
 
   .lyrics-table td {
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0rem;
     vertical-align: top;
   }
 
@@ -191,6 +193,6 @@ const notesHtml = marked.parse(song.songNotes ?? '') as string
   }
 
   .lyrics-verse-gap td {
-    padding-bottom: 0.75rem;
+    padding-bottom: 2rem;
   }
 </style>
