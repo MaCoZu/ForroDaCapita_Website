@@ -1,0 +1,96 @@
+---
+import Layout from '../layout/Layout.astro'
+import { executeQuery } from '../lib/datocms.js'
+
+interface Song {
+  songSlug: string
+  songTitle: string
+  songWriter: string
+  songDescription: string
+}
+
+const result = await executeQuery(`
+  query AllSongsQuery {
+    allSongs {
+      songSlug
+      songTitle
+      songWriter
+      songDescription
+    }
+  }
+`)
+
+const songs = (result as { allSongs?: Song[] }).allSongs || []
+---
+
+<Layout title="Lyrics">
+  <div class="flex mx-auto items-start justify-center">
+    <article class="md:w-7/12 w-full">
+      <div class="text-base-styles">
+        <h1 class="page-title mb-5 md:mt-15 mt-5">Lyrics</h1>
+
+        <ul class="lyrics-list">
+          {
+            songs.map((song, i) => (
+              <li class="lyrics-item">
+                <a href={`/lyrics/${song.songSlug}`} class="song-heading">
+                  {song.songTitle}
+                </a>
+                {song.songWriter && (
+                  <div class="song-writer">{song.songWriter}</div>
+                )}
+                {song.songDescription && (
+                  <p class="song-description">{song.songDescription}</p>
+                )}
+                {i < songs.length - 1 && <hr class="song-divider" />}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .lyrics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lyrics-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .song-heading {
+    display: inline-block;
+    font-family: var(--heading-font);
+    font-size: var(--text-heading-2);
+    font-weight: 600;
+    color: var(--color-primary-content);
+    text-decoration: none;
+  }
+
+  .song-heading:hover {
+    color: var(--color-secondary);
+  }
+
+  .song-writer {
+    font-family: var(--content-font);
+    font-size: var(--text-small);
+    opacity: 0.7;
+    margin-top: 0.15rem;
+  }
+
+  .song-description {
+    margin-top: 0.4rem;
+  }
+
+  .song-divider {
+    border: none;
+    border-top: 1px solid var(--color-base-content);
+    opacity: 0.15;
+    margin: 1.25rem 0;
+  }
+</style>
