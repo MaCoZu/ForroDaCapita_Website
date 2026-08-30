@@ -71,73 +71,71 @@ const notesHtml = marked.parse(song.songNotes ?? '') as string
 ---
 
 <Layout title={displayTitle}>
-  <div class="flex mx-auto items-start justify-center">
-    <div class="md:w-8/12 w-full">
-      <h1 class="page-title mb-2 md:mt-15 mt-5">{displayTitle}</h1>
-      {song.songWriter && (
-        <p class="song-writer mb-6">{song.songWriter}</p>
-      )}
+  <div class="w-full">
+    <h1 class="page-title mb-2 md:mt-15 mt-5">{displayTitle}</h1>
+    {song.songWriter && (
+      <p class="song-writer mb-6">{song.songWriter}</p>
+    )}
 
-      {rows.length > 0 && (
-        <>
-          <div class="lyrics-desktop hidden md:block">
-            <table class="lyrics-table">
-              <thead>
-                <tr>
-                  {columns.map((col) => (
-                    <th class="lyrics-lang">{col.lang}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
+    {rows.length > 0 && (
+      <>
+        <div class="lyrics-desktop hidden md:block">
+          <table class="lyrics-table">
+            <thead>
+              <tr>
+                {columns.map((col) => (
+                  <th class="lyrics-lang">{col.lang}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) =>
+                row.isHeader ? (
+                  <tr class="lyrics-section">
+                    <td colspan={columns.length} class="lyrics-header">
+                      {row.pt}
+                    </td>
+                  </tr>
+                ) : (
+                  <tr class={row.pt.trim() === '' ? 'lyrics-verse-gap' : ''}>
+                    {columns.map((col) => (
+                      <td class="lyrics-cell">{col.lines[i]}</td>
+                    ))}
+                  </tr>
+                ),
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lyrics-mobile md:hidden">
+          {columns.map((col) => (
+            <div class="mb-6">
+              <div class="lyrics-lang">{col.lang}</div>
+              <div>
                 {rows.map((row, i) =>
                   row.isHeader ? (
-                    <tr class="lyrics-section">
-                      <td colspan={columns.length} class="lyrics-header">
-                        {row.pt}
-                      </td>
-                    </tr>
+                    <p class="lyrics-header">{row.pt}</p>
                   ) : (
-                    <tr class={row.pt.trim() === '' ? 'lyrics-verse-gap' : ''}>
-                      {columns.map((col) => (
-                        <td class="lyrics-cell">{col.lines[i]}</td>
-                      ))}
-                    </tr>
+                    <p class="lyrics-cell">
+                      {row.pt.trim() === '' ? '' : col.lines[i]}
+                    </p>
                   ),
                 )}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="lyrics-mobile md:hidden">
-            {columns.map((col) => (
-              <div class="mb-6">
-                <div class="lyrics-lang">{col.lang}</div>
-                <div>
-                  {rows.map((row, i) =>
-                    row.isHeader ? (
-                      <p class="lyrics-header">{row.pt}</p>
-                    ) : (
-                      <p class="lyrics-cell">
-                        {row.pt.trim() === '' ? '' : col.lines[i]}
-                      </p>
-                    ),
-                  )}
-                </div>
               </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {notesHtml && (
-        <div class="mt-8">
-          <article class="text-base-styles">
-            <div set:html={notesHtml} />
-          </article>
+            </div>
+          ))}
         </div>
-      )}
-    </div>
+      </>
+    )}
+
+    {notesHtml && (
+      <div class="flex mx-auto items-start justify-center mt-8">
+        <article class="text-base-styles md:w-7/12 w-full">
+          <div set:html={notesHtml} />
+        </article>
+      </div>
+    )}
   </div>
 </Layout>
 
