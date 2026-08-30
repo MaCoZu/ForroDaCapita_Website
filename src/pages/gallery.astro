@@ -53,12 +53,9 @@ function parseDescription(text?: string): string {
 ---
 
 <Layout title="Gallery">
+  <h1 class="page-title mb-5 md:mt-15 mt-5" set:html={gallery?.galleryHeader} />
   <div class="flex mx-auto items-start justify-center">
     <div class="md:w-7/12 text-base-styles">
-      <h1
-        class="page-title mb-5 md:mt-15 mt-5"
-        set:html={gallery?.galleryHeader}
-      />
       <StructuredText data={gallery?.galleryText} />
     </div>
   </div>
