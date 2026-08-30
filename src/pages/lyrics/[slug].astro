@@ -1,0 +1,198 @@
+---
+import { marked } from 'marked'
+import Layout from '../../layout/Layout.astro'
+import { executeQuery } from '../../lib/datocms.js'
+
+interface Song {
+  songTitle: string
+  songWriter: string
+  lyricsPt: string
+  lyricsEnglish: string
+  lyricsGerman: string
+  songNotes: string
+}
+
+const { slug } = Astro.params
+
+const result = await executeQuery(
+  `
+  query SongQuery($slug: String!) {
+    song(filter: { songSlug: { eq: $slug } }) {
+      songTitle
+      songWriter
+      lyricsPt
+      lyricsEnglish
+      lyricsGerman
+      songNotes
+    }
+  }
+  `,
+  { variables: { slug } }
+)
+
+const song = (result as { song?: Song }).song
+
+if (!song) {
+  return Astro.redirect('/lyrics', 302)
+}
+
+const titleCase = (s: string) => s.replace(/\b\w/g, (c) => c.toUpperCase())
+const displayTitle = song.songTitle || titleCase(slug.replace(/-/g, ' '))
+
+type LyricRow = { pt: string; en: string; de: string; isHeader: boolean }
+
+const splitLines = (text?: string): string[] => (text ?? '').split('\n')
+
+const buildRows = (): LyricRow[] => {
+  const pt = splitLines(song.lyricsPt)
+  const en = splitLines(song.lyricsEnglish)
+  const de = splitLines(song.lyricsGerman)
+  const maxLen = Math.max(pt.length, en.length, de.length)
+  const rows: LyricRow[] = []
+  for (let i = 0; i < maxLen; i++) {
+    const p = pt[i] ?? ''
+    const e = en[i] ?? ''
+    const d = de[i] ?? ''
+    const isHeader = /^\[.+\]$/.test(p.trim())
+    rows.push({ pt: p, en: e, de: d, isHeader })
+  }
+  return rows
+}
+
+const rows = buildRows()
+
+const columns = [
+  { lang: 'Português', lines: rows.map((r) => r.pt) },
+  { lang: 'English', lines: rows.map((r) => r.en) },
+  { lang: 'Deutsch', lines: rows.map((r) => r.de) },
+].filter((col) => col.lines.some((l) => l.trim() !== ''))
+
+const notesHtml = marked.parse(song.songNotes ?? '') as string
+---
+
+<Layout title={displayTitle}>
+  <div class="flex mx-auto items-start justify-center">
+    <div class="md:w-8/12 w-full">
+      <h1 class="page-title mb-2 md:mt-15 mt-5">{displayTitle}</h1>
+      {song.songWriter && (
+        <p class="song-writer mb-6">{song.songWriter}</p>
+      )}
+
+      {rows.length > 0 && (
+        <>
+          <div class="lyrics-desktop hidden md:block">
+            <table class="lyrics-table">
+              <thead>
+                <tr>
+                  {columns.map((col) => (
+                    <th class="lyrics-lang">{col.lang}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, i) =>
+                  row.isHeader ? (
+                    <tr class="lyrics-section">
+                      <td colspan={columns.length} class="lyrics-header">
+                        {row.pt}
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr class={row.pt.trim() === '' ? 'lyrics-verse-gap' : ''}>
+                      {columns.map((col) => (
+                        <td class="lyrics-cell">{col.lines[i]}</td>
+                      ))}
+                    </tr>
+                  ),
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="lyrics-mobile md:hidden">
+            {columns.map((col) => (
+              <div class="mb-6">
+                <div class="lyrics-lang">{col.lang}</div>
+                <div>
+                  {rows.map((row, i) =>
+                    row.isHeader ? (
+                      <p class="lyrics-header">{row.pt}</p>
+                    ) : (
+                      <p class="lyrics-cell">
+                        {row.pt.trim() === '' ? '' : col.lines[i]}
+                      </p>
+                    ),
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {notesHtml && (
+        <div class="mt-8">
+          <article class="text-base-styles">
+            <div set:html={notesHtml} />
+          </article>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .song-writer {
+    font-family: var(--content-font);
+    font-size: var(--text-small);
+    opacity: 0.7;
+  }
+
+  .lyrics-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-family: var(--content-font);
+    font-size: var(--text-content);
+    line-height: var(--line-height-body);
+  }
+
+  .lyrics-lang {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    text-align: left;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-base-content);
+    font-size: var(--text-small);
+  }
+
+  .lyrics-table td {
+    padding: 0.25rem 0.5rem;
+    vertical-align: top;
+  }
+
+  .lyrics-cell {
+    white-space: pre-wrap;
+  }
+
+  .lyrics-section {
+    border-top: 1px solid var(--color-base-content);
+  }
+
+  .lyrics-header {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secondary);
+    padding-top: 1.5rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .lyrics-verse-gap td {
+    padding-bottom: 0.75rem;
+  }
+</style>
