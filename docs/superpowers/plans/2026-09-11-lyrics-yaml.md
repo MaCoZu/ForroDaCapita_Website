@@ -659,7 +659,7 @@ git add "public/lyrics/Luiz Gonzaga - Asa Branca.yaml"
 git commit -m "feat: add Asa Branca sample lyric sheet (YAML)"
 ```
 
-Then run: `git status --short` — should show only the committed change set plus unrelated untracked items (`.superpowers/` and `docs/superpowers/plans/2026-08-30-lyrics-collection.md`).
+Then run: `git status --short` — should show only the committed change set plus the unrelated untracked `.superpowers/` directory. (Note: `docs/superpowers/plans/2026-08-30-lyrics-collection.md` is gitignored, so it will not appear.)
 
 ---
 
