@@ -2,6 +2,7 @@ import react from '@astrojs/react'
 import vercel from '@astrojs/vercel'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
+import { lyrics } from './src/integrations/lyrics.js'
 
 export default defineConfig({
   env: {
@@ -31,5 +32,5 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [react()],
+  integrations: [react(), lyrics()],
 })

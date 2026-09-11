@@ -58,3 +58,4 @@ _*.astro
 .gitignore
 docs/superpowers/plans/2026-08-30-lyrics-collection.md
 .superpowers/brainstorm/9129-1788089229/mobile-columns.html
+src/generated-lyrics.js
