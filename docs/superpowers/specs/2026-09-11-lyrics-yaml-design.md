@@ -55,18 +55,29 @@ footnotes:
 - `footnotes` (array, optional) — `id` (string/number), `term`, `explanation_en`.
   A `[n]` marker in the `pt` language lines links to footnote `n`
 
+Note for content authors: markers (`[1]` etc.) are present in **every** language
+block in the YAML (the PT and EN blocks both carry them, matching footnote ids).
+Only the `pt` column renders them as superscripts; every other column strips
+them.
+
 ## Parsing library
 
-- Add `js-yaml` dependency (plus `@types/js-yaml` if typechecking requires it).
+- Add `js-yaml` dependency **and** `@types/js-yaml` (js-yaml ships no types and
+  Astro typechecks imported frontmatter).
 - New helper module `src/lib/lyrics.js`, modeled on `src/lib/datocms.js` style:
-  - `listLyrics()`: `fs.readdirSync` on `public/lyrics/`, filter `*.yaml`, parse
-    each with `yaml.load`, attach a derived `slug`. Unparseable or structurally
-    invalid files are skipped with a `console.warn` — never crash the page.
-    Returns `Array<{ slug, title, artist, description, pdfUrl, languages,
+  - `listLyrics()`: loads all YAML files in `public/lyrics/` via Vite's
+    build-time glob import — `import.meta.glob('../../public/lyrics/*.yaml',
+    { query: '?raw', import: 'default', eager: true })` — then parses each raw
+    string with `yaml.load` and attaches a derived `slug`.
+    This resolves the file contents into the server bundle **at build time**, so
+    it behaves identically in local dev and Vercel serverless (no runtime
+    filesystem access, which is unreliable in serverless function bundles).
+  - Unparseable or structurally invalid files are skipped with a `console.warn`
+    — never crash the page. If two filenames produce the same slug, the later
+    file is skipped with a `console.warn`.
+  - Returns `Array<{ slug, title, artist, description, pdfUrl, languages,
     footnotes }>` sorted by title.
   - `getLyricsBySlug(slug)`: returns the matching record or `undefined`.
-  - File paths resolve via `new URL('../../public/lyrics/', import.meta.url)`
-    so behavior matches local dev and Vercel serverless.
 - No other changes to the repo's build tooling.
 
 ## Routes
@@ -87,31 +98,37 @@ footnotes:
 - Look up `getLyricsBySlug(slug)`; if not found, `return Astro.redirect('/lyrics', 302)`
   (current behavior kept).
 - Header:
-  - `title` as `page-title` h1.
+  - Title (`title`) and download button share a header row: a flex wrapper with
+    `justify-between` — `page-title` h1 on the left, the button on the right.
   - `artist` below (existing `.song-writer` style).
   - If `pdf_url` present, a "Download PDF" button — an `<a>` with
     `target="_blank"` and `rel="noopener"`, styled as a small outline button
-    consistent with the site, placed beside the title on the right.
+    consistent with the site.
 - Columns:
   - One column per `languages` entry, rendering PT then EN in the order
     authored. Desktop keeps the aligned `<table>`; mobile keeps the stacked
     layout.
   - Rows aligned by line index; missing lines pad with empty strings.
+  - Language blocks whose `lines` are blank or whitespace-only are skipped
+    (existing empty-column behavior).
   - The `pt` language column governs `[Label]` section-header rows (a row is a
     header when the `pt` line matches `/^\[.+\]$/`; falls back to the first
-    column if no `pt` column exists). Section headers span all columns.
+    column if no `pt` column exists). Section headers span all columns and
+    render the governing column's line.
   - Blank lines create verse spacing (existing `.lyrics-verse-gap` behavior).
 - Footnote superscripts:
   - Line text is HTML-escaped first; then on the `pt` column only the markers
-    `[n]` are replaced with `<sup class="footnote-ref" data-footnote-n="n"
-    data-term="..." data-explanation="...">n</sup>`.
+    `\[(\d+)\]` are replaced with
+    `<sup class="footnote-ref" data-footnote-n="n" data-tippy-content="Term — explanation">n</sup>`.
   - All other language columns strip `[n]` markers entirely (no numbering).
+  - A marker whose number has no matching footnote is dropped (no superscript);
+    footnotes without a matching marker are still listed below.
 - Tooltip:
-  - `tippy.js` (already a dependency). An inline `<script>` in the component
-    initialises `tippy()` on every `.footnote-ref` on `DOMContentLoaded` /
-    after mount.
-  - Tooltip content: bold `term`, then the `explanation_en`. Data read from the
-    superscript's `data-*` attributes.
+  - Reuse the site's existing centralized tippy infrastructure (`Layout.astro`
+    already initialises `tippy()` on every element with `data-tippy-content`,
+    using `theme: 'custom-tooltip'`). No new script or tippy theme is needed.
+  - Tooltip content — `<strong>term</strong>`, then the `explanation_en` — is
+    baked into the superscript's `data-tippy-content` attribute at render time.
 - Footnotes section (rendered below the lyrics, in the existing
   `text-base-styles` article centered at `md:w-7/12`):
   - `h2` "Footnotes".
@@ -141,9 +158,11 @@ footnotes:
 
 No unit-test framework in the repo. Verification:
 
-1. `npm run build` — must pass.
+1. `npm run build` — must pass; confirm the lyrics YAML content is present in the
+   built server bundle output (proves the build-time glob inlining works for
+   serverless).
 2. Dev server: landing shows "Asa Branca - Luiz Gonzaga"; detail page shows two
-   columns, superscripts on PT only, tooltip text on hover, footnotes list
-   below, no download button (no `pdf_url` yet).
+   columns, superscripts on PT only, `custom-tooltip` tooltip on hover, footnotes
+   list below, and no download button (sample has no `pdf_url`).
 3. `curl` checks of the rendered HTML for superscript markup and marker
    stripping in the EN column.
