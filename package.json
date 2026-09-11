@@ -48,6 +48,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "fullcalendar": "^6.1.18",
     "globals": "^16.2.0",
+    "js-yaml": "^5.4.1",
     "marked": "^15.0.12",
     "prettier": "^3.6.0",
     "prettier-plugin-tailwindcss": "^0.6.13",
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@astrojs/node": "^9.5.0",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/js-yaml": "^4.0.9",
     "typescript": "^5.8.3"
   }
 }
