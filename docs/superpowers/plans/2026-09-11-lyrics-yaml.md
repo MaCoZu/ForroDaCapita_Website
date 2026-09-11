@@ -215,6 +215,8 @@ git commit -m "feat: add listLyrics/getLyricsBySlug YAML helper"
 
 Replace the frontmatter and template with:
 
+Thus the complete new file is:
+
 ```astro
 ---
 import Layout from '../layout/Layout.astro'
@@ -256,11 +258,52 @@ const songs = listLyrics()
 </Layout>
 
 <style>
-  /* preserve the existing <style> block verbatim from the current file */
+  .lyrics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lyrics-item {
+    margin-bottom: 1.25rem;
+  }
+
+  .song-heading {
+    display: inline-block;
+    font-family: var(--heading-font);
+    font-size: var(--text-heading-1);
+    font-weight: 700;
+    color: var(--color-primary-content);
+    text-decoration: none;
+  }
+
+  .song-heading:hover {
+    color: var(--color-secondary);
+  }
+
+  /* .song-writer {
+    font-family: var(--content-font);
+    font-size: var(--text-small);
+    font-weight: 900;
+    opacity: 0.9;
+  } */
+
+  .song-description {
+    margin-top: 0.2rem;
+  }
+
+  .song-divider {
+    border: none;
+    border-top: 1px solid var(--color-base-content);
+    opacity: 0.15;
+    margin: 1.25rem 0;
+  }
 </style>
 ```
 
-Preserve the current `<style>` block exactly (it contains the user's `.song-heading { font-weight: 700 }` and the commented-out `.song-writer` rule).
+The `<style>` block above is the current file's block preserved verbatim (the
+`.song-heading { font-weight: 700 }` tweak and the commented-out `.song-writer`
+rule are intentional and kept).
 
 - [ ] **Step 2: Restart the dev server and verify**
 
@@ -607,9 +650,16 @@ Re-check `/lyrics` and `/lyrics/luiz-gonzaga-asa-branca` for: landing list, supe
 
 In a browser at `http://localhost:4321/lyrics/luiz-gonzaga-asa-branca`: two aligned columns (PT/EN), superscripts styled, hover shows themed tooltip, footnotes section below in article style. (Chromium is not installed for automated checks — manual browser verification required.)
 
-- [ ] **Step 5: Commit any leftover changes and finalize**
+- [ ] **Step 5: Commit initial content and finalize**
 
-Run: `git status --short` — should show only the committed changes plus the untracked `public/lyrics/`, `.superpowers/`, and the original (superseded) plan doc `docs/superpowers/plans/2026-08-30-lyrics-collection.md`.
+Commit the sample YAML so it ships with the feature (fresh clones and deployments render Asa Branca):
+
+```bash
+git add "public/lyrics/Luiz Gonzaga - Asa Branca.yaml"
+git commit -m "feat: add Asa Branca sample lyric sheet (YAML)"
+```
+
+Then run: `git status --short` — should show only the committed change set plus unrelated untracked items (`.superpowers/` and `docs/superpowers/plans/2026-08-30-lyrics-collection.md`).
 
 ---
 
