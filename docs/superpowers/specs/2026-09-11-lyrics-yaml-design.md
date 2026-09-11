@@ -64,19 +64,29 @@ them.
 
 - Add `js-yaml` dependency **and** `@types/js-yaml` (js-yaml ships no types and
   Astro typechecks imported frontmatter).
-- New helper module `src/lib/lyrics.js`, modeled on `src/lib/datocms.js` style:
-  - `listLyrics()`: loads all YAML files in `public/lyrics/` via Vite's
-    build-time glob import — `import.meta.glob('../../public/lyrics/*.yaml',
-    { query: '?raw', import: 'default', eager: true })` — then parses each raw
-    string with `yaml.load` and attaches a derived `slug`.
-    This resolves the file contents into the server bundle **at build time**, so
-    it behaves identically in local dev and Vercel serverless (no runtime
-    filesystem access, which is unreliable in serverless function bundles).
-  - Unparseable or structurally invalid files are skipped with a `console.warn`
-    — never crash the page. If two filenames produce the same slug, the later
-    file is skipped with a `console.warn`.
-  - Returns `Array<{ slug, title, artist, description, pdfUrl, languages,
-    footnotes }>` sorted by title.
+- Background: a build-time glob (`import.meta.glob('../../public/lyrics/*.yaml',
+  { query: '?raw', ... })`) was tested against the repo's Vite 6.3.6 and
+  **does not work** — Vite excludes the `public/` directory from glob imports
+  (empty result). Runtime `fs` reads of `public/` are unreliable on Vercel
+  serverless. Therefore the build-time load is done by an Astro integration:
+- Add a small Astro integration that runs on `astro:config:setup` (fires at the
+  start of both `astro dev` and `astro build`):
+  - `src/integrations/lyrics.js` — reads `public/lyrics/*.yaml` from the repo
+    root via `fs`, and writes `src/generated-lyrics.js` exporting
+    `lyricsSources`, a map of `filename -> raw YAML string`.
+  - Registered from `astro.config.mjs` (`integrations: [react(), lyrics()]`).
+  - `src/generated-lyrics.js` is added to `.gitignore` (regenerated on every
+    dev/build start; a fresh clone just runs dev/build once).
+- New helper module `src/lib/lyrics.js`, modeled on `src/lib/datocms.js` style,
+  importing `lyricsSources` from the generated module:
+  - `listLyrics()`: for each `filename -> content` entry — derive `slug`
+    (lowercase, non-alphanumerics to `-`, trim leading/trailing `-`), parse the
+    YAML with `yaml.load`, and build a record
+    `{ slug, title, artist, description, pdfUrl, languages, footnotes }`.
+    Unparseable or structurally invalid files are skipped with a
+    `console.warn` (never crash the page); if two filenames produce the same
+    slug the first wins and the later is skipped with a `console.warn`.
+    Returns records sorted by `title`.
   - `getLyricsBySlug(slug)`: returns the matching record or `undefined`.
 - No other changes to the repo's build tooling.
 
@@ -126,9 +136,10 @@ them.
 - Tooltip:
   - Reuse the site's existing centralized tippy infrastructure (`Layout.astro`
     already initialises `tippy()` on every element with `data-tippy-content`,
-    using `theme: 'custom-tooltip'`). No new script or tippy theme is needed.
-  - Tooltip content — `<strong>term</strong>`, then the `explanation_en` — is
-    baked into the superscript's `data-tippy-content` attribute at render time.
+    using `theme: 'custom-tooltip'`; the layout uses tippy's default
+    `allowHTML: false`, so tooltip content is plain text — no inline HTML tags).
+  - Tooltip content — `term — explanation` as plain text — is baked into the
+    superscript's `data-tippy-content` attribute at render time.
 - Footnotes section (rendered below the lyrics, in the existing
   `text-base-styles` article centered at `md:w-7/12`):
   - `h2` "Footnotes".
@@ -158,9 +169,8 @@ them.
 
 No unit-test framework in the repo. Verification:
 
-1. `npm run build` — must pass; confirm the lyrics YAML content is present in the
-   built server bundle output (proves the build-time glob inlining works for
-   serverless).
+1. `npm run build` — must pass; confirm `src/generated-lyrics.js` is written by
+   the integration (contains the Asa Branca YAML content).
 2. Dev server: landing shows "Asa Branca - Luiz Gonzaga"; detail page shows two
    columns, superscripts on PT only, `custom-tooltip` tooltip on hover, footnotes
    list below, and no download button (sample has no `pdf_url`).
