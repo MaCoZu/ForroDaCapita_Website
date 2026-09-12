@@ -1,0 +1,106 @@
+title: Asa Branca
+artist: Luiz Gonzaga
+languages:
+- code: pt
+  name: Português
+  lines: |
+    Quando olhei a terra ardendo
+    Quá fogueira de São João[1]
+    Eu perguntei a Deus do céu: Ai
+    Por que tamanha judiação?[2]
+
+    Que braseiro[3], que fornalha[4]
+    Nem um pé de plantação[5]
+    Por falta d'água, perdi meu gado
+    Morreu de sede meu alazão[6]
+    Por falta d'água, perdi meu gado
+    Morreu de sede meu alazão
+
+    Inté mesmo a asa branca[7]
+    Bateu asas do sertão[8]
+    Entonce eu disse: Adeus, Rosinha
+    Guarda contigo meu coração
+    Entonce eu disse: Adeus, Rosinha
+    Guarda contigo meu coração
+
+    Hoje longe, muitas légua[9]
+    Numa triste solidão
+    Espero a chuva cair de novo
+    Pra mim voltar pro meu sertão
+    Espero a chuva cair de novo
+    Pra mim voltar pro meu sertão
+
+    Quando o verde dos teus olho
+    Se espalhar na plantação
+    Eu te asseguro, não chore não, viu?[10]
+    Que eu voltarei, viu, meu coração?
+    Eu te asseguro, não chore não, viu?
+    Que eu voltarei, viu, meu coração?
+- code: en
+  name: English
+  lines: |
+    When I saw the land burning
+    Like a São João bonfire[1]
+    I asked God in heaven: Ai
+    Why such cruel suffering?[2]
+
+    What a blazing fire[3], what a furnace[4]
+    Not a single crop left standing[5]
+    For lack of water, I lost my cattle
+    My chestnut horse died of thirst[6]
+    For lack of water, I lost my cattle
+    My chestnut horse died of thirst
+
+    Even the white-winged dove[7]
+    Flew away from the sertão[8]
+    Then I said: Farewell, Rosinha
+    Keep my heart with you
+    Then I said: Farewell, Rosinha
+    Keep my heart with you
+
+    Today, far away, many leagues[9]
+    In sad loneliness
+    I wait for the rain to fall again
+    So I can return to my sertão
+    I wait for the rain to fall again
+    So I can return to my sertão
+
+    When the green of your eyes
+    Spreads across the fields
+    I assure you, don't you cry, you hear?[10]
+    For I'll come back, you hear, my heart?
+    I assure you, don't you cry, you hear?
+    For I'll come back, you hear, my heart?
+footnotes:
+- id: 1
+  term: fogueira de São João
+  explanation_en: The bonfire lit during the São João festival in June, a major Northeastern Brazilian tradition celebrating the summer solstice and Saint John, symbolizing intense heat and festive fire imagery.
+- id: 2
+  term: judiação
+  explanation_en: A term denoting hardship, or unjust mistreatment, often describing the harsh conditions endured during drought or migration in Northeastern Brazil.
+- id: 3
+  term: braseiro
+  explanation_en: Literally a bed of hot coals, brazier smt. hellfire; used figuratively here to describe the scorching heat of the drought-stricken land.
+- id: 4
+  term: fornalha
+  explanation_en: A furnace used metaphorically to describe the torrid and harsh climate of the sertão during drought.
+- id: 5
+  term: pé de plantação
+  explanation_en: Literally 'foot of the plantation,' here used to mean not a single crop or plant surviving the drought.
+- id: 6
+  term: alazão
+  explanation_en: An equestrian term for a horse with a chestnut or reddish-brown coat, part of everyday rural vocabulary in the sertão.
+- id: 7
+  term: asa branca
+  explanation_en: A white-winged dove (picazuro pigeon) native to the sertão. During drought the bird leaves the countryside. Also the protagonist, unable to make a living in the dry season, has to leave the sertão and his lady-love. In a sequel to this song "A Volta da Asa-Branca", the bird and protagnoist return with the beginning of the rainy season.
+- id: 8
+  term: sertão
+  explanation_en: The semi-arid backlands of Northeastern Brazil, known for its harsh dry season which is a driver of migration and economic poverty in the region. The sertão is nonetheless well known for its rich history, folklore and unique cultural identity. And a crucial symbol in forró music. 
+- id: 9
+  term: légua
+  explanation_en: A traditional unit of distance historically used in Brazil, roughly equal to 6 kilometers, evoking the long journeys of Northeastern migrants.
+- id: 10
+  term: asseguro, não chore não, viu?
+  explanation_en: A tender colloquial phrase from the song's finale, using Northeastern speech patterns ('viu?' as a verbal tic meaning 'you hear?') to comfort a loved one with a promise of return.
+
+
