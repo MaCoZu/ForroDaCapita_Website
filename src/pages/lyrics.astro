@@ -1,26 +1,8 @@
 ---
 import Layout from '../layout/Layout.astro'
-import { executeQuery } from '../lib/datocms.js'
+import { listLyrics } from '../lib/lyrics.js'
 
-interface Song {
-  songSlug: string
-  songTitle: string
-  songWriter: string
-  songDescription: string
-}
-
-const result = await executeQuery(`
-  query AllSongsQuery {
-    allSongs {
-      songSlug
-      songTitle
-      songWriter
-      songDescription
-    }
-  }
-`)
-
-const songs = (result as { allSongs?: Song[] }).allSongs || []
+const songs = listLyrics()
 ---
 
 <Layout title="Lyrics">
@@ -33,17 +15,17 @@ const songs = (result as { allSongs?: Song[] }).allSongs || []
           {
             songs.map((song, i) => (
               <li class="lyrics-item">
-                <a href={`/lyrics/${song.songSlug}`} class="song-heading">
-                  {song.songTitle}
-                  {song.songWriter && (
+                <a href={`/lyrics/${song.slug}`} class="song-heading">
+                  {song.title}
+                  {song.artist && (
                     <>
                       {' '}
-                      - <span class="song-writer">{song.songWriter}</span>
+                      - <span class="song-writer">{song.artist}</span>
                     </>
                   )}
                 </a>
-                {song.songDescription && (
-                  <p class="song-description">{song.songDescription}</p>
+                {song.description && (
+                  <p class="song-description">{song.description}</p>
                 )}
                 {i < songs.length - 1 && <hr class="song-divider" />}
               </li>
