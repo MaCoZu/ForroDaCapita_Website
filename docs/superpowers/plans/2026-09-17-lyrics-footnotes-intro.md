@@ -122,7 +122,7 @@ Append inside the page `<style>` block (after `.lyrics-verse-gap td` rule, end o
   }
 ```
 
-(The scoped selector compiles to `.footnotes-list[data-astro-cid-…]`, specificity 0-2-0 with `!important`, which beats the shared `.text-base-styles ol` 0-1-1 `!important` rule at main.css:347-353 that forces `circle` + `padding-left: 0`.)
+(The footnote `<ol class="footnotes-list">` sits inside `<article class="text-base-styles …">`, so the shared `.text-base-styles ol` rule at main.css:345-353 (circle bullet + `padding-left: 0rem`, both `!important`) DOES apply to it; the scoped selector compiles to `.footnotes-list[data-astro-cid-…]`, specificity 0-2-0 with `!important`, which beats 0-1-1.)
 
 - [ ] **Step 4: Verify statically**
 
@@ -275,13 +275,18 @@ Expected: `olExists:true`, `listStyleType:"decimal"`, `marker1:"\"1. \""`, `term
 
 - [ ] **Step 3: Confirm navigation flow unchanged**
 
-Screenshot the landing list and detail page, confirm superscripts and 10 footnotes still present:
+Screenshot the landing list and detail page (playwright is only installed in `/tmp/opencode` — run there with the explicit headless-shell path, NOT `npx playwright` from the repo). Append to `/tmp/opencode/fn-check.mjs` before `await b.close()`:
 
-```bash
-cd /home/mz/code/Websites/ForroDaCapita && npx playwright screenshot --viewport-size=1280,900 http://localhost:4321/lyrics/luiz-gonzaga-asa-branca /tmp/fn-detail.png && npx playwright screenshot --viewport-size=1280,900 http://localhost:4321/lyrics /tmp/fn-landing.png
+```js
+await p.setViewportSize({ width: 1280, height: 900 })
+await p.screenshot({ path: '/tmp/fn-detail.png', fullPage: false })
+await p.goto('http://localhost:4321/lyrics')
+await p.screenshot({ path: '/tmp/fn-landing.png', fullPage: false })
 ```
 
-Expected: both exit 0; visually the detail page shows a numbered footnote list (e.g. `1.` marker), bold term, explanation paragraphs below, and the intro article above `Footnotes`.
+and re-run: `cd /tmp/opencode && node fn-check.mjs`
+
+Expected: both PNGs written; visually the detail page shows a numbered footnote list (e.g. `1.` marker), bold term, explanation paragraphs below, and the intro article above `Footnotes`; the landing list is unchanged.
 
 - [ ] **Step 4: Landing page + footnote tooltips regression**
 
