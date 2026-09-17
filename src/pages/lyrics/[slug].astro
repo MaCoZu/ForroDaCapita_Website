@@ -222,7 +222,12 @@ const footnotesHtml = lyric.footnotes
     padding-left: 1.5rem !important;
   }
 
-  .footnotes-list li p {
+  .footnotes-list :global(strong) {
+    font-family: var(--menu-font) !important;
+    font-weight: 700 !important;
+  }
+
+  .footnotes-list :global(li) :global(p) {
     margin-top: 0;
     margin-bottom: 0.5rem !important;
   }
