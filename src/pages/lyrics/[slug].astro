@@ -51,7 +51,7 @@ for (let i = 0; i < maxLen; i++) {
 const footnotesHtml = lyric.footnotes
   .map((f) => {
     const n = esc(String(f.id))
-    return `<li id="fn-${n}"><strong>[${n}] ${esc(f.term ?? '')}</strong> — ${marked.parse(f.explanation_en ?? '')}</li>`
+    return `<li id="fn-${n}"><strong>${esc(f.term ?? '')}</strong>${marked.parse(f.explanation_en ?? '')}</li>`
   })
   .join('\n')
 ---
@@ -120,7 +120,7 @@ const footnotesHtml = lyric.footnotes
       <div class="flex mx-auto items-start justify-center mt-8">
         <article class="text-base-styles md:w-7/12 w-full">
           <h2>Footnotes</h2>
-          <ol set:html={footnotesHtml} />
+          <ol class="footnotes-list" set:html={footnotesHtml} />
         </article>
       </div>
     )}
@@ -209,5 +209,10 @@ const footnotesHtml = lyric.footnotes
 
   .lyrics-verse-gap td {
     padding-bottom: 2rem;
+  }
+
+  .footnotes-list {
+    list-style-type: decimal !important;
+    padding-left: 1.5rem !important;
   }
 </style>
