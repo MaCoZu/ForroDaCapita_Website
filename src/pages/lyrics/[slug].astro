@@ -116,6 +116,12 @@ const footnotesHtml = lyric.footnotes
       </>
     )}
 
+    {lyric.intro && (
+      <div class="flex mx-auto items-start justify-center mt-8">
+        <article class="text-base-styles md:w-7/12 w-full" set:html={marked.parse(lyric.intro)} />
+      </div>
+    )}
+
     {lyric.footnotes.length > 0 && (
       <div class="flex mx-auto items-start justify-center mt-8">
         <article class="text-base-styles md:w-7/12 w-full">
