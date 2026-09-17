@@ -33,6 +33,7 @@ const parseRecord = (filename, content) => {
     artist: doc.artist,
     description: typeof doc.description === 'string' ? doc.description : undefined,
     pdfUrl: typeof doc.pdf_url === 'string' ? doc.pdf_url : undefined,
+    intro: typeof doc.intro === 'string' && doc.intro.trim() !== '' ? doc.intro : undefined,
     languages: doc.languages,
     footnotes: Array.isArray(doc.footnotes) ? doc.footnotes : [],
   }
