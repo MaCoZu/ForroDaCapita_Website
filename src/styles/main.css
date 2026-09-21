@@ -36,9 +36,9 @@
 
 /* 📝 Font Families - Change these to switch fonts site-wide */
 :root {
-  --menu-font: 'LouisGeorgeBold';
+  --menu-font: 'LouisGeorge', sans-serif;
   --heading-font: 'LouisGeorge', sans-serif;
-  --content-font: 'LouisGeorge', serif;
+  --content-font: 'LouisGeorge', sans-serif;
   --tech-font: 'Work Sans', sans-serif;
 }
 
@@ -116,6 +116,7 @@ body {
 /* Font family utilities */
 .font-menu {
   font-family: var(--menu-font);
+  font-weight: 700;
 }
 
 .font-heading {

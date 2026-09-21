@@ -1,17 +1,41 @@
 @font-face {
   font-family: 'LouisGeorge';
-  font-weight: 700;
-  /* Bold */
+  font-weight: 300;
+  /* Light */
+  font-style: normal;
+  src: url('/fonts/Louis George Cafe Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'LouisGeorge';
+  font-weight: 400;
+  /* Regular */
   font-style: normal;
   src: url('/fonts/Louis George Cafe.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'LouisGeorgeBold';
+  font-family: 'LouisGeorge';
   font-weight: 700;
   /* Bold */
   font-style: normal;
   src: url('/fonts/Louis George Cafe Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  font-weight: 700;
+  /* Bold */
+  font-style: normal;
+  src: url('/fonts/WorkSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work Sans';
+  font-weight: 600;
+  /* Semibold */
+  font-style: normal;
+  src: url('/fonts/WorkSans-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
@@ -28,18 +52,4 @@
   /* Regular */
   font-style: normal;
   src: url('/fonts/WorkSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Gokhan';
-  font-weight: normal;
-  font-style: normal;
-  src: url('/fonts/Gokhan.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Gokhan+';
-  font-weight: normal;
-  font-style: normal;
-  src: url('/fonts/Gokhan+.ttf') format('truetype');
 }
