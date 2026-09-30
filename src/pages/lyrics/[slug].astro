@@ -69,51 +69,53 @@ const footnotesHtml = lyric.footnotes
     {lyric.artist && <p class="song-writer mb-6">{lyric.artist}</p>}
 
     {rows.length > 0 && (
-      <>
-        <div class="lyrics-desktop hidden md:block">
-          <table class="lyrics-table">
-            <thead>
-              <tr>
-                {cols.map((c) => (
-                  <th class="lyrics-lang">{c.name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) =>
-                row.isHeader ? (
-                  <tr class="lyrics-section">
-                    <td colspan={cols.length} class="lyrics-header" set:html={row.htmls[governing]} />
-                  </tr>
-                ) : (
-                  <tr class={row.isBlank ? 'lyrics-verse-gap' : ''}>
-                    {row.htmls.map((h) => (
-                      <td class="lyrics-cell" set:html={h} />
-                    ))}
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="lyrics-mobile md:hidden">
-          {cols.map((c, idx) => (
-            <div class="mb-6">
-              <div class="lyrics-lang">{c.name}</div>
-              <div>
+      <div class="flex mx-auto items-start justify-center">
+        <div class="md:w-10/12 w-full">
+          <div class="lyrics-desktop hidden md:block">
+            <table class="lyrics-table">
+              <thead>
+                <tr>
+                  {cols.map((c) => (
+                    <th class="lyrics-lang">{c.name}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
                 {rows.map((row) =>
                   row.isHeader ? (
-                    <p class="lyrics-header" set:html={row.htmls[governing]} />
+                    <tr class="lyrics-section">
+                      <td colspan={cols.length} class="lyrics-header" set:html={row.htmls[governing]} />
+                    </tr>
                   ) : (
-                    <p class="lyrics-cell" set:html={row.isBlank ? '' : row.htmls[idx]} />
+                    <tr class={row.isBlank ? 'lyrics-verse-gap' : ''}>
+                      {row.htmls.map((h) => (
+                        <td class="lyrics-cell" set:html={h} />
+                      ))}
+                    </tr>
                   )
                 )}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="lyrics-mobile md:hidden">
+            {cols.map((c, idx) => (
+              <div class="mb-6">
+                <div class="lyrics-lang">{c.name}</div>
+                <div>
+                  {rows.map((row) =>
+                    row.isHeader ? (
+                      <p class="lyrics-header" set:html={row.htmls[governing]} />
+                    ) : (
+                      <p class="lyrics-cell" set:html={row.isBlank ? '' : row.htmls[idx]} />
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </>
+      </div>
     )}
 
     {lyric.intro && (
