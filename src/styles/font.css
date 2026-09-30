@@ -1,3 +1,11 @@
+/* Lyrics face. Variable: single file, real 100-1000 wght axis. */
+@font-face {
+  font-family: 'Bogart';
+  font-weight: 100 1000;
+  font-style: normal;
+  src: url('/fonts/Bogart_variable.TTF') format('truetype-variations');
+}
+
 @font-face {
   font-family: 'LouisGeorge';
   font-weight: 300;

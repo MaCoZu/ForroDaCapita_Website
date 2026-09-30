@@ -29,10 +29,12 @@ export default [
     ignores: [
       'node_modules/',
       'dist/',
+      '.vercel/',
       'docs/',
       'build/',
       '.astro/',
       'coverage/',
+      'src/generated-lyrics.js',
       '*.min.js',
     ],
   },

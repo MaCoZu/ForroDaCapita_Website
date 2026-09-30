@@ -34,6 +34,9 @@ const cols = lyric.languages.filter((lang) => (lang.lines ?? '').trim() !== '')
 const lines = cols.map((lang) => (lang.lines ?? '').split('\n'))
 const maxLen = Math.max(0, ...lines.map((l) => l.length))
 
+const weightTotal = cols.reduce((sum, col) => sum + (col.width ?? 1), 0)
+const colPercents = cols.map((col) => ((col.width ?? 1) / weightTotal) * 100)
+
 const ptIdx = cols.findIndex((c) => c.code === 'pt')
 const governing = ptIdx >= 0 ? ptIdx : 0
 
@@ -57,66 +60,71 @@ const footnotesHtml = lyric.footnotes
 ---
 
 <Layout title={lyric.title}>
-  <div class="w-full">
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <h1 class="page-title mb-2 md:mt-15 mt-5">{lyric.title}</h1>
-      {lyric.pdfUrl && (
-        <a class="download-button md:mt-15 mt-5" href={lyric.pdfUrl} target="_blank" rel="noopener">
-          Download PDF
-        </a>
-      )}
-    </div>
-    {lyric.artist && <p class="song-writer mb-6">{lyric.artist}</p>}
+  <div class="lyric-page w-full">
+    <div class="flex mx-auto items-start justify-center">
+      <div class="md:w-10/12 w-full">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <h1 class="page-title mb-2 md:mt-15 mt-5">{lyric.title}</h1>
+          {lyric.pdfUrl && (
+            <a class="download-button md:mt-15 mt-5" href={lyric.pdfUrl} target="_blank" rel="noopener">
+              Download PDF
+            </a>
+          )}
+        </div>
+        {lyric.artist && <p class="song-writer mb-6">{lyric.artist}</p>}
 
-    {rows.length > 0 && (
-      <div class="flex mx-auto items-start justify-center">
-        <div class="md:w-10/12 w-full">
-          <div class="lyrics-desktop hidden md:block">
-            <table class="lyrics-table">
-              <thead>
-                <tr>
-                  {cols.map((c) => (
-                    <th class="lyrics-lang">{c.name}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) =>
-                  row.isHeader ? (
-                    <tr class="lyrics-section">
-                      <td colspan={cols.length} class="lyrics-header" set:html={row.htmls[governing]} />
-                    </tr>
-                  ) : (
-                    <tr class={row.isBlank ? 'lyrics-verse-gap' : ''}>
-                      {row.htmls.map((h) => (
-                        <td class="lyrics-cell" set:html={h} />
-                      ))}
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="lyrics-mobile md:hidden">
-            {cols.map((c, idx) => (
-              <div class="mb-6">
-                <div class="lyrics-lang">{c.name}</div>
-                <div>
+        {rows.length > 0 && (
+          <div>
+            <div class="lyrics-desktop hidden md:block">
+              <table class="lyrics-table">
+                <colgroup>
+                  {colPercents.map((pct) => <col style={`width: ${pct}%`} />)}
+                </colgroup>
+                <thead>
+                  <tr>
+                    {cols.map((c) => (
+                      <th class="lyrics-lang">{c.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
                   {rows.map((row) =>
                     row.isHeader ? (
-                      <p class="lyrics-header" set:html={row.htmls[governing]} />
+                      <tr class="lyrics-section">
+                        <td colspan={cols.length} class="lyrics-header" set:html={row.htmls[governing]} />
+                      </tr>
                     ) : (
-                      <p class="lyrics-cell" set:html={row.isBlank ? '' : row.htmls[idx]} />
+                      <tr class={row.isBlank ? 'lyrics-verse-gap' : ''}>
+                        {row.htmls.map((h) => (
+                          <td class="lyrics-cell" set:html={h} />
+                        ))}
+                      </tr>
                     )
                   )}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="lyrics-mobile md:hidden">
+              {cols.map((c, idx) => (
+                <div class="mb-6">
+                  <div class="lyrics-lang">{c.name}</div>
+                  <div>
+                    {rows.map((row) =>
+                      row.isHeader ? (
+                        <p class="lyrics-header" set:html={row.htmls[governing]} />
+                      ) : (
+                        <p class="lyrics-cell" set:html={row.isBlank ? '' : row.htmls[idx]} />
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    )}
+    </div>
 
     {lyric.intro && (
       <div class="flex mx-auto items-start justify-center mt-8">
@@ -136,15 +144,31 @@ const footnotesHtml = lyric.footnotes
 </Layout>
 
 <style>
+  /* The whole detail page reads in the lyrics face for a coherent look.
+     Beats the `!important` --content-font rules in main.css on specificity:
+     .lyric-page[data-astro-cid-x] .text-base-styles * (0,2,0) > (0,1,1). */
+  .lyric-page {
+    font-family: var(--lyrics-font);
+  }
+
+  .lyric-page :global(.page-title) {
+    font-family: var(--lyrics-font) !important;
+  }
+
+  .lyric-page :global(.text-base-styles),
+  .lyric-page :global(.text-base-styles *) {
+    font-family: var(--lyrics-font) !important;
+  }
+
   .song-writer {
-    font-family: var(--content-font);
+    font-family: var(--lyrics-font);
     font-size: var(--text-heading-2);
     opacity: 0.7;
   }
 
   .download-button {
     display: inline-block;
-    font-family: var(--heading-font);
+    font-family: var(--lyrics-font);
     font-size: var(--text-small);
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -175,13 +199,13 @@ const footnotesHtml = lyric.footnotes
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-    font-family: var(--content-font);
+    font-family: var(--lyrics-font);
     font-size: var(--text-content);
     line-height: var(--line-height-body);
   }
 
   .lyrics-lang {
-    font-family: var(--heading-font);
+    font-family: var(--lyrics-font);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.2em;
@@ -206,7 +230,7 @@ const footnotesHtml = lyric.footnotes
   }
 
   .lyrics-header {
-    font-family: var(--heading-font);
+    font-family: var(--lyrics-font);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -222,10 +246,16 @@ const footnotesHtml = lyric.footnotes
   .footnotes-list {
     list-style-type: decimal !important;
     padding-left: 1.5rem !important;
+    font-family: var(--lyrics-font) !important;
+  }
+
+  .footnotes-list :global(li),
+  .footnotes-list :global(li) :global(p) {
+    font-family: var(--lyrics-font) !important;
   }
 
   .footnotes-list :global(strong) {
-    font-family: var(--menu-font) !important;
+    font-family: var(--lyrics-font) !important;
     font-weight: 700 !important;
   }
 

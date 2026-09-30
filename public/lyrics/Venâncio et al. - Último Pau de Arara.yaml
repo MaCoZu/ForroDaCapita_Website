@@ -1,0 +1,93 @@
+title: Último Pau de Arara
+artist: Venâncio, Corumba, José Guimarães (Composers)
+pdf_url: https://drive.google.com/uc?export=download&id=10uZJu6TPePnrTd0Q3o_yaf3HppQBMDF0
+languages:
+- code: pt
+  name: Português
+  lines: |
+    A vida aqui só é ruim
+    Quando não chove no chão
+    Mas se chover dá de tudo
+    Fartura tem de montão
+    Tomara que chova logo
+    Tomara, meu Deus, tomara
+
+    Só deixo o meu Cariri[1]
+    No último pau de arara
+    Só deixo o meu Cariri
+    No último pau de arara[2]
+
+    Enquanto a minha vaquinha
+    Tiver o couro e o osso
+    E puder com o chocalho[3]
+    Pendurado no pescoço
+    Vou ficando por aqui
+    Que Deus do céu me ajude
+
+    Quem sai da terra natal
+    Em outro canto não pára
+    Só deixo o meu Cariri
+    No último pau de arara
+    Só deixo o meu Cariri
+    No último pau de arara
+
+    Enquanto a minha vaquinha
+    Tiver o couro e o osso
+    E puder com o chocalho
+    Pendurado no pescoço
+    Vou ficando por aqui
+- code: en
+  name: English
+  lines: |
+    Life here is just hard
+    When the rain won't fall
+    But if it rains, there's plenty
+    There's abundance in heaps
+    I hope it rains soon
+    Please, my God, I hope so
+
+    I'll only leave my Cariri
+    On the last pau de arara
+    I'll only leave my Cariri
+    On the last pau de arara
+
+    As long as my little cow
+    Has skin and bone 
+    And can carry her bell
+    Hanging from the neck
+    I'll stay right here
+    May God in heaven help me
+
+    Whoever leaves the homeland
+    Will settles nowhere else
+    I'll only leave my Cariri
+    On the last pau de arara
+    I'll only leave my Cariri
+    On the last pau de arara
+
+    As long as my little cow
+    Has skin and bone left
+    And can carry the cowbell
+    Hanging from her neck
+    I'm staying right here
+intro: |-
+  "Último Pau de Arara" (composed by Venâncio, Corumba, and J. Guimarães, immortalized by Ary Lobo and Fagner) is a canonical anthem of Northeastern identity and resilience. It encapsulates the sertanejo's resistance to abandoning their homeland. Vowing to leave only on the "last lorry" (Último Pau de Arara) to the city is a call for perseverance in the face of prolonged droughts.
+footnotes:
+- id: 1
+  term: Cariri
+  explanation_en: |-
+    Cariri is an oasis-like sub-region in the sertão, celebrated for its fertile valleys amid dry thorny scrub.
+    
+    The exclusively Brazilian ecosystem of the sertão, called Caatinga, is adapted to extremely arid conditions and has a remarkable potential for regeneration. The Caatinga covers nearly 10% of Brazil's territory, is home to 26 million people and over 2,000 species of plants, fish, reptiles, amphibians, birds, and mammals. Some of which cannot be found anywhere else on the planet.
+    
+    In Forró lyrics Cariri serves as an icon of origin, agricultural hope, and nostalgic homecoming (saudade).
+- id: 2
+  term: Pau de Arara
+  explanation_en: |-
+    Literally "macaw's perch", originally meant the bird sellers' practice of tying a parrot to a stick for exhibition. Pau de Arara is also an illustrative name given to a torture method widely used during the military dictatorship in Brazil (1964 -1985). Whereby the victim is bound very uncomfortably to a pole, hanging upside down.
+    
+    Northeastern farmers fleeing the severe drought hop on open flatbed trucks fitted with wooden planks. The torturous journey stretches thousands of kilometers, over bad roads and potholes, to Southeastern industrial centers like São Paulo. These trucks became known as Pau de Araras for obvious reasons.
+- id: 3
+  term: Chocalho
+  explanation_en: |-
+    A traditional bronze or iron cowbell worn around livestock's necks. During droughts, cattle often become severely emaciated. A cow that is only "skin and bone" but can still carry her bell, is a sign of hope, for the rain to fall, the sertão to blossom and to stay on one's native soil.

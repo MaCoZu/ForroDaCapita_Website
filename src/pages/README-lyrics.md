@@ -32,6 +32,7 @@ Each element in `languages`:
 ```yaml
 - code: pt
   name: Português
+  width: 1.4
   lines: |
     [Canto I]
     Quá fogueira de São João
@@ -49,6 +50,7 @@ Each element in `languages`:
 
 - `code` — lowercase language code (`pt`, `en`, …). The `pt` column is special: it renders footnote superscripts. All other columns strip them. If no language has `code: pt`, the first column takes over the superscript/header role.
 - `name` — display label shown above the column.
+- `width` — optional column width as a relative weight (default `1`). Give a column more room when its lines are long: `width: 1.4`. The weights are normalised across the columns, so `1.4` next to `1` yields a 58/42 split. The whole block stays centred on the article's axis regardless. Clamped to `0.5`–`3`.
 - `lines` — the full lyrics text, line by line, as a YAML block scalar (`|`). Blank lines create verse spacing (extra vertical gap). Lines that consist *only* of `[...]` (e.g. `[Canto I]`) become section headers in the `pt` column.
 
 Languages with empty or whitespace-only `lines` are skipped entirely.

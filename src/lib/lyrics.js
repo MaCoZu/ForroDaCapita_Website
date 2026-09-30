@@ -4,6 +4,8 @@ import { lyricsSources } from '../generated-lyrics.js'
 const slugify = (filename) =>
   filename
     .replace(/\.yaml$/i, '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
@@ -14,6 +16,18 @@ const isValidRecord = (doc) =>
   typeof doc.title === 'string' &&
   typeof doc.artist === 'string' &&
   Array.isArray(doc.languages)
+
+const MIN_COLUMN_WEIGHT = 0.5
+const MAX_COLUMN_WEIGHT = 3
+
+const columnWeight = (lang) => {
+  const raw = typeof lang?.width === 'number' ? lang.width : Number.parseFloat(lang?.width)
+  if (!Number.isFinite(raw) || raw <= 0) return 1
+  return Math.min(Math.max(raw, MIN_COLUMN_WEIGHT), MAX_COLUMN_WEIGHT)
+}
+
+const withColumnWeights = (languages) =>
+  languages.map((lang) => ({ ...lang, width: columnWeight(lang) }))
 
 const parseRecord = (filename, content) => {
   let doc
@@ -34,7 +48,7 @@ const parseRecord = (filename, content) => {
     description: typeof doc.description === 'string' ? doc.description : undefined,
     pdfUrl: typeof doc.pdf_url === 'string' ? doc.pdf_url : undefined,
     intro: typeof doc.intro === 'string' && doc.intro.trim() !== '' ? doc.intro : undefined,
-    languages: doc.languages,
+    languages: withColumnWeights(doc.languages),
     footnotes: Array.isArray(doc.footnotes) ? doc.footnotes : [],
   }
 }
