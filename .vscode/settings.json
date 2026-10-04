@@ -1,4 +1,7 @@
 {
+  "editor.renderWhitespace": "boundary",
+  "editor.formatOnSave": true,
+
   "cSpell.words": [
     "eingang",
     "Forró",

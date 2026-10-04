@@ -36,28 +36,20 @@ const wayimages = find58?.findus ?? []
     <div class="flex flex-row justify-between gap-x-8 w-full">
       <div class="text-base-styles" set:html={whenwhere} />
       <div class="flex flex-col md:flex-row gap-8 justify-end items-start">
-        <TreasureMapIcon
-          id="mapIcon"
-          className="w-8 md:w-13  cursor-pointer"
-        />
+        <TreasureMapIcon id="mapIcon" className="w-8 md:w-13  cursor-pointer" />
         <GoogleIcon className="w-6 ml-1 md:ml-0 md:w-8" />
       </div>
     </div>
 
-    <div
-      class="flex flex-row justify-between gap-x-8 w-full items-baseline"
-    >
+    <div class="flex flex-row justify-between gap-x-8 w-full items-baseline">
       <div class="text-base-styles">
-        Once at Prinzenallee 58,
-        <a id="wayLink" class="underline decoration-1 cursor-pointer"
-          >this is the way</a
-        >
+        Once at Prinzenallee 58,{' '}
+        <a id="wayLink" class="underline decoration-1 cursor-pointer">
+          this is the way
+        </a>{' '}
         to go.
       </div>
-      <ImagesIcon
-        id="imagesIcon"
-        className="min-w-8 md:w-12 cursor-pointer"
-      />
+      <ImagesIcon id="imagesIcon" className="min-w-8 md:w-12 cursor-pointer" />
     </div>
   </div>
 
@@ -78,9 +70,7 @@ const wayimages = find58?.findus ?? []
         viewBox="0 0 512 512"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"
-        ></path>
+        <path d="M437.5 386.6 306.9 256l130.6-130.6a36 36 0 1 0-50.9-50.9L256 205.1 125.4 74.5a36 36 0 1 0-50.9 50.9L205.1 256 74.5 386.6a36 36 0 1 0 50.9 50.9L256 306.9l130.6 130.6a36 36 0 1 0 50.9-50.9"></path>
       </svg>
     </button>
     <div
@@ -159,7 +149,6 @@ const wayimages = find58?.findus ?? []
       })
     }
   </script>
-
   <style>
     .hidescrollbar::-webkit-scrollbar {
       display: none;

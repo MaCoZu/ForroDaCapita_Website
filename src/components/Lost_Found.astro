@@ -26,8 +26,12 @@ const lf_conditions = marked.parse(lostfound?.lfinfo ?? '')
   <h2 class="text-heading-2">Lost and Found</h2>
   <div class="flex flex-row items-center justify-between">
     <div class="text-base-styles">
-      <span>Miss something? Have a look in the 
-        <a id="boxLink" class="no-underline">box</a>.
+      <span>
+        Miss something? Have a look in the{' '}
+        <a id="boxLink" class="no-underline">
+          box
+        </a>
+        .
       </span>
       <div set:html={lf_conditions} />
     </div>

@@ -12,10 +12,10 @@ import Article from '../components/Article.astro'
       <h1 class="heading-base-styles mb-3">Heading 1 - Base Styles</h1>
       <h2 class="heading-2-styles mb-3">Heading 2 - Secondary Styles</h2>
       <p class="text-base-styles mb-5">
-        This paragraph uses <strong>text-base-styles</strong>. It should use
-        the LouisGeorge font, have proper line height (2), and use the
-        primary-content color. <a href="#test">This is a link</a> with
-        underline styling.
+        This paragraph uses <strong>text-base-styles</strong>. It should use the
+        LouisGeorge font, have proper line height (2), and use the
+        primary-content color. <a href="#test">This is a link</a> with underline
+        styling.
       </p>
     </section>
 
@@ -32,11 +32,13 @@ import Article from '../components/Article.astro'
         <ul>
           <li>First list item with LouisGeorge font</li>
           <li>Second list item testing font application</li>
-          <li>Third item with <strong>bold text</strong> and <em>italic</em></li>
+          <li>
+            Third item with <strong>bold text</strong> and <em>italic</em>
+          </li>
         </ul>
         <p>
-          Here's another paragraph with a
-          <a href="#link">clickable link</a> that should be underlined.
+          Here's another paragraph with a <a href="#link">clickable link</a>{' '}
+          that should be underlined.
         </p>
         <h3>Subheading Level 3</h3>
         <p>
@@ -59,7 +61,8 @@ import Article from '../components/Article.astro'
           <path
             fill-rule="evenodd"
             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-            clip-rule="evenodd"></path>
+            clip-rule="evenodd"
+          ></path>
         </svg>
       </div>
     </section>
@@ -71,13 +74,11 @@ import Article from '../components/Article.astro'
         <h1>Article H1 - Should use LouisGeorge Heading Font</h1>
         <p>
           This content is inside the <code>Article</code> component. It should
-          use the full Tailwind Typography prose styles combined with our
-          custom font families.
+          use the full Tailwind Typography prose styles combined with our custom
+          font families.
         </p>
         <h2>Article H2 - Also LouisGeorge</h2>
-        <p>
-          The Article component is configured with:
-        </p>
+        <p>The Article component is configured with:</p>
         <ul>
           <li>LouisGeorge font for body text (font-content)</li>
           <li>LouisGeorge for headings (font-heading)</li>
@@ -134,8 +135,12 @@ import Article from '../components/Article.astro'
     <section class="mb-15">
       <h1 class="heading-base-styles mb-5">Responsive Text Sizes</h1>
       <div class="space-y-3">
-        <p class="text-heading-1">text-heading-1 (1.7rem mobile / 1.69rem desktop)</p>
-        <p class="text-heading-2">text-heading-2 (1.5rem mobile / 1.43rem desktop)</p>
+        <p class="text-heading-1">
+          text-heading-1 (1.7rem mobile / 1.69rem desktop)
+        </p>
+        <p class="text-heading-2">
+          text-heading-2 (1.5rem mobile / 1.43rem desktop)
+        </p>
         <p class="text-content">text-content (1rem mobile / 1.3rem desktop)</p>
         <p class="text-small">text-small (0.95rem mobile / 0.975rem desktop)</p>
       </div>
@@ -151,7 +156,9 @@ import Article from '../components/Article.astro'
         </p>
         <p class="text-secondary">text-secondary (--color-secondary)</p>
         <p class="text-accent">text-accent (--color-accent)</p>
-        <p class="text-base-content">text-base-content (--color-base-content)</p>
+        <p class="text-base-content">
+          text-base-content (--color-base-content)
+        </p>
       </div>
     </section>
 
@@ -160,8 +167,8 @@ import Article from '../components/Article.astro'
       <h1 class="heading-base-styles mb-5">Dark Mode Test</h1>
       <p class="text-base-styles">
         Toggle the theme using the theme switcher to verify all typography
-        maintains proper contrast and readability in both light (retro) and
-        dark (coffee) themes.
+        maintains proper contrast and readability in both light (retro) and dark
+        (coffee) themes.
       </p>
       <div class="markdown-content mt-5">
         <h2>Markdown in Dark Mode</h2>
@@ -192,7 +199,10 @@ import Article from '../components/Article.astro'
       <div class="markdown-content">
         <p>Verify the following:</p>
         <ol>
-          <li>✓ All text uses LouisGeorge font (except font-tech which uses Work Sans)</li>
+          <li>
+            ✓ All text uses LouisGeorge font (except font-tech which uses Work
+            Sans)
+          </li>
           <li>✓ Headings are clearly distinguishable from body text</li>
           <li>✓ Links are underlined and use primary-content color</li>
           <li>✓ Text sizes are responsive (check mobile vs desktop)</li>
@@ -201,9 +211,13 @@ import Article from '../components/Article.astro'
           <li>✓ Flex layouts keep text aligned with icons</li>
           <li>✓ Article component properly styles structured content</li>
         </ol>
-        <p><strong>How to use this page:</strong></p>
+        <p>
+          <strong>How to use this page:</strong>
+        </p>
         <ul>
-          <li>View at different screen sizes (mobile &lt;768px, desktop ≥768px)</li>
+          <li>
+            View at different screen sizes (mobile &lt;768px, desktop ≥768px)
+          </li>
           <li>Toggle between light and dark themes</li>
           <li>Inspect elements to verify computed styles</li>
           <li>Compare against the original design specifications</li>
